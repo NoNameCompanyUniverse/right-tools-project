@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "right-tools-project"
+version = "0.1.0"
+description = ""
+authors = ["Roman Sotnikov <66946134+axemanofic@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "<3.3"
+djangorestframework = "^3.12.4"
+djangorestframework-simplejwt = "^5.0.0"
+django-cors-headers = "^3.10.1"
+psycopg2 = "^2.9.2"
+drf-yasg = "^1.20.0"
+django-crontab = "^0.7.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
