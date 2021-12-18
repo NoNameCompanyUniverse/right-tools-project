@@ -1,5 +1,10 @@
 # Right Tools Backend API
 
+## Cloning
+```shell
+$ git clone https://github.com/axemanofic/right-tools-project.git
+```
+
 ## How do I start this?
 
 ```shell
