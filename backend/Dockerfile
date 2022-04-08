@@ -4,16 +4,14 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 ENV PYTHONUNBUFFERED=1
 
-ADD . /right-tools-project
+ADD /backend /backend
 
-WORKDIR /right-tools-project
+WORKDIR /backend
 
-RUN pip install "poetry==1.1.12"
-
-RUN poetry config virtualenvs.create false
-
-RUN poetry install
+RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
-CMD cd rt_project && python manage.py runserver 0.0.0.0:8000
+WORKDIR ./src
+
+CMD python manage.py runserver 0.0.0.0:8000
