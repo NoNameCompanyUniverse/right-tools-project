@@ -1,0 +1,127 @@
+.container {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.main {
+  width: 47%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 1rem;
+}
+
+.logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--secondary);
+  font-size: 1.8rem;
+  padding: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.05px;
+
+  span {
+    color: var(--success);
+  }
+}
+
+.copyright {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: .9rem;
+  color: var(--gray);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.banner {
+  position: relative;
+  width: 53%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom;
+    z-index: 1;
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 10;
+  border-radius: 1rem;
+  max-width: 500px;
+  width: 100%;
+  padding: 3.5rem 3.5rem;
+  background: rgba(87, 87, 87, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(.5rem);
+  color: #fff;
+  h2{
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  p{
+    width: 70%;
+    font-size: .9rem;
+  }
+}
+
+.form {
+  max-width: 400px;
+  width: 100%;
+}
+
+.title {
+  h2,
+  p {
+    font-size: .9rem;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    color: var(--black);
+  }
+
+  p {
+    color: var(--gray);
+  }
+
+  margin-bottom: 5rem;
+}
+
+.registration {
+  font-size: .85rem;
+  text-align: center;
+  display: block;
+
+
+  span {
+    color: var(--success);
+    cursor: pointer;
+  }
+}
+
+
+@media (max-width: 1100px) {
+  .banner{
+    display: none;
+  }
+  .main{
+    width: 100%;
+  }
+}
