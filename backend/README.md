@@ -21,3 +21,17 @@ Now you can open here http://127.0.0.1:8000/
 
 ## Documentation
 http://127.0.0.1:8000/swagger/
+
+## How install?
+
+```shell
+poetry config virtualenvs.in-project true
+```
+
+```shell
+poetry install
+```
+
+```
+python manage.py runserver 0.0.0.0:8000
+```
