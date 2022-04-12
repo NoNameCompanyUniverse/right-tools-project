@@ -1,5 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.http import Http404
+
 from config.settings import BASE_DIR
 
 
@@ -16,3 +18,7 @@ class Subdivision(models.Model):
     parent = models.ForeignKey('self', on_delete=models.PROTECT, null=True, related_name='children')
     name = models.CharField(max_length=100, null=False)
     description = models.TextField(null=True)
+    level = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.pk} {self.name}"

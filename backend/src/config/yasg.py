@@ -5,9 +5,9 @@ from django.urls import re_path
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Name you API",
+      title="Right Tools API",
       default_version='v1',
-      description="Name you API",
+      description="Right Tools API",
       terms_of_service="https://www.google.com/policies/terms/",
       license=openapi.License(name="BSD License"),
    ),

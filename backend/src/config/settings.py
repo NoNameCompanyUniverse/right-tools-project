@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
-import dotenv
+import sys
 from datetime import timedelta
 from pathlib import Path
+
+import dotenv
 
 dotenv.load_dotenv()
 
@@ -48,7 +50,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'django_simple_logs',
+    'django_bot_exceptions'
 ]
 
 MIDDLEWARE = [
@@ -60,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_simple_logs.middlewares.LoguruMiddleware',
+    'django_bot_exceptions.middlewares.TelegramExceptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -141,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -210,3 +216,30 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3080",
     "http://127.0.0.1:3000",
 ]
+
+
+DJANGO_SIMPLE_LOGS = {
+    "LOGURU": {
+        "handlers": [
+            {
+                "sink": sys.stdout,
+                "filter": lambda record: record['level'].name == 'INFO',
+                "format": '{time} | {level} | {message}',
+            },
+            {
+                "sink": BASE_DIR / 'logs/error.log',
+                "filter": lambda record: record['level'].name == 'ERROR',
+                "format": '{time} | {level} | {message}',
+                "rotation": '100 KB',
+                "compression": 'zip',
+            }
+        ]
+    }
+}
+
+TELEGRAM_BOT = {
+    "TOKEN": os.getenv('TOKEN'),
+    "CHATS": {
+        '494061970'
+    }
+}
