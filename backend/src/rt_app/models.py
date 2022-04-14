@@ -10,7 +10,6 @@ class User(AbstractUser):
     description = models.TextField(null=True)
     date_birth = models.DateField(null=True)
     phone = models.CharField(unique=True, max_length=30, null=True)
-    user_created = models.CharField(max_length=150, null=False)
     subdivision = models.ForeignKey('Subdivision', on_delete=models.PROTECT, null=False)
 
 
