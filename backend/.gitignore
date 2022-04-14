@@ -148,3 +148,5 @@ cython_debug/
 
 ./python_install.sh
 
+logs
+
