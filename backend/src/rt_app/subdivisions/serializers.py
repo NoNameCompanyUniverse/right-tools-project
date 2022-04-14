@@ -58,3 +58,9 @@ class SubdivisionSerializer(ModelSerializer):
     class Meta:
         model = Subdivision
         fields = ('id', 'name', 'description', 'level', 'parent')
+
+
+class SubdivisionShortInfoSerializer(ModelSerializer):
+    class Meta:
+        model = Subdivision
+        fields = ('id', 'name')

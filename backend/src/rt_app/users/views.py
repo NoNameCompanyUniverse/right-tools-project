@@ -92,7 +92,7 @@ class StaffView(BaseUser, APIView):
 class PasswordView(BaseUser, APIView):
     permission_classes = [IsOwner, ]
 
-    @swagger_auto_schema(query_serializer=PasswordSerializer(), tags=['Текущий пользователь'],
+    @swagger_auto_schema(query_serializer=PasswordSerializer(), tags=['Пользователи'],
                          operation_summary="Изменить пароль")
     def patch(self, request, pk):
         user = self.get_object(pk)
@@ -108,7 +108,7 @@ class PhotoView(BaseUser, APIView):
 
     parser_classes = (MultiPartParser, FormParser)
 
-    # @swagger_auto_schema(query_serializer=PhotoSerializer(), tags=['Текущий пользователь'], operation_summary="Изменить пароль")
+    @swagger_auto_schema(tags=['Пользователи'], operation_summary="Изменить фото")
     def patch(self, request, pk):
         user = self.get_object(pk)
         self.check_object_permissions(request, user)
