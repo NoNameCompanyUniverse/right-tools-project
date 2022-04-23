@@ -16,13 +16,11 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.urls import path, include
 from .yasg import urlpatterns as yasg_pattern
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from . import settings
+from rest_framework_simplejwt.views import TokenRefreshView
+from . import settings, simplejwt
 
 
 urlpatterns = [
-    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/', include('rt_app.urls'))
 ]
 

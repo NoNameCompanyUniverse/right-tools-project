@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from .permissions import *
@@ -50,7 +49,6 @@ class CurrentUserView(ModelViewSet):
     tags=['Пользователи'], operation_summary="Удалить пользователя"
 ))
 class UserView(ModelViewSet):
-    pagination_class = LimitOffsetPagination
     permission_classes = [IsAdmin, IsOwner]
 
     queryset = User.objects.all().order_by('pk')
