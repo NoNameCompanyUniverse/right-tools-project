@@ -1,0 +1,35 @@
+.main {
+  background: #fafafa;
+  transition: .4s all ease;
+  margin-left: 5rem;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+
+.aside {
+  display: block;
+  position: fixed;
+  max-width: 5rem;
+  width: 100%;
+  padding: 1rem;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  transition: .4s all ease;
+  background: #fff;
+  border-right: 1px solid #eee;
+
+  &:hover {
+    max-width: 14rem;
+    & + .main {
+      margin-right: -14rem;
+      margin-left: 14rem;
+    }
+  }
+}
+
+
+
+
+

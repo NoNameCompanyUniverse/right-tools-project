@@ -1,0 +1,23 @@
+.block {
+  padding: 1.5rem;
+  height: 100%;
+  color: #fff;
+  border-radius: var(--radius-value);
+}
+.title {
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.count {
+  margin: 5px 0 10px 0;
+  font-weight: 500;
+  font-size: 45px;
+  line-height: 1.5;
+}
+.description {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+}

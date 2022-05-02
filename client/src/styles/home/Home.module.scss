@@ -1,0 +1,263 @@
+.logo {
+  color: var(--secondary);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.05px;
+
+  span {
+    color: var(--success);
+  }
+}
+
+.nav {
+  padding: .5rem 0;
+  border-bottom: 1px solid var(--light-gray);
+  //box-shadow: 0 10px 30px 0 rgb(0 0 0 / 5%);
+  ul {
+    list-style: none;
+
+    li + li {
+      margin-left: 1.2rem;
+    }
+  }
+}
+
+.link {
+  background: linear-gradient(var(--wood), var(--wood)) 50% 100% no-repeat;
+  background-size: 0 2px;
+  padding-bottom: .2rem;
+  transition: .3s all ease;
+  font-size: 1rem;
+
+  &:hover {
+    background-size: 100% 2px;
+  }
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.header {
+
+  padding: 7rem 0;
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h1 {
+      color: var(--black);
+      font-size: 4.5rem;
+      text-align: center;
+
+    }
+
+    p {
+      color: var(--black);
+      font-size: 1.15rem;
+      max-width: 850px;
+      text-align: center;
+
+    }
+  }
+
+  &__banners {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 5rem;
+  }
+
+
+  &__banner {
+    border-radius: 1.15rem;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+
+    border: 1px solid var(--light-gray);
+
+    &_side {
+      max-width: 550px;
+      height: 380px;
+      z-index: 1;
+
+      &__left {
+        margin-right: -15rem;
+      }
+
+      &__right {
+        margin-left: -15rem;
+      }
+    }
+
+    &_main {
+      max-width: 700px;
+      height: 470px;
+      z-index: 3;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.section {
+  padding: 10rem 0;
+
+  &__title {
+    font-size: 2.75rem;
+    line-height: 1.15;
+  }
+
+  &__description {
+    margin: 2rem 0;
+    color: var(--black);
+    font-size: 1.75rem;
+    max-width: 850px;
+    font-weight: 500;
+  }
+}
+
+.card {
+  border-radius: 1.15rem;
+  padding: 2rem;
+  overflow: hidden;
+
+  &_green {
+    background: #e2f4df;
+  }
+
+  &_wood {
+    background: #fdf6f0;
+  }
+
+  &_dark {
+    background: #1d1d1f;
+
+    .card {
+      &__label {
+        color: #fff;
+      }
+
+      &__title {
+        color: #fff;
+      }
+
+      &__description {
+        color: #fff;
+
+      }
+    }
+  }
+
+  &_outline {
+    &_dark {
+      border: 2px solid #1d1d1f;
+      background: #fff;
+    }
+
+    &_green {
+      border: 2px solid #32bb56;
+      background: #fff;
+    }
+  }
+
+  &_img {
+    background: url("../../../public/auth/auth-bg.jpg") 0% 70% no-repeat;
+    background-size: cover;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .card {
+      &__title {
+        color: #fff;
+        text-align: center;
+        backdrop-filter: blur(0.5rem);
+
+        box-shadow: 0 10px 25px rgb(0 0 0 / 5%);
+        background: rgba(87, 87, 87, 0.2);
+        border-radius: 1.25rem;
+        padding: 2rem;
+
+        span {
+          font-weight: 400;
+          font-size: 3rem;
+        }
+      }
+    }
+  }
+
+  &__label {
+    color: var(--secondary);
+    font-size: 1.15rem;
+    font-weight: bold;
+  }
+
+  &__title {
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1.25;
+  }
+
+  &__description {
+    margin: 1.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  &__label {
+    color: var(--secondary);
+  }
+
+  &__title {
+    color: var(--secondary);
+  }
+
+  &__description {
+    color: var(--secondary);
+
+  }
+
+  &__banner {
+    position: relative;
+
+  }
+
+  &__img {
+    position: absolute;
+    right: -2.5rem;
+    bottom: -3rem;
+    width: 100%;
+    height: 400px;
+    border-radius: 1.15rem;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.footer {
+  background: var(--secondary);
+  padding: 2rem 0;
+  color: #fff;
+}

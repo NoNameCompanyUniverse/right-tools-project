@@ -1,0 +1,86 @@
+.block {
+  padding: 1.5rem;
+  border-radius: var(--radius-value);
+  max-width: 420px;
+  width: 100%;
+  border: 1px solid #EEEEEE;
+  background: #fff;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--black);
+  margin-bottom: .95rem;
+}
+
+.body {
+  padding: 0 1.5rem;
+}
+
+.banner {
+  width: 100%;
+  height: 10rem;
+  border-radius: var(--radius-value);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: scale 10s ease-in-out 1s infinite;
+    object-position: center;
+  }
+}
+
+.user {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  z-index: 10;
+}
+
+.avatar {
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-top: -3.25rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.name {
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.login {
+  font-weight: 400;
+  font-size: .95rem;
+  line-height: 1.5;
+}
+
+.status {
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  from {
+    transform: scale(1);
+  }
+}
