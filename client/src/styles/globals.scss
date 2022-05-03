@@ -32,6 +32,9 @@ a {
   --wood: #F0B878;
   --smokegreen: #8E9993;
   --green: #868974;
+  --smokeyellow: #FFEEDC;
+  --darkwood: #8B7659;
+  --smoke: #f3f9ff;
 
   --radius-value: .5rem;
 }
@@ -240,4 +243,10 @@ a {
   &-green {
     color: var(--green) !important;
   }
+}
+
+button {
+  border: 0;
+  outline: 0;
+  cursor: pointer;
 }
