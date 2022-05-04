@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {motion} from 'framer-motion'
 import {PageTransition} from "../../motion";
 import Title from "../../components/Panel/Title";
@@ -102,13 +102,11 @@ const users:Array<any> = [
     },
 ]
 
-
 const Users = () => {
 
     const handleOnSearch = (value:string) => {
 
     }
-
 
     return (
         <>
@@ -153,7 +151,6 @@ const Users = () => {
         </>
     );
 };
-
 
 Users.getLayout = function getLayout(page: ReactElement) {
     return (

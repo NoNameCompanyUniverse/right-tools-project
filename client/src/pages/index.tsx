@@ -40,12 +40,12 @@ const Home: NextPage = () => {
                                     <div className={`me-3`}>
                                         <Link href={`/profile/_l0stvayne_`}>
                                             <a className={style.link}>
-                                                Primoshina, L
+                                                Maksimov, S
                                             </a>
                                         </Link>
                                     </div>
                                     <div className={style.avatar}>
-                                        <img src="/test/avatar.jpg" alt=""/>
+                                        <img src="/profile/user.PNG" alt=""/>
                                     </div>
                                 </div>
                             </div>
