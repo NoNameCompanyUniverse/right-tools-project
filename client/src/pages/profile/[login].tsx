@@ -5,7 +5,7 @@ import StatisticsCard from "../../components/Panel/StatisticsCard";
 import User from "../../components/Panel/User";
 import {motion} from 'framer-motion'
 import {PageTransition} from "../../motion";
-import ProjectCard from "../../components/Panel/ProjectCard";
+import ProjectCard from "../../components/ProjectCard";
 import Users from "../../components/Panel/Users";
 
 
@@ -22,6 +22,7 @@ const user = {
 
 const projects: Array<any> = [
     {
+        id: 1,
         name: 'Разработка интернет-магазина',
         status: {
             id: 1,
@@ -53,6 +54,7 @@ const projects: Array<any> = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam at aut autem consectetur consequuntur excepturi exercitationem, illum, non quibusdam ratione sapiente similique tempora. Animi eius expedita inventore qui rerum!'
     },
     {
+        id: 2,
         name: 'Разработка интернет-магазина',
         status: {
             id: 2,
@@ -76,6 +78,7 @@ const projects: Array<any> = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam at aut autem consectetur consequuntur excepturi exercitationem, illum, non quibusdam ratione sapiente similique tempora. Animi eius expedita inventore qui rerum!'
     },
     {
+        id: 3,
         name: 'Разработка интернет-магазина',
         status: {
             id: 1,
@@ -169,7 +172,7 @@ const Profile = () => {
                         <div className="row my-5 gx-4">
                             {
                                 projects.map((project, index: number) => (
-                                    <div key={index} className="col-xl-4 mb-4">
+                                    <div key={index} className="col-xxl-4 col-lg-6 mb-4">
                                         <ProjectCard props={project}/>
                                     </div>
                                 ))
