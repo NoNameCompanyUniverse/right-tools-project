@@ -1,6 +1,7 @@
 import React from 'react';
 import style from './index.module.scss';
 import DropDown from "../DropDown";
+import {motion} from "framer-motion";
 
 type IUserCard = {
     id: number,
@@ -16,10 +17,17 @@ const UserCard: React.FC<{ props: IUserCard }> = ({props}) => {
 
     return (
         <div className={style.block}>
-            <div className={style.avatar}>
+            <motion.div
+                whileHover={
+                    {
+                        width: '5.75rem',
+                        height: '5.75rem',
+                        transformOrigin: 'left top'
+                    }}
+                className={style.avatar}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={avatar} alt=""/>
-            </div>
+            </motion.div>
             <div className={style.control}>
                 <DropDown>
                     <ul>
@@ -41,9 +49,15 @@ const UserCard: React.FC<{ props: IUserCard }> = ({props}) => {
             <div className={`d-flex align-items-center flex-wrap`}>
                 {
                     tags.map((tag: { id: number, name: string }, index: number) => (
-                        <div key={index} className={style.tag}>
+                        <motion.div
+                            whileHover={
+                                {
+                                    y: -5,
+                                    transformOrigin: 'left top'
+                                }}
+                            key={index} className={style.tag}>
                             {tag.name}
-                        </div>
+                        </motion.div>
                     ))
                 }
             </div>

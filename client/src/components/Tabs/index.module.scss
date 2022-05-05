@@ -1,0 +1,23 @@
+.underline {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--green);
+}
+.tabs {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #eeeeee;
+
+  li {
+    padding: 1rem 1.25rem;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+}

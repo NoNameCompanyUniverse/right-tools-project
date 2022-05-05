@@ -5,6 +5,8 @@ import LayoutPanel from "../../layout/LayoutPanel";
 import Title from "../../components/Panel/Title";
 import UserCard from "../../components/UserCard";
 import PanelInfo from "../../components/Project/PanelInfo";
+import Tabs from "../../components/Tabs";
+import Card from '../../components/Project/Card';
 
 const user = {
     id: 2,
@@ -74,6 +76,119 @@ const project = {
     ]
 }
 
+const users:Array<any> = [
+    {
+        id: 1,
+        avatar: '/profile/user.PNG',
+        name: 'Alice Zuberg',
+        status: 'UI/UX Designer',
+        tags: [
+            {
+                id: 1,
+                name: 'Дизайнер'
+            },
+            {
+                id: 2,
+                name: 'Figma'
+            },
+            {
+                id: 3,
+                name: 'PhotoShop'
+            }
+        ]
+    },
+    {
+        id: 2,
+        avatar: '/test/avatar.jpg',
+        name: 'Liza Primoshina',
+        status: 'Manager',
+        tags: [
+            {
+                id: 1,
+                name: 'Менеджер'
+            },
+            {
+                id: 2,
+                name: 'Яндекс Метрика'
+            },
+        ]
+    },
+    {
+        id: 3,
+        avatar: '/profile/user.PNG',
+        name: 'Sergey Maksimov',
+        status: 'Front-end developer',
+        tags: [
+            {
+                id: 1,
+                name: 'JavaScript'
+            },
+            {
+                id: 2,
+                name: 'React'
+            },
+            {
+                id: 3,
+                name: 'Next.js'
+            },
+            {
+                id: 4,
+                name: 'Redux'
+            },
+            {
+                id: 5,
+                name: 'Redux-toolkit'
+            },
+        ]
+    },
+    {
+        id: 4,
+        avatar: '/profile/user.PNG',
+        name: 'Roman Sotnikov',
+        status: 'Back-end developer',
+        tags: [
+            {
+                id: 1,
+                name: 'Python'
+            },
+            {
+                id: 2,
+                name: 'PHP'
+            },
+        ]
+    },
+];
+
+
+const maps = [
+    {
+        id: 1,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #1'
+    },
+    {
+        id: 2,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #2'
+    },
+    {
+        id: 3,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #3'
+    },
+    {
+        id: 4,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #4'
+    },
+    {
+        id: 5,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #5'
+    },
+
+]
+
 const Project = () => {
     return (
         <>
@@ -90,9 +205,59 @@ const Project = () => {
                             <UserCard props={user}/>
                         </div>
                         <div>
-                            <Title value={`Разработчики проекта`}/>
+                            <Tabs tabs={['Разработчики проекта', 'Mind Maps проекта', 'KanBan boards', 'Вложения']}>
+                                <>
+                                    <div>
+                                        <Title value={`Разработчики проекта`}/>
+                                        <div className={`mt-4`}>
+                                            <div className={`row`}>
+                                                {
+                                                    users.map((user, index) => (
+                                                        <div key={index} className={`col-xl-4 mb-3`}>
+                                                            <UserCard props={user}/>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Title value={`Mind Maps проекта`}/>
+                                        <div className={`mt-4`}>
+                                            <div className={`row`}>
+                                                {
+                                                    maps.map((map, index) => (
+                                                        <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                            <Card props={map}/>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Title value={`KanBan boards`}/>
+                                        <div className={`mt-4`}>
+                                            <div className={`row`}>
+                                                {
+                                                    maps.map((map, index) => (
+                                                        <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                            <Card props={map}/>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Title value={`Вложения проекта`}/>
+                                        <div className={`mt-4`}>
+                                            4
+                                        </div>
+                                    </div>
+                                </>
+                            </Tabs>
                         </div>
-
                     </div>
                     <div className="col-auto">
                         <PanelInfo props={project}/>

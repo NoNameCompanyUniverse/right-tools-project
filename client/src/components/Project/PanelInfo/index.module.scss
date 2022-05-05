@@ -1,9 +1,22 @@
-.block {
-  padding: 1.5rem;
-  border-radius: var(--radius-value);
+.container {
   width: 420px;
+}
+.block {
+  position: fixed;
+
+  border-radius: var(--radius-value);
   border: 1px solid #EEEEEE;
   background: #fff;
+  top: 2rem;
+  right: 2rem;
+  bottom: 2rem;
+  width: inherit;
+  padding: 1.5rem 0;
+  & > div {
+    padding: 0 1.5rem;
+    height: 100%;
+    overflow: hidden auto;
+  }
 }
 
 .title {
@@ -117,8 +130,6 @@
 .item {
   height: 5rem;
   border: 2px dashed var(--gray);
-  width: 9rem;
-  flex: 0 0 9rem;
   font-size: .95rem;
   white-space: nowrap;
   overflow: hidden;
@@ -130,9 +141,6 @@
     width: 100%;
     display: inline-block;
     padding: .5rem;
-  }
-  & + .item {
-    margin-left: 1rem;
   }
 }
 
