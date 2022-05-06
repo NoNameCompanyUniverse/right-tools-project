@@ -12,7 +12,9 @@ const Search:React.FC<ISearch> = ({placeholder, value= '', onSubmit}) => {
 
     const [word, setWord] = useState('');
 
-    const [isDisabled, setIsDisabled] = useState(value?.length <= 0)
+    //const [isDisabled, setIsDisabled] = useState(value?.length <= 0)
+
+    const [isDisabled, setIsDisabled] = useState(false)
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
@@ -22,12 +24,13 @@ const Search:React.FC<ISearch> = ({placeholder, value= '', onSubmit}) => {
     const handleOnSearch = (event: FormEvent<HTMLInputElement>) => {
         let currencyWord: string = event.currentTarget.value;
         setWord(currencyWord);
-        setIsDisabled(currencyWord.length <= 0)
+        //setIsDisabled(currencyWord.length <= 0)
     }
 
 
     useEffect(() => {
-        value ? setWord(value) : ''
+        // value ? setWord(value) : ''
+        setWord(value)
     }, [value])
 
     return (

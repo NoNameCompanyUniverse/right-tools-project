@@ -1,12 +1,13 @@
 import React, {ReactElement} from 'react';
 import {motion} from "framer-motion";
-import {PageTransition} from "../../motion";
-import LayoutPanel from "../../layout/LayoutPanel";
-import Title from "../../components/Panel/Title";
-import UserCard from "../../components/UserCard";
-import PanelInfo from "../../components/Project/PanelInfo";
-import Tabs from "../../components/Tabs";
-import Card from '../../components/Project/Card';
+import {PageTransition} from "../../../motion";
+import LayoutPanel from "../../../layout/LayoutPanel";
+import Title from "../../../components/Panel/Title";
+import UserCard from "../../../components/Cards/UserCard";
+import PanelInfo from "../../../components/Project/PanelInfo";
+import Tabs from "../../../components/Tabs";
+import Card from '../../../components/Project/Card';
+import FileCard from "../../../components/Cards/FileCard";
 
 const user = {
     id: 2,
@@ -187,6 +188,67 @@ const maps = [
         name: 'Board #5'
     },
 
+];
+
+const files = [
+    {
+        id: 1,
+        date: 'Jan 30 / 2020',
+        name: 'ID Photo',
+        size: '537Kb',
+        type: 'PNG',
+    },
+    {
+        id: 2,
+        date: 'Jan 30 / 2020',
+        name: 'Design',
+        size: '537Kb',
+        type: 'JPG',
+    },
+    {
+        id: 3,
+        date: 'Jan 30 / 2020',
+        name: 'Table Plan',
+        size: '537Kb',
+        type: 'xls',
+    },
+    {
+        id: 4,
+        date: 'Jan 30 / 2020',
+        name: 'ТЗ',
+        size: '537Kb',
+        type: 'doc',
+    },
+    {
+        id: 1,
+        date: 'Jan 30 / 2020',
+        name: 'ID Photo',
+        size: '537Kb',
+        type: 'PNG',
+    },
+    {
+        id: 2,
+        date: 'Jan 30 / 2020',
+        name: 'Design',
+        size: '537Kb',
+        type: 'JPG',
+    },
+    {
+        id: 3,
+        date: 'Jan 30 / 2020',
+        name: 'Table Plan',
+        size: '537Kb',
+        type: 'xls',
+    },
+    {
+        id: 4,
+        date: 'Jan 30 / 2020',
+        name: 'ТЗ',
+        size: '537Kb',
+        type: 'doc',
+    },
+
+
 ]
 
 const Project = () => {
@@ -205,7 +267,12 @@ const Project = () => {
                             <UserCard props={user}/>
                         </div>
                         <div>
-                            <Tabs tabs={['Разработчики проекта', 'Mind Maps проекта', 'KanBan boards', 'Вложения']}>
+                            <Tabs tabs={[
+                                'Разработчики проекта',
+                                'Mind Maps проекта',
+                                'KanBan boards',
+                                'Вложения'
+                            ]}>
                                 <>
                                     <div>
                                         <Title value={`Разработчики проекта`}/>
@@ -252,7 +319,15 @@ const Project = () => {
                                     <div>
                                         <Title value={`Вложения проекта`}/>
                                         <div className={`mt-4`}>
-                                            4
+                                            <div className="row gx-3">
+                                                {
+                                                    files.map((file, index) => (
+                                                        <div key={index} className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
+                                                            <FileCard props={file}/>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </>

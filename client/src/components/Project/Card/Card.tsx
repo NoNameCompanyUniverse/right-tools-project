@@ -17,7 +17,7 @@ const Card:React.FC<{props: ICard}> = ({props}) => {
     return (
         <div className={style.block}>
             <motion.div
-                whileHover={{width: '75%', height: '5.75rem', transformOrigin: 'left top'}}
+                whileHover={{scale: 1.1, transformOrigin: 'left top'}}
                 className={style.banner}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <motion.img whileHover={{scale: 1.05}} src={banner} alt=""/>

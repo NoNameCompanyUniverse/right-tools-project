@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './index.module.scss';
-import DropDown from "../DropDown";
+import DropDown from "../../DropDown";
 import {motion} from "framer-motion";
 
 type IUserCard = {

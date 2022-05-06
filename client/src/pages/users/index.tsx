@@ -6,7 +6,7 @@ import LayoutPanel from "../../layout/LayoutPanel";
 import Search from "../../components/Search";
 import UserInfo from "../../components/Panel/User";
 import User from "../../components/Panel/User";
-import UserCard from "../../components/UserCard";
+import UserCard from "../../components/Cards/UserCard";
 
 const user = {
     firstname: 'Sergey',

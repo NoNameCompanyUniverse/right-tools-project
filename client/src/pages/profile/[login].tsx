@@ -5,7 +5,7 @@ import StatisticsCard from "../../components/Panel/StatisticsCard";
 import User from "../../components/Panel/User";
 import {motion} from 'framer-motion'
 import {PageTransition} from "../../motion";
-import ProjectCard from "../../components/ProjectCard";
+import ProjectCard from "../../components/Cards/ProjectCard";
 import Users from "../../components/Panel/Users";
 
 

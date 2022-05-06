@@ -8,9 +8,6 @@ export const PageTransition: Variants = {
     animate: {
         opacity: 1,
         x: 0,
-        transition: {
-            delay: .5
-        }
     },
 
 }

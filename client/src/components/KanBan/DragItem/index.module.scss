@@ -1,0 +1,33 @@
+.container {
+  background: #fff;
+  overflow: hidden;
+  padding: 1rem;
+  border-radius: var(--radius-value);
+  cursor: grab;
+}
+
+.tag {
+  font-size: 0.76rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 500px;
+  display: inline-block;
+  background: var(--green);
+  color: #fff;
+}
+
+.title {
+  color: var(--black);
+  margin: .5rem 0;
+  font-size: 1.05rem;
+  font-weight: bold;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--gray);
+  font-size: .85rem;
+}
