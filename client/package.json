@@ -15,7 +15,7 @@
     "next": "12.1.4",
     "next-auth": "^4.3.1",
     "react": "18.0.0",
-    "react-beautiful-dnd": "^13.1.0",
+    "react-beautiful-dnd-next": "^11.0.5",
     "react-dom": "18.0.0",
     "react-flow-renderer": "^10.2.1",
     "swiper": "^8.1.4"

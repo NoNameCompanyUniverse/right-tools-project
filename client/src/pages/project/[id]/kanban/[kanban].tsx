@@ -1,17 +1,14 @@
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {motion} from "framer-motion";
 import {PageTransition} from "../../../../motion";
 import LayoutPanel from "../../../../layout/LayoutPanel";
 import DragColumn from "../../../../components/KanBan/DragColumn";
 import DragItem from "../../../../components/KanBan/DragItem";
-// @ts-ignore
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+
 import KanBan from "../../../../blocks/KanBan";
 
 
-
 const Kanban = () => {
-
 
 
     return (
@@ -20,7 +17,11 @@ const Kanban = () => {
             initial={`initial`}
             animate={`animate`}
             className={`d-flex flex-column flex-grow-1`}>
+
+
             <KanBan/>
+         
+
         </motion.div>
     );
 };
