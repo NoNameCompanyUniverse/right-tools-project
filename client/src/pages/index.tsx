@@ -7,9 +7,13 @@ import React from "react";
 import {motion} from 'framer-motion'
 import {fadeIn, fadeUp, fadeUpRotateRight, leftIn, PageTransition, rightIn} from "../motion";
 
+
 const Home: NextPage = () => {
     return (
         <>
+            <Head>
+                <title>Right Tools</title>
+            </Head>
             <motion.div
                 variants={PageTransition}
                 initial={'initial'}

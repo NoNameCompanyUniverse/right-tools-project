@@ -29,7 +29,7 @@ const Kanban = () => {
 
 Kanban.getLayout = function getLayout(page: ReactElement) {
     return (
-        <LayoutPanel title={'KanBan доска'}>
+        <LayoutPanel title={'Right Tools | KanBan доска'}>
             {page}
         </LayoutPanel>
     )

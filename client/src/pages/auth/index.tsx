@@ -8,7 +8,7 @@ import {fadeIn, fadeUp, rightIn, scaleIn} from '../../motion';
 
 const Auth = () => {
 
-    const [isRegistration, setIsRegistration] = useState<boolean>(true)
+    const [isRegistration, setIsRegistration] = useState<boolean>(false)
 
     return (
         <section className={style.container}>
@@ -90,95 +90,95 @@ const Auth = () => {
                                         Отправить
                                     </motion.button>
                                 </div>
-                                {/*<div className={`col-12 mt-5`}>*/}
-                                {/*    <motion.div*/}
-                                {/*        variants={fadeIn}*/}
-                                {/*        custom={11}*/}
-                                {/*        initial={`initial`}*/}
-                                {/*        animate={`animate`}*/}
-                                {/*        className={style.registration}>*/}
-                                {/*        У вас есть аккаунт?*/}
-                                {/*        <span onClick={() => setIsRegistration(false)}>*/}
-                                {/*            Войти*/}
-                                {/*        </span>*/}
-                                {/*    </motion.div>*/}
-                                {/*</div>*/}
+                                <div className={`col-12 mt-5`}>
+                                    <motion.div
+                                        variants={fadeIn}
+                                        custom={11}
+                                        initial={`initial`}
+                                        animate={`animate`}
+                                        className={style.registration}>
+                                        У вас есть аккаунт?
+                                        <span className={`ms-1`} onClick={() => setIsRegistration(false)}>
+                                            Войти
+                                        </span>
+                                    </motion.div>
+                                </div>
                             </div>
                         </form>
                     )
                 }
-                {/*{*/}
-                {/*    !isRegistration && (*/}
-                {/*        <form className={style.form}>*/}
-                {/*            <div className={style.title}>*/}
-                {/*                <motion.h2*/}
-                {/*                    variants={fadeUp}*/}
-                {/*                    custom={3}*/}
-                {/*                    initial={`initial`}*/}
-                {/*                    animate={`animate`}*/}
-                {/*                    className={`mb-3`}>*/}
-                {/*                    Добро пожаловать!*/}
-                {/*                </motion.h2>*/}
-                {/*                <motion.p*/}
-                {/*                    variants={fadeUp}*/}
-                {/*                    custom={6}*/}
-                {/*                    initial={`initial`}*/}
-                {/*                    animate={`animate`}>*/}
-                {/*                    Lorem ipsum dolor sit amet,*/}
-                {/*                    consectetur adipisicing elit.*/}
-                {/*                    A expedita illo, illum placeat*/}
-                {/*                    temporibus voluptate.*/}
-                {/*                </motion.p>*/}
-                {/*            </div>*/}
-                {/*            <div className={`row`}>*/}
-                {/*                <div className={`col-12`}>*/}
-                {/*                    <motion.input*/}
-                {/*                        variants={rightIn}*/}
-                {/*                        custom={3}*/}
-                {/*                        initial={`initial`}*/}
-                {/*                        animate={`animate`}*/}
-                {/*                        className={`form-control`}*/}
-                {/*                        placeholder={`Введите логин`}*/}
-                {/*                        type="text"/>*/}
-                {/*                </div>*/}
-                {/*                <div className={`col-12 mt-4`}>*/}
-                {/*                    <motion.input*/}
-                {/*                        variants={rightIn}*/}
-                {/*                        custom={6}*/}
-                {/*                        initial={`initial`}*/}
-                {/*                        animate={`animate`}*/}
-                {/*                        className={`form-control`}*/}
-                {/*                        placeholder={`Введите пароль`}*/}
-                {/*                        type="text"/>*/}
-                {/*                </div>*/}
-                {/*                <div className={`col-12 mt-4 d-flex`}>*/}
-                {/*                    <motion.button*/}
-                {/*                        variants={rightIn}*/}
-                {/*                        custom={9}*/}
-                {/*                        initial={`initial`}*/}
-                {/*                        animate={`animate`}*/}
-                {/*                        className={`btn btn-lg flex-grow-1 btn-black rounded`}*/}
-                {/*                        type={`submit`}>*/}
-                {/*                        Отправить*/}
-                {/*                    </motion.button>*/}
-                {/*                </div>*/}
-                {/*                <div className={`col-12 mt-5`}>*/}
-                {/*                    <motion.div*/}
-                {/*                        variants={fadeIn}*/}
-                {/*                        custom={11}*/}
-                {/*                        initial={`initial`}*/}
-                {/*                        animate={`animate`}*/}
-                {/*                        className={style.registration}>*/}
-                {/*                        Вы здесь впервые?*/}
-                {/*                        <span onClick={() => setIsRegistration(true)}>*/}
-                {/*                             Регистрация*/}
-                {/*                        </span>*/}
-                {/*                    </motion.div>*/}
-                {/*                </div>*/}
-                {/*            </div>*/}
-                {/*        </form>*/}
-                {/*    )*/}
-                {/*}*/}
+                {
+                    !isRegistration && (
+                        <form className={style.form}>
+                            <div className={style.title}>
+                                <motion.h2
+                                    variants={fadeUp}
+                                    custom={3}
+                                    initial={`initial`}
+                                    animate={`animate`}
+                                    className={`mb-3`}>
+                                    Добро пожаловать!
+                                </motion.h2>
+                                <motion.p
+                                    variants={fadeUp}
+                                    custom={6}
+                                    initial={`initial`}
+                                    animate={`animate`}>
+                                    Lorem ipsum dolor sit amet,
+                                    consectetur adipisicing elit.
+                                    A expedita illo, illum placeat
+                                    temporibus voluptate.
+                                </motion.p>
+                            </div>
+                            <div className={`row`}>
+                                <div className={`col-12`}>
+                                    <motion.input
+                                        variants={rightIn}
+                                        custom={3}
+                                        initial={`initial`}
+                                        animate={`animate`}
+                                        className={`form-control`}
+                                        placeholder={`Введите логин`}
+                                        type="text"/>
+                                </div>
+                                <div className={`col-12 mt-4`}>
+                                    <motion.input
+                                        variants={rightIn}
+                                        custom={6}
+                                        initial={`initial`}
+                                        animate={`animate`}
+                                        className={`form-control`}
+                                        placeholder={`Введите пароль`}
+                                        type="text"/>
+                                </div>
+                                <div className={`col-12 mt-4 d-flex`}>
+                                    <motion.button
+                                        variants={rightIn}
+                                        custom={9}
+                                        initial={`initial`}
+                                        animate={`animate`}
+                                        className={`btn btn-lg flex-grow-1 btn-black rounded`}
+                                        type={`submit`}>
+                                        Отправить
+                                    </motion.button>
+                                </div>
+                                <div className={`col-12 mt-5`}>
+                                    <motion.div
+                                        variants={fadeIn}
+                                        custom={11}
+                                        initial={`initial`}
+                                        animate={`animate`}
+                                        className={style.registration}>
+                                        Вы здесь впервые?
+                                        <span className={`ms-1`} onClick={() => setIsRegistration(true)}>
+                                             Регистрация
+                                        </span>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        </form>
+                    )
+                }
                 <div className={style.copyright}>
                     Все права защищены 2022г.
                 </div>

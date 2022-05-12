@@ -14,10 +14,7 @@ const KanBan = () => {
 
     const [boardData, setBoardData] = useState(BoardData);
 
-
-
     const onDragEnd = (re: any) => {
-        console.log(re)
         if (!re.destination) return;
         let newBoardData = boardData;
         let dragItem = newBoardData[parseInt(re.source.droppableId)].items[re.source.index];
@@ -29,13 +26,14 @@ const KanBan = () => {
     return (
 
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className={`row flex-grow-1`}>
+            <div className={`row flex-grow-1 gx-3`}>
                 {
                     BoardData.map((data: any, bIndex: number) => (
                         <div key={data.name} className="col">
                             <Droppable droppableId={bIndex.toString()}>
                                 {
                                     (provided: any, snapshot: any) => (
+
                                         <div
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
@@ -43,6 +41,7 @@ const KanBan = () => {
                                         >
                                             <div className={styleColumn.title}>
                                                 {data.name}
+                                                {/*{provided.placeholder}*/}
                                             </div>
                                             <div className={styleColumn.content}>
                                                 {
@@ -50,6 +49,7 @@ const KanBan = () => {
                                                         <DragItem key={item.id} data={item} index={index}/>
                                                     ))
                                                 }
+                                                {provided.placeholder}
                                             </div>
                                         </div>
                                     )
