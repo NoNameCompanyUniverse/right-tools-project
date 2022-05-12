@@ -55,18 +55,18 @@ const project = {
 
     ],
     maps: [
-        {id: 1, name: 'Board #1'},
-        {id: 2, name: 'Board #2'},
-        {id: 3, name: 'Board #3'},
-        {id: 4, name: 'Board #4'},
-        {id: 5, name: 'Board #5'}
+        {id: 1, name: 'Board #1', path: '/kanban/'},
+        {id: 2, name: 'Board #2', path: '/kanban/'},
+        {id: 3, name: 'Board #3', path: '/kanban/'},
+        {id: 4, name: 'Board #4', path: '/kanban/'},
+        {id: 5, name: 'Board #5', path: '/kanban/'}
     ],
     boards: [
-        {id: 1, name: 'Board #1'},
-        {id: 2, name: 'Board #2'},
-        {id: 3, name: 'Board #3'},
-        {id: 4, name: 'Board #4'},
-        {id: 5, name: 'Board #5'}
+        {id: 1, name: 'Board #1', path: '/mindmap/'},
+        {id: 2, name: 'Board #2', path: '/mindmap/'},
+        {id: 3, name: 'Board #3', path: '/mindmap/'},
+        {id: 4, name: 'Board #4', path: '/mindmap/'},
+        {id: 5, name: 'Board #5', path: '/mindmap/'}
     ],
     files: [
         {id: 1, name: 'File #1'},
@@ -165,27 +165,66 @@ const maps = [
     {
         id: 1,
         banner: '/profile/user-banner.jpg',
-        name: 'Board #1'
+        name: 'Board #1',
+        path: 'mindmap'
     },
     {
         id: 2,
         banner: '/profile/user-banner.jpg',
-        name: 'Board #2'
+        name: 'Board #2',
+        path: 'mindmap'
     },
     {
         id: 3,
         banner: '/profile/user-banner.jpg',
-        name: 'Board #3'
+        name: 'Board #3',
+        path: 'mindmap'
     },
     {
         id: 4,
         banner: '/profile/user-banner.jpg',
-        name: 'Board #4'
+        name: 'Board #4',
+        path: 'mindmap'
     },
     {
         id: 5,
         banner: '/profile/user-banner.jpg',
-        name: 'Board #5'
+        name: 'Board #5',
+        path: 'mindmap'
+    },
+
+];
+
+const kambans = [
+    {
+        id: 1,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #1',
+        path: 'kanban'
+    },
+    {
+        id: 2,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #2',
+        path: 'kanban'
+    },
+    {
+        id: 3,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #3',
+        path: 'kanban'
+    },
+    {
+        id: 4,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #4',
+        path: 'kanban'
+    },
+    {
+        id: 5,
+        banner: '/profile/user-banner.jpg',
+        name: 'Board #5',
+        path: 'kanban'
     },
 
 ];
@@ -307,7 +346,7 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    maps.map((map, index) => (
+                                                    kambans.map((map, index) => (
                                                         <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
                                                             <Card props={map}/>
                                                         </div>

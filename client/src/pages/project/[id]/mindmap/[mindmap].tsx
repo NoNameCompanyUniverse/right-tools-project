@@ -1,5 +1,5 @@
 import React, {ReactElement, useCallback, useState} from 'react';
-import MindMapBoard  from '../../../../components/MindMap';
+import MindMapBoard  from '../../../../blocks/MindMap';
 import LayoutPanel from "../../../../layout/LayoutPanel";
 
 

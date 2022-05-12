@@ -42,7 +42,7 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
     return (
         <>
             <AnimatePresence exitBeforeEnter>
-                {/*{isLoading && <Preloader/>}*/}
+                {isLoading && <Preloader/>}
                 {
                     getLayout(<Component {...pageProps} />)
                 }

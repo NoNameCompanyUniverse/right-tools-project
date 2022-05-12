@@ -2,17 +2,19 @@ import React from 'react';
 import style from './index.module.scss';
 import DropDown from "../../DropDown";
 import {motion} from "framer-motion";
+import Link from "next/link";
 
 type ICard = {
     id: number,
     name: string,
     banner: string,
+    path: 'kanban' | 'mindmap'
 }
 
 
 const Card:React.FC<{props: ICard}> = ({props}) => {
 
-    const {id, banner, name} = props;
+    const {id, banner, name, path} = props;
 
     return (
         <div className={style.block}>
@@ -23,7 +25,9 @@ const Card:React.FC<{props: ICard}> = ({props}) => {
                 <motion.img whileHover={{scale: 1.05}} src={banner} alt=""/>
             </motion.div>
             <div className={style.title}>
-                <span className={`text-black`}>{name}</span>
+                <Link href={`1/${path}/${id}`}>
+                    <a><span className={`text-black`}>{name}</span></a>
+                </Link>
             </div>
             <div className={style.control}>
                 <DropDown>
