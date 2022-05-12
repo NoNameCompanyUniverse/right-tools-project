@@ -160,8 +160,14 @@ const users:Array<any> = [
     },
 ];
 
+type ICard = {
+    id: number,
+    name: string,
+    banner: string,
+    path: 'kanban' | 'mindmap'
+}
 
-const maps = [
+const maps:Array<ICard> = [
     {
         id: 1,
         banner: '/profile/user-banner.jpg',
@@ -195,7 +201,7 @@ const maps = [
 
 ];
 
-const kambans = [
+const kambans:Array<ICard> = [
     {
         id: 1,
         banner: '/profile/user-banner.jpg',
