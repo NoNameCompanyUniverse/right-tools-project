@@ -9,46 +9,45 @@ import ReactFlow, {
     Node,
     MiniMap, NodeChange, EdgeChange, updateEdge, Connection
 } from "react-flow-renderer";
-
-
+import NodeCard from '../../components/MindMap/Node'
 
 
 const initialNodes: Node[] = [
     {
         id: '1',
-        type: 'input',
-        data: {label: 'Input Node'},
-        position: {x: 250, y: 25},
+        type: 'nodeCard',
+        data: {
+            label: 'Hello World',
+            description: 'Нужно просто взять и сделать этот ваш гребаный сайт и забыть про эту фигню как страшный сон.',
+            type: 'source'
+        },
+        position: {x: 250, y: 550},
     },
     {
         id: '2',
-        // you can also pass a React component as a label
-        data: {label: <div>Default Node</div>},
-        position: {x: 100, y: 125},
+        type: 'nodeCard',
+        data: {
+            label: 'Hello World 2',
+            type: 'target'
+        },
+        position: {x: 450, y: 350},
     },
     {
         id: '3',
-        type: 'output',
-        data: {label: 'Output Node'},
-        position: {x: 250, y: 250},
-    },
-    {
-        id: '4',
-        type: 'input',
-        data: {label: 'Input Node'},
-        position: {x: 350, y: 350},
-    },
-    {
-        id: '5',
-        type: 'output',
-        data: {label: 'Output Node'},
-        position: {x: 450, y: 450},
+        type: 'nodeCard',
+        data: {
+            label: 'Hello World 3',
+            description: 'Нужно просто взять и сделать этот ваш гребаный сайт и забыть про эту фигню как страшный сон.',
+            type: 'default'
+        },
+        position: {x: 450, y: 150},
     },
 ];
 
+const nodeCard = {nodeCard: NodeCard};
+
 const initialEdges: Edge[] = [
-    {id: 'e1-2', source: '1', target: '2'},
-    {id: 'e2-3', source: '2', target: '3', animated: true, label: 'hello world'},
+    {id: 'e1-2', source: '1', target: '3', animated: true},
 ];
 
 const MindMap = () => {
@@ -78,7 +77,6 @@ const MindMap = () => {
     )
 
 
-
     return (
         <>
             <ReactFlow
@@ -89,8 +87,15 @@ const MindMap = () => {
                 onEdgesChange={handleOnEdgesChange}
                 onConnect={handleOnConnect}
                 onEdgeUpdate={handleOnEdgeUpdate}
+                nodeTypes={nodeCard}
                 fitView>
-                <MiniMap/>
+                <MiniMap nodeColor={(n:Node<any>) => {
+                    if (n.data.type === 'target') return '#868974FF';
+                    if (n.data.type === 'source') return '#F0B878FF';
+                    if (n.data.type === 'default') return '#dcdcdc';
+                    return '#fff';
+
+                }}/>
                 <Controls/>
                 <Background color={`#aaa`} gap={10}/>
             </ReactFlow>
