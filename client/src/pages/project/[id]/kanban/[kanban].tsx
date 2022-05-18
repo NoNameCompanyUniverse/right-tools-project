@@ -17,11 +17,7 @@ const Kanban = () => {
             initial={`initial`}
             animate={`animate`}
             className={`d-flex flex-column flex-grow-1`}>
-
-
             <KanBan/>
-         
-
         </motion.div>
     );
 };

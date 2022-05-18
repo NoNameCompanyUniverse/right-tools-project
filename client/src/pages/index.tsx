@@ -3,12 +3,14 @@ import Head from 'next/head'
 import Image from 'next/image'
 import style from '../styles/home/Home.module.scss'
 import Link from "next/link";
-import React from "react";
+import React, {useEffect} from "react";
 import {motion} from 'framer-motion'
 import {fadeIn, fadeUp, fadeUpRotateRight, leftIn, PageTransition, rightIn} from "../motion";
+import axios from "axios";
 
 
 const Home: NextPage = () => {
+
     return (
         <>
             <Head>
@@ -76,7 +78,8 @@ const Home: NextPage = () => {
                                     </motion.span>
                                 </h1>
                                 <p className={`mx-auto mt-5`}>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad atque corporis
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad atque
+                                    corporis
                                     distinctio dolorum facilis incidunt libero, magnam magni nisi officiis optio quasi
                                     quisquam reiciendis sit tempora tempore tenetur voluptate.
                                 </p>
@@ -149,8 +152,10 @@ const Home: NextPage = () => {
                             viewport={{once: true}}
                             className={style.section__description}>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium amet libero pariatur
-                            quaerat quam sapiente ut veritatis? A ab adipisci aliquam amet, animi consectetur cumque ducimus
-                            eaque excepturi, impedit laboriosam laborum magnam magni maxime nulla pariatur possimus quaerat,
+                            quaerat quam sapiente ut veritatis? A ab adipisci aliquam amet, animi consectetur cumque
+                            ducimus
+                            eaque excepturi, impedit laboriosam laborum magnam magni maxime nulla pariatur possimus
+                            quaerat,
                             quisquam sint tempore tenetur ut veniam? Accusamus adipisci earum exercitationem explicabo?
                         </motion.div>
                     </div>
@@ -178,7 +183,8 @@ const Home: NextPage = () => {
                                             </div>
                                             <div className={style.card__description}>
                                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. A amet aperiam
-                                                assumenda autem consequatur deleniti deserunt dolor magnam nemo non, odit
+                                                assumenda autem consequatur deleniti deserunt dolor magnam nemo non,
+                                                odit
                                                 quia repellat sequi voluptatem.
                                             </div>
                                         </div>
@@ -274,8 +280,10 @@ const Home: NextPage = () => {
                             viewport={{once: true}}
                             className={style.section__description}>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium amet libero pariatur
-                            quaerat quam sapiente ut veritatis? A ab adipisci aliquam amet, animi consectetur cumque ducimus
-                            eaque excepturi, impedit laboriosam laborum magnam magni maxime nulla pariatur possimus quaerat,
+                            quaerat quam sapiente ut veritatis? A ab adipisci aliquam amet, animi consectetur cumque
+                            ducimus
+                            eaque excepturi, impedit laboriosam laborum magnam magni maxime nulla pariatur possimus
+                            quaerat,
                             quisquam sint tempore tenetur ut veniam? Accusamus adipisci earum exercitationem explicabo?
                         </motion.div>
                     </div>
@@ -358,8 +366,10 @@ const Home: NextPage = () => {
                             viewport={{once: true}}
                             className={style.section__description}>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium amet libero pariatur
-                            quaerat quam sapiente ut veritatis? A ab adipisci aliquam amet, animi consectetur cumque ducimus
-                            eaque excepturi, impedit laboriosam laborum magnam magni maxime nulla pariatur possimus quaerat,
+                            quaerat quam sapiente ut veritatis? A ab adipisci aliquam amet, animi consectetur cumque
+                            ducimus
+                            eaque excepturi, impedit laboriosam laborum magnam magni maxime nulla pariatur possimus
+                            quaerat,
                             quisquam sint tempore tenetur ut veniam? Accusamus adipisci earum exercitationem explicabo?
                         </motion.div>
                     </div>

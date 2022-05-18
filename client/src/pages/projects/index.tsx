@@ -86,15 +86,10 @@ const projects: Array<any> = [
 ];
 
 const Projects = () => {
-
     const [query, setQuery] = useState("")
-
-    const handleOnSearch = (value:string) => {
+    const handleOnSearch = (value: string) => {
         setQuery(value)
     }
-
-
-
     return (
         <motion.div
             variants={PageTransition}
@@ -111,7 +106,13 @@ const Projects = () => {
                     <div className="row">
                         {
                             projects.filter(project => project.name.toLowerCase().includes(query)).map((project, index) => (
-                                <motion.div variants={fadeUp} initial={`initial`} animate={`animate`} custom={index} key={project.id} className="col-xxl-4 col-lg-6 mb-4">
+                                <motion.div
+                                    variants={fadeUp}
+                                    initial={`initial`}
+                                    animate={`animate`}
+                                    custom={index}
+                                    key={project.id}
+                                    className="col-xxl-4 col-lg-6 mb-4">
                                     <ProjectCard props={project}/>
                                 </motion.div>
                             ))
@@ -122,7 +123,6 @@ const Projects = () => {
         </motion.div>
     );
 };
-
 Projects.getLayout = function getLayout(page: ReactElement) {
     return (
         <LayoutPanel title={'Проекты'}>

@@ -5,19 +5,14 @@ import TodayDate from "../../components/Panel/TodayDate";
 import Link from 'next/link';
 import {UserIcon, UserGroupIcon, CollectionIcon, LogoutIcon} from "@heroicons/react/outline";
 
-
 type ILayoutPanel = {
     title: string,
 }
-
-
 const LayoutPanel: React.FC<ILayoutPanel> = (
     {
         children,
         title,
     }) => {
-
-
     return (
         <>
             <Head>
@@ -92,6 +87,5 @@ const LayoutPanel: React.FC<ILayoutPanel> = (
         </>
     );
 };
-
 
 export default LayoutPanel;
