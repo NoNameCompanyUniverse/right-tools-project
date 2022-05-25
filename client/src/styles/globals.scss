@@ -5,7 +5,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -35,8 +35,7 @@ a {
 }
 
 
-
-:root{
+:root {
   --primary: #1e87f0;
   --black: #0f0e18;
   --secondary: #24272c;
@@ -73,19 +72,19 @@ a {
   border-radius: 0.25rem;
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
-  &-primary{
+  &-primary {
     color: #fff;
     background: var(--primary);
     border-color: var(--primary);
   }
 
-  &-danger{
+  &-danger {
     color: #fff;
     background: var(--danger);
     border-color: var(--danger);
   }
 
-  &-success{
+  &-success {
     color: #fff;
     background: var(--success);
     border-color: var(--success);
@@ -96,54 +95,55 @@ a {
     color: #fff;
   }
 
-  &-warning{
+  &-warning {
     color: #fff;
     background: var(--warning);
     border-color: var(--warning);
   }
 
-  &-info{
+  &-info {
     color: #fff;
     background: var(--info);
     border-color: var(--info);
   }
 
-  &-wood{
+  &-wood {
     color: #fff;
     background: var(--wood);
     border-color: var(--wood);
   }
 
-  &-black{
+  &-black {
     color: #fff;
     background: var(--black);
     border-color: var(--black);
   }
 
-  &-green{
+  &-green {
     color: #fff;
     background: var(--green);
     border-color: var(--green);
   }
 
-  &-sm{
+  &-sm {
     padding: 0.25rem 0.5rem;
     font-size: .875rem;
     border-radius: 0.2rem;
   }
 
-  &-lg{
+  &-lg {
     padding: 0.5rem 1rem;
     font-size: 1.25rem;
     border-radius: 0.3rem;
   }
+
   &.disabled,
-  &:disabled{
+  &:disabled {
     pointer-events: none;
     opacity: .65;
   }
 
-  &:active{
+  &:active {
     transform: translateY(1px);
   }
 
@@ -151,112 +151,143 @@ a {
   &-outline-primary {
     color: var(--primary);
     border-color: var(--primary);
-    &:hover{
+
+    &:hover {
       color: #fff;
       background: var(--primary);
     }
   }
-  &-outline-danger{
+
+  &-outline-danger {
     color: var(--danger);
     border-color: var(--danger);
-    &:hover{
+
+    &:hover {
       color: #fff;
       background: var(--danger);
     }
   }
-  &-outline-success{
+
+  &-outline-success {
     color: var(--success);
     border-color: var(--success);
-    &:hover{
+
+    &:hover {
       color: #fff;
       background: var(--success);
     }
   }
-  &-outline-warning{
+
+  &-outline-warning {
     color: var(--warning);
     border-color: var(--warning);
-    &:hover{
+
+    &:hover {
       color: #fff;
       background: var(--warning);
     }
   }
-  &-outline-info{
+
+  &-outline-info {
     color: var(--info);
     border-color: var(--info);
-    &:hover{
+
+    &:hover {
       color: #fff;
       background: var(--info);
     }
   }
-  &-outline-wood{
+
+  &-outline-wood {
     color: var(--wood);
     border-color: var(--wood);
-    &:hover{
+
+    &:hover {
       color: #fff;
       background: var(--wood);
     }
   }
 }
 
-.rounded{
-  border-radius: 0.25rem!important;
-  &-pill{
-    border-radius: 50rem!important;
+.rounded {
+  border-radius: 0.25rem !important;
+
+  &-pill {
+    border-radius: 50rem !important;
   }
 }
 
-.border{
+.border {
   border: 1px solid #dee2e6;
 
-  &-primary{
+  &-primary {
     border-color: var(--primary) !important;;
   }
 
-  &-danger{
+  &-danger {
     border-color: var(--danger) !important;;
   }
 
-  &-success{
+  &-success {
     border-color: var(--success) !important;;
   }
 
-  &-warning{
+  &-warning {
     border-color: var(--warning) !important;;
   }
 
-  &-info{
+  &-info {
     border-color: var(--info) !important;;
   }
 }
 
-.form-control{
-  display: block;
-  width: 100%;
-  background: var(--light-gray);
-  font-size: .9rem;
-  padding: 1.2rem;
-  border: 0;
-  outline: 0;
-  border-radius: .25rem;
-  font-weight: 500;
-  &::placeholder{
-    color: var(--gray);
+.form {
+  &-select,
+  &-control {
+    display: block;
+    width: 100%;
+    background-color: var(--light-gray);
+    font-size: .9rem;
+    padding: 1.2rem;
+    border: 0;
+    outline: 0;
+    border-radius: var(--radius-value);
+    font-weight: 500;
+    resize: none;
+    &::placeholder {
+      color: var(--gray);
+    }
+  }
+  &-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    appearance: none;
+    option {
+      color: var(--black);
+    }
   }
 }
+
 
 .text {
   &-success {
     color: var(--success);
   }
+
   &-wood {
     color: var(--wood);
   }
+
   &-dark {
     color: var(--secondary);
   }
+
   &-gray {
     color: var(--gray);
   }
+
   &-green {
     color: var(--green) !important;
   }

@@ -10,6 +10,8 @@ import ReactFlow, {
     MiniMap, NodeChange, EdgeChange, updateEdge, Connection
 } from "react-flow-renderer";
 import NodeCard from '../../components/MindMap/Node'
+import Modal from "../../components/Modal";
+import CreateNode from "../../blocks/MindMap/CreateNode";
 
 
 const initialNodes: Node[] = [
@@ -50,10 +52,18 @@ const initialEdges: Edge[] = [
     {id: 'e1-2', source: '1', target: '3', animated: true},
 ];
 
+
+const getNodeId = () => `randomnode_${+new Date()}`;
+
+
 const MindMap = () => {
 
     const [nodes, setNodes] = useState<Node[]>(initialNodes);
     const [edges, setEdges] = useState<Edge[]>(initialEdges);
+
+    const handleAddNode = (data:Node) => {
+        setNodes((nds) => nds.concat(data))
+    }
 
     const handleOnNodeChange = useCallback(
         (changes: NodeChange[]) => setNodes((nds: any) =>
@@ -77,6 +87,8 @@ const MindMap = () => {
     )
 
 
+
+
     return (
         <>
             <ReactFlow
@@ -89,6 +101,14 @@ const MindMap = () => {
                 onEdgeUpdate={handleOnEdgeUpdate}
                 nodeTypes={nodeCard}
                 fitView>
+                <div style={{
+                    'position' : 'absolute',
+                    'top' : '10px',
+                    'zIndex' : '5',
+                    'right' : '10px'
+                }}>
+                    <CreateNode onAddNode={handleAddNode}/>
+                </div>
                 <MiniMap nodeColor={(n:Node<any>) => {
                     if (n.data.type === 'target') return '#868974FF';
                     if (n.data.type === 'source') return '#F0B878FF';
@@ -99,6 +119,7 @@ const MindMap = () => {
                 <Controls/>
                 <Background color={`#aaa`} gap={10}/>
             </ReactFlow>
+
         </>
     );
 };

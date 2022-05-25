@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 // @ts-ignore
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd-next";
 
-import styleColumn from './../../components/KanBan/DragColumn/index.module.scss';
-import styleCard from './../../components/KanBan/DragItem/index.module.scss';
+import styleColumn from '../../components/KanBan/DragColumn/index.module.scss';
+import styleCard from '../../components/KanBan/DragItem/index.module.scss';
 
 import BoardData from '../../../data-board.json';
 import DragItem from "../../components/KanBan/DragItem";

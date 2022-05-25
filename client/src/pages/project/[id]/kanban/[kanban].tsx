@@ -5,7 +5,7 @@ import LayoutPanel from "../../../../layout/LayoutPanel";
 import DragColumn from "../../../../components/KanBan/DragColumn";
 import DragItem from "../../../../components/KanBan/DragItem";
 
-import KanBan from "../../../../blocks/KanBan";
+import KanBan from "../../../../containers/KanBan";
 
 
 const Kanban = () => {
