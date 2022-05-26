@@ -5,12 +5,14 @@
       {
         "id":12323,
         "priority": 0,
-        "title": "Поправить карточку товара на главной"
+        "title": "Поправить карточку товара на главной",
+        "description": "Hello World"
       },
       {
         "id":2,
         "priority": 2,
-        "title": "Не работает модальное окно при нажатии на карточку"
+        "title": "Не работает модальное окно при нажатии на карточку",
+        "description": "Hello World"
       }
     ]
   },
@@ -20,7 +22,8 @@
       {
         "id":3,
         "priority": 1,
-        "title": "Добавить в базу поле 'Чаты'"
+        "title": "Добавить в базу поле 'Чаты'",
+        "description": "Hello World"
       }
     ]
   },
@@ -30,12 +33,14 @@
       {
         "id":4,
         "priority": 2,
-        "title": " Добавить метрику"
+        "title": " Добавить метрику",
+        "description": "Hello World"
       },
       {
         "id":5,
         "priority": 0,
-        "title": "Добавить социальные сети"
+        "title": "Добавить социальные сети",
+        "description": "Hello World"
       }
     ]
   },
@@ -45,17 +50,20 @@
       {
         "id":6,
         "priority": 0,
-        "title": "Убрать блок 'О нас'"
+        "title": "Убрать блок 'О нас'",
+        "description": "Hello World"
       },
       {
         "id":7,
         "priority": 1,
-        "title": "Доработать карточку партнеров"
+        "title": "Доработать карточку партнеров",
+        "description": "Hello World"
       },
       {
         "id":8,
         "priority": 2,
-        "title": "Поменять размер шрифта"
+        "title": "Поменять размер шрифта",
+        "description": "Hello World"
       }
     ]
   }

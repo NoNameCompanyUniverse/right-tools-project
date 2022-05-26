@@ -1,83 +1,81 @@
 import React, {FormEvent, useEffect, useState} from 'react';
+import {CollectionIcon} from "@heroicons/react/outline";
 import Modal from "../../../components/Modal";
-import {Node} from "react-flow-renderer";
-import {genId} from "../../../helpers/functions";
+import { genId } from '../../../helpers/functions';
+import {IDrag, INewDrag } from '../../../types/IDrag';
 
 
 
 
-type INode = { label: string, description: string, type: 'source' | 'target' | 'default' }
 
+interface ICreateDrag {
+    addDrag: (data: INewDrag) => void
+}
 
+const CreateDrag:React.FC<ICreateDrag> = ({addDrag}) => {
 
-const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
 
     const [modal, setModal] = useState<{ id: string, isOpen: boolean }>({id: '1', isOpen: false});
 
-    const [node, setNode] = useState<INode>({
-        label: '',
-        description: '',
-        type: 'default'
-    })
+    const [drag, setDrag] = useState<IDrag>({
+        title: '',
+        priority: '0',
+        description: ''
+    });
+
 
     const types: Array<{ option: string, label: string }> = [
-        {option: 'source', label: 'Начало'},
-        {option: 'default', label: 'Промежуточный'},
-        {option: 'target', label: 'Финал'}
+        {option: '0', label: 'Низкий приоритет'},
+        {option: '1', label: 'Средний приоритет'},
+        {option: '2', label: 'Высокий приоритет'}
     ];
+
+    const handleSetValue = (value: string, name: string) => setDrag(state => ({...state, [name]: value}));
 
     const handleOnModal = (id: string) => {
         setModal({id: id, isOpen: !modal.isOpen})
     }
 
-    const handleSetValue = (value: string, name: string) => setNode(state => ({...state, [name]: value}));
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        const newNode:Node = {
-            id: genId().toString(),
-            type: 'nodeCard',
-            data: {
-                label: node.label,
-                description: node.description,
-                type: node.type
-            },
-            position: {
-                x: Math.random() * window.innerWidth - 100,
-                y: Math.random() * window.innerHeight,
-            }
+        const newDrag: INewDrag = {
+            id: genId(),
+            title: drag.title,
+            description: drag.description,
+            priority: +drag.priority
         }
-        onAddNode(newNode);
+        addDrag(newDrag);
         handleOnModal(modal.id);
     }
-
-
     useEffect(() => {
-        modal.isOpen ? setNode({label: '', description: '', type: 'default'}) : '';
+        modal.isOpen ? setDrag({title: '', description: '', priority: '0'}) : '';
     }, [modal])
+
 
     return (
         <>
-            <div style={{
-                'position': 'absolute',
-                'top': '10px',
-                'zIndex': '5',
-                'right': '10px'
-            }}>
-                <button className={`btn btn-green`} style={{'whiteSpace': 'nowrap'}}
-                        onClick={() => handleOnModal(modal.id)}>
-                    Создать карточку
+            <div className={`mb-3`}>
+                <button
+                    onClick={() => handleOnModal(modal.id)}
+                    className={`btn btn-green d-flex align-items-center`}>
+                    <i className="icon me-2">
+                        <CollectionIcon/>
+                    </i>
+                    <span>
+                       Добавить карточку
+                   </span>
                 </button>
             </div>
-            <Modal modal={modal} title={'Создать карточку'} onClose={handleOnModal}>
+            <Modal modal={modal} onClose={handleOnModal} title={'Создать карточку'}>
                 <>
                     <form onSubmit={event => handleOnSubmit(event)}>
                         <div className="row">
                             <div className="col-12">
                                 <input
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    value={node.label}
-                                    name={`label`}
+                                    value={drag.title}
+                                    name={`title`}
                                     type="text"
                                     placeholder={`Введите название`}
                                     className="form-control"/>
@@ -87,7 +85,7 @@ const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
                                     className={'form-select'}
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
                                     name="type"
-                                    value={node.type}
+                                    value={drag.priority}
                                 >
                                     {types.map((item: { option: string, label: string }, index: number) => (
                                         <option key={index} value={item.option}>{item.label}</option>
@@ -101,12 +99,14 @@ const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
                                     className="form-control"
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
                                     name="description"
-                                    value={node.description}
+                                    value={drag.description}
                                 />
                             </div>
                             <div className="col-12 mt-4">
                                 <div className="d-flex justify-content-end">
-                                    <button type={'submit'} className={'btn btn-green'}>
+                                    <button
+                                        type={`submit`}
+                                        className="btn btn-green">
                                         Создать карточку
                                     </button>
                                 </div>
@@ -119,4 +119,4 @@ const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
     );
 };
 
-export default CreateNode;
+export default CreateDrag;
