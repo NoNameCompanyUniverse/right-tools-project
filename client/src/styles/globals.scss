@@ -1,3 +1,4 @@
+@import "values";
 html,
 body {
   padding: 0;
@@ -35,25 +36,6 @@ a {
 }
 
 
-:root {
-  --primary: #1e87f0;
-  --black: #0f0e18;
-  --secondary: #24272c;
-  --danger: #BA5066;
-  --info: #54baf7;
-  --warning: #f1c40f;
-  --success: #47C269;
-  --gray: #a0a4a6;
-  --light-gray: #f6f7f8;
-  --wood: #F0B878;
-  --smokegreen: #8E9993;
-  --green: #868974;
-  --smokeyellow: #FFEEDC;
-  --darkwood: #8B7659;
-  --smoke: #f3f9ff;
-
-  --radius-value: .5rem;
-}
 
 .btn {
   display: inline-block;
@@ -305,3 +287,27 @@ button {
   outline: 0;
   cursor: pointer;
 }
+
+
+.fs {
+  &-1 {
+    font-size: 2.5rem!important;
+  }
+  &-2 {
+    font-size: 2rem!important;
+  }
+  &-3 {
+    font-size: 1.75rem!important;
+  }
+  &-4 {
+    font-size: 1.5rem!important;
+  }
+  &-5 {
+    font-size: 1.25rem!important;
+  }
+  &-6 {
+    font-size: 1rem!important;
+  }
+}
+
+

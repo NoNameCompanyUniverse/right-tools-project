@@ -12,8 +12,10 @@
   align-items: center;
   border-bottom: 2px solid #eeeeee;
 
+  li + li {margin-left: 1.5rem}
+
   li {
-    padding: 1rem 1.25rem;
+    padding: 1rem 0;
     display: block;
     position: relative;
     cursor: pointer;

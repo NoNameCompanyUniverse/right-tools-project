@@ -1,21 +1,19 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import {CollectionIcon} from "@heroicons/react/outline";
 import Modal from "../../../components/Modal";
-import { genId } from '../../../helpers/functions';
-import {IDrag, INewDrag } from '../../../types/IDrag';
-
-
-
+import {genId} from '../../../helpers/functions';
+import {IDrag, INewDrag} from '../../../types/IDrag';
+import {IModal} from "../../../types/IModal";
 
 
 interface ICreateDrag {
-    addDrag: (data: INewDrag) => void
+    onDrag: (action: { type: "CREATE" | "EDIT" | "DELETE", payload: INewDrag }) => void,
 }
 
-const CreateDrag:React.FC<ICreateDrag> = ({addDrag}) => {
+const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
 
 
-    const [modal, setModal] = useState<{ id: string, isOpen: boolean }>({id: '1', isOpen: false});
+    const [modal, setModal] = useState<IModal>({id: '1', isOpen: false});
 
     const [drag, setDrag] = useState<IDrag>({
         title: '',
@@ -45,11 +43,14 @@ const CreateDrag:React.FC<ICreateDrag> = ({addDrag}) => {
             description: drag.description,
             priority: +drag.priority
         }
-        addDrag(newDrag);
+        onDrag({type: "CREATE", payload: newDrag});
         handleOnModal(modal.id);
     }
     useEffect(() => {
-        modal.isOpen ? setDrag({title: '', description: '', priority: '0'}) : '';
+        if (!modal.isOpen) {
+            setDrag({title: '', description: '', priority: '0'});
+        }
+
     }, [modal])
 
 
@@ -84,7 +85,7 @@ const CreateDrag:React.FC<ICreateDrag> = ({addDrag}) => {
                                 <select
                                     className={'form-select'}
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    name="type"
+                                    name="priority"
                                     value={drag.priority}
                                 >
                                     {types.map((item: { option: string, label: string }, index: number) => (

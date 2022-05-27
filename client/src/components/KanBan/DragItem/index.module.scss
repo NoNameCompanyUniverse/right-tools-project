@@ -3,13 +3,15 @@
   overflow: hidden;
   padding: 1rem;
   border-radius: var(--radius-value);
-  cursor: grab;
+  //cursor: grab;
+  cursor: pointer;
   margin-bottom: 1rem;
+  position: relative;
 }
 
 .tag {
   font-size: 0.76rem;
-  padding: 0.25rem 0.55rem;
+  padding: 0.3rem 0.6rem 0.4rem 0.7rem;
   border-radius: 500px;
   display: inline-block;
   background: var(--green);
@@ -46,4 +48,19 @@
   text-overflow: ellipsis;
   color: var(--gray);
   font-size: .85rem;
+}
+
+
+.link {
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--black);
+  background: transparent;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: .5rem;
+  display: inline-block;
+  z-index: 10;
 }

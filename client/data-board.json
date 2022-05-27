@@ -6,13 +6,13 @@
         "id":12323,
         "priority": 0,
         "title": "Поправить карточку товара на главной",
-        "description": "Hello World"
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores atque cupiditate esse expedita laudantium non. Eos facere incidunt non sapiente suscipit. Alias facilis fuga saepe temporibus! Aliquam assumenda beatae dignissimos dolor eaque eos ex id iusto labore nihil nobis non numquam obcaecati perferendis placeat quo reiciendis soluta, tenetur ullam."
       },
       {
         "id":2,
         "priority": 2,
         "title": "Не работает модальное окно при нажатии на карточку",
-        "description": "Hello World"
+        "description": "Тебе нужно просто взять и сожрать свой тапок"
       }
     ]
   },
