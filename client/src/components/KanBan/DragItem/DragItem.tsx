@@ -1,18 +1,18 @@
 import React from 'react';
 import style from './index.module.scss';
-import {INewDrag} from "../../../types/IDrag";
+import {IDrag} from "../../../types/IDrag";
 import {PencilAltIcon} from "@heroicons/react/outline";
 
 // @ts-ignore
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd-next";
 
-interface IDragIten {
-    data: INewDrag,
-    onData: (data: INewDrag) => void,
+interface IDragItem {
+    data: IDrag,
+    onData: (data: IDrag) => void,
     index: number
 }
 
-const DragItem: React.FC<IDragIten> = ({data, index, onData}) => {
+const DragItem: React.FC<IDragItem> = ({data, index, onData}) => {
 
     const {id, title, priority, description} = data;
 

@@ -1,9 +1,9 @@
-export interface IDrag  {
+export interface INewDrag  {
     title: string,
     priority: string | number,
     description: string
 }
 
-export interface INewDrag extends IDrag  {
+export interface IDrag extends INewDrag  {
     id: number
 }

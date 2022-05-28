@@ -8,16 +8,15 @@ import styleColumn from '../../components/KanBan/DragColumn/index.module.scss';
 import BoardData from '../../../data-board.json';
 import DragItem from "../../components/KanBan/DragItem";
 import CreateDrag from "../../blocks/KanBan/CreateDrag";
-import {INewDrag} from "../../types/IDrag";
+import {IDrag} from "../../types/IDrag";
 import Modal from "../../components/Modal";
 import ControlDrag from "../../blocks/KanBan/ControlDrag";
 
 
+const KanBan: React.FC = () => {
 
-const KanBan:React.FC = () => {
-
-    const [boardData, setBoardData] = useState<Array<{name: string, items: Array<INewDrag>}>>(BoardData);
-    const [boardItem, setBoardItem] = useState<INewDrag | null>(null);
+    const [boardData, setBoardData] = useState<Array<{ name: string, items: Array<IDrag> }>>(BoardData);
+    const [boardItem, setBoardItem] = useState<IDrag | null>(null);
 
     const onDragEnd = (re: any) => {
         if (!re.destination) return;
@@ -29,8 +28,7 @@ const KanBan:React.FC = () => {
     };
 
 
-
-    const handleOnDrag = (action: {type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: INewDrag}) => {
+    const handleOnDrag = (action: { type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: IDrag }) => {
         const {type, payload} = action
         switch (type) {
             case "CREATE": {
@@ -40,9 +38,21 @@ const KanBan:React.FC = () => {
                 break;
             }
             case "EDIT": {
+                let newBoardData = Array.from(boardData);
+                newBoardData = newBoardData.map(board => ({
+                    name: board.name,
+                    items: board.items.map(item => item.id === payload.id ? item = payload : item)
+                }))
+                setBoardData(newBoardData);
                 break;
             }
             case "DELETE": {
+                let newBoardData = Array.from(boardData);
+                newBoardData = newBoardData.map(board => ({
+                    name: board.name,
+                    items: board.items.filter(item => item.id !== payload.id)
+                }))
+                setBoardData(newBoardData);
                 break;
             }
             default: {
@@ -54,16 +64,20 @@ const KanBan:React.FC = () => {
     }
 
 
-    const handleOnLookDrag = (data: INewDrag) => {
+    const handleOnLookDrag = (data: IDrag) => {
         setBoardItem(JSON.parse(JSON.stringify(data)));
     }
 
+
+    useEffect(() => {
+        console.log(boardData)
+    }, [])
 
 
     return (
         <>
             <CreateDrag onDrag={handleOnDrag}/>
-            <ControlDrag data={boardItem}/>
+            <ControlDrag data={boardItem} onDrag={handleOnDrag}/>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className={`row flex-grow-1 gx-3`}>
                     {
@@ -84,8 +98,9 @@ const KanBan:React.FC = () => {
                                                 </div>
                                                 <div className={styleColumn.content}>
                                                     {
-                                                        data.items.map((item: INewDrag, index: number) => (
-                                                            <DragItem onData={handleOnLookDrag} key={item.id} data={item} index={index}/>
+                                                        data.items.map((item: IDrag, index: number) => (
+                                                            <DragItem onData={handleOnLookDrag} key={item.id}
+                                                                      data={item} index={index}/>
                                                         ))
                                                     }
                                                     {provided.placeholder}

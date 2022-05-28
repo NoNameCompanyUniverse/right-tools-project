@@ -7,7 +7,7 @@ import {IModal} from "../../../types/IModal";
 
 
 interface ICreateDrag {
-    onDrag: (action: { type: "CREATE" | "EDIT" | "DELETE", payload: INewDrag }) => void,
+    onDrag: (action: { type: "CREATE" | "EDIT" | "DELETE", payload: IDrag }) => void,
 }
 
 const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
@@ -15,12 +15,14 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
 
     const [modal, setModal] = useState<IModal>({id: '1', isOpen: false});
 
-    const [drag, setDrag] = useState<IDrag>({
+    const [state, setState] = useState<INewDrag>({
         title: '',
         priority: '0',
         description: ''
     });
 
+
+    const [valid, setValid] = useState<boolean>(false)
 
     const types: Array<{ option: string, label: string }> = [
         {option: '0', label: 'Низкий приоритет'},
@@ -28,7 +30,7 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
         {option: '2', label: 'Высокий приоритет'}
     ];
 
-    const handleSetValue = (value: string, name: string) => setDrag(state => ({...state, [name]: value}));
+    const handleSetValue = (value: string, name: string) => setState(state => ({...state, [name]: value}));
 
     const handleOnModal = (id: string) => {
         setModal({id: id, isOpen: !modal.isOpen})
@@ -37,21 +39,27 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        const newDrag: INewDrag = {
+        const newDrag: IDrag = {
             id: genId(),
-            title: drag.title,
-            description: drag.description,
-            priority: +drag.priority
+            title: state.title,
+            description: state.description,
+            priority: +state.priority
         }
         onDrag({type: "CREATE", payload: newDrag});
         handleOnModal(modal.id);
     }
+
+
     useEffect(() => {
         if (!modal.isOpen) {
-            setDrag({title: '', description: '', priority: '0'});
+            setState({title: '', description: '', priority: '0'});
         }
 
-    }, [modal])
+    }, [modal]);
+    useEffect(() => {
+        let formValid: boolean = state.title !== '' && state.description !== '';
+        setValid(formValid)
+    }, [state])
 
 
     return (
@@ -75,7 +83,7 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
                             <div className="col-12">
                                 <input
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    value={drag.title}
+                                    value={state.title}
                                     name={`title`}
                                     type="text"
                                     placeholder={`Введите название`}
@@ -86,7 +94,7 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
                                     className={'form-select'}
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
                                     name="priority"
-                                    value={drag.priority}
+                                    value={state.priority}
                                 >
                                     {types.map((item: { option: string, label: string }, index: number) => (
                                         <option key={index} value={item.option}>{item.label}</option>
@@ -100,13 +108,14 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
                                     className="form-control"
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
                                     name="description"
-                                    value={drag.description}
+                                    value={state.description}
                                 />
                             </div>
                             <div className="col-12 mt-4">
                                 <div className="d-flex justify-content-end">
                                     <button
                                         type={`submit`}
+                                        disabled={!valid}
                                         className="btn btn-green">
                                         Создать карточку
                                     </button>

@@ -2,69 +2,25 @@
   {
     "name":"Backlog",
     "items": [
-      {
-        "id":12323,
-        "priority": 0,
-        "title": "Поправить карточку товара на главной",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores atque cupiditate esse expedita laudantium non. Eos facere incidunt non sapiente suscipit. Alias facilis fuga saepe temporibus! Aliquam assumenda beatae dignissimos dolor eaque eos ex id iusto labore nihil nobis non numquam obcaecati perferendis placeat quo reiciendis soluta, tenetur ullam."
-      },
-      {
-        "id":2,
-        "priority": 2,
-        "title": "Не работает модальное окно при нажатии на карточку",
-        "description": "Тебе нужно просто взять и сожрать свой тапок"
-      }
+
     ]
   },
   {
     "name":"In Progress",
     "items": [
-      {
-        "id":3,
-        "priority": 1,
-        "title": "Добавить в базу поле 'Чаты'",
-        "description": "Hello World"
-      }
+
     ]
   },
   {
     "name":"На проверку",
     "items": [
-      {
-        "id":4,
-        "priority": 2,
-        "title": " Добавить метрику",
-        "description": "Hello World"
-      },
-      {
-        "id":5,
-        "priority": 0,
-        "title": "Добавить социальные сети",
-        "description": "Hello World"
-      }
+
     ]
   },
   {
     "name":"Done",
     "items": [
-      {
-        "id":6,
-        "priority": 0,
-        "title": "Убрать блок 'О нас'",
-        "description": "Hello World"
-      },
-      {
-        "id":7,
-        "priority": 1,
-        "title": "Доработать карточку партнеров",
-        "description": "Hello World"
-      },
-      {
-        "id":8,
-        "priority": 2,
-        "title": "Поменять размер шрифта",
-        "description": "Hello World"
-      }
+
     ]
   }
 ]

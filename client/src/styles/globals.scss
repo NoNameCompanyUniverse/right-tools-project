@@ -121,7 +121,7 @@ a {
 
   &.disabled,
   &:disabled {
-    pointer-events: none;
+    //pointer-events: none;
     opacity: .65;
   }
 
@@ -286,6 +286,9 @@ button {
   border: 0;
   outline: 0;
   cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 

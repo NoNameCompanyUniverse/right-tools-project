@@ -1,20 +1,23 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {IModal} from "../../../types/IModal";
-import {INewDrag} from "../../../types/IDrag";
+import {IDrag, INewDrag} from "../../../types/IDrag";
 import Tabs from "../../../components/Tabs";
 
 import style from './../../../components/KanBan/DragItem/index.module.scss'
+import {genId} from "../../../helpers/functions";
 
 interface IControlDrag {
-    data: INewDrag | null,
+    data: IDrag | null,
+    onDrag: (action: { type: "EDIT" | "DELETE", payload: IDrag }) => void
 }
 
-const ControlDrag:React.FC<IControlDrag> = ({data}) => {
+const ControlDrag:React.FC<IControlDrag> = ({data, onDrag}) => {
 
 
-    const [drag, setDrag] = useState<INewDrag | null>(null);
+    const [state, setState] = useState<IDrag | null>(null);
     const [modal, setModal] = useState<IModal>({id: '#controlDrag', isOpen: false});
+    const [valid, setValid] = useState(false);
 
     const handleOnModal = (id: string) => {
         setModal({id: id, isOpen: !modal.isOpen})
@@ -22,6 +25,13 @@ const ControlDrag:React.FC<IControlDrag> = ({data}) => {
 
     const handleOnSubmit = (event:FormEvent) => {
         event.preventDefault();
+        state ? onDrag({type: "EDIT", payload: {...state, priority: +state.priority}}) : '';
+        handleOnModal(modal.id);
+    }
+
+    const handleOnDelete = () => {
+        state ? onDrag({type: "DELETE", payload: state}) : '';
+        handleOnModal(modal.id);
     }
 
     const types: Array<{ option: string, label: string }> = [
@@ -31,43 +41,46 @@ const ControlDrag:React.FC<IControlDrag> = ({data}) => {
     ];
 
     // @ts-ignore
-    const handleSetValue = (value: string, name: string) => setDrag(state => ({...state, [name]: value}));
+    const handleSetValue = (value: string, name: string) => setState(state => ({...state, [name]: value}));
 
     useEffect(() => {
         if(!modal.isOpen) {
-            setDrag(null);
+            setState(null);
         }
     }, [modal])
 
     useEffect(() => {
-
-        //console.log(data)
         if (data) {
             setModal({id: modal.id, isOpen: true});
-            setDrag(data)
+            setState(data)
         }
-    }, [data])
+    }, [data]);
+
+    useEffect(() => {
+        let formValid: boolean = state !== null ? state.title !== '' && state.description !== '' : false;
+        setValid(formValid)
+    }, [state])
 
     return (
         <>
             <Modal modal={modal} onClose={handleOnModal} title={'Карточка'}>
                 {
-                    drag && (
+                    state && (
                         <>
                                 <Tabs tabs={['Просмотр', 'Редактировать']}>
                                     <>
                                         <div className="row">
                                             <div className="col-12">
-                                                <div className={`${style.title} fs-4`}>{drag.title}</div>
+                                                <div className={`${style.title} fs-4`}>{state.title}</div>
                                             </div>
                                             <div className="col-12 mt-3">
                                                 <div
-                                                    className={`${style.tag} fs-6 ${drag.priority === 0 ? style.low : drag.priority === 1 ? style.medium : style.high}`}>
-                                                    {drag.priority === 0 ? "Низкий приоритет" : drag.priority === 1 ? "Средний приоритет" : "Высокий приоритет"}
+                                                    className={`${style.tag} fs-6 ${state.priority === 0 ? style.low : state.priority === 1 ? style.medium : style.high}`}>
+                                                    {state.priority === 0 ? "Низкий приоритет" : state.priority === 1 ? "Средний приоритет" : "Высокий приоритет"}
                                                 </div>
                                             </div>
                                             <div className="col-12 mt-4">
-                                                <div className={`${style.description} fs-6`}>{drag.description}</div>
+                                                <div className={`${style.description} fs-6`}>{state.description}</div>
                                             </div>
                                         </div>
                                         <form onSubmit={event => handleOnSubmit(event)}>
@@ -75,7 +88,7 @@ const ControlDrag:React.FC<IControlDrag> = ({data}) => {
                                                 <div className="col-12">
                                                     <input
                                                         onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                                        value={drag.title}
+                                                        value={state.title}
                                                         name={`title`}
                                                         type="text"
                                                         placeholder={`Введите название`}
@@ -86,7 +99,7 @@ const ControlDrag:React.FC<IControlDrag> = ({data}) => {
                                                         className={'form-select'}
                                                         onChange={event => handleSetValue(event.target.value, event.target.name)}
                                                         name="priority"
-                                                        value={drag.priority}
+                                                        value={state.priority}
                                                     >
                                                         {types.map((item: { option: string, label: string }, index: number) => (
                                                             <option key={index} value={item.option}>{item.label}</option>
@@ -100,17 +113,19 @@ const ControlDrag:React.FC<IControlDrag> = ({data}) => {
                                                         className="form-control"
                                                         onChange={event => handleSetValue(event.target.value, event.target.name)}
                                                         name="description"
-                                                        value={drag.description}
+                                                        value={state.description}
                                                     />
                                                 </div>
                                                 <div className="col-12 mt-4">
                                                     <div className="d-flex justify-content-end">
                                                         <button
+                                                            onClick={() => handleOnDelete()}
                                                             type={`button`}
                                                             className="btn btn-danger me-3">
                                                             Удалить карточку
                                                         </button>
                                                         <button
+                                                            disabled={!valid}
                                                             type={`submit`}
                                                             className="btn btn-green">
                                                             Сохранить изменения
@@ -121,7 +136,6 @@ const ControlDrag:React.FC<IControlDrag> = ({data}) => {
                                         </form>
                                     </>
                                 </Tabs>
-
                         </>
                     )
                 }
