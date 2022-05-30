@@ -2,23 +2,28 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {Node} from "react-flow-renderer";
 import {genId} from "../../../helpers/functions";
+import {INode} from "../../../types/INode";
 
 
 
+interface ICreateNode {
+    onNode: (action: {type: "CREATE" | "EDIT" | "DELETE", payload: Node}) => void
+}
 
-type INode = { label: string, description: string, type: 'source' | 'target' | 'default' }
 
 
-
-const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
+const CreateNode:React.FC<ICreateNode> = ({onNode}) => {
 
     const [modal, setModal] = useState<{ id: string, isOpen: boolean }>({id: '1', isOpen: false});
 
-    const [node, setNode] = useState<INode>({
+    const [state, setState] = useState<INode>({
+        id: '',
         label: '',
         description: '',
         type: 'default'
     })
+
+    const [valid, setValid] = useState<boolean>(false)
 
     const types: Array<{ option: string, label: string }> = [
         {option: 'source', label: 'Начало'},
@@ -30,31 +35,39 @@ const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
         setModal({id: id, isOpen: !modal.isOpen})
     }
 
-    const handleSetValue = (value: string, name: string) => setNode(state => ({...state, [name]: value}));
+    const handleSetValue = (value: string, name: string) => setState(state => ({...state, [name]: value}));
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
+        const id: string = genId().toString();
         const newNode:Node = {
-            id: genId().toString(),
+            id,
             type: 'nodeCard',
             data: {
-                label: node.label,
-                description: node.description,
-                type: node.type
+                id,
+                label: state.label,
+                description: state.description,
+                type: state.type
             },
             position: {
                 x: Math.random() * window.innerWidth - 100,
                 y: Math.random() * window.innerHeight,
             }
         }
-        onAddNode(newNode);
+        onNode({type: "CREATE", payload: newNode});
         handleOnModal(modal.id);
     }
 
 
     useEffect(() => {
-        modal.isOpen ? setNode({label: '', description: '', type: 'default'}) : '';
+        modal.isOpen ? setState({label: '', description: '', type: 'default', id: ''}) : '';
     }, [modal])
+
+
+    useEffect(() => {
+        let formValid: boolean = state.label !== '' && state.description !== '';
+        setValid(formValid)
+    }, [state])
 
     return (
         <>
@@ -76,7 +89,7 @@ const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
                             <div className="col-12">
                                 <input
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    value={node.label}
+                                    value={state.label}
                                     name={`label`}
                                     type="text"
                                     placeholder={`Введите название`}
@@ -87,7 +100,7 @@ const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
                                     className={'form-select'}
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
                                     name="type"
-                                    value={node.type}
+                                    value={state.type}
                                 >
                                     {types.map((item: { option: string, label: string }, index: number) => (
                                         <option key={index} value={item.option}>{item.label}</option>
@@ -101,12 +114,12 @@ const CreateNode:React.FC<{onAddNode: (data:Node) => void}> = ({onAddNode}) => {
                                     className="form-control"
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
                                     name="description"
-                                    value={node.description}
+                                    value={state.description}
                                 />
                             </div>
                             <div className="col-12 mt-4">
                                 <div className="d-flex justify-content-end">
-                                    <button type={'submit'} className={'btn btn-green'}>
+                                    <button disabled={!valid} type={'submit'} className={'btn btn-green'}>
                                         Создать карточку
                                     </button>
                                 </div>

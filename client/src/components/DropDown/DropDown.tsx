@@ -1,16 +1,36 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {DotsVerticalIcon} from "@heroicons/react/solid";
 import style from './index.module.scss';
 import {motion} from "framer-motion";
 
-const DropDown: React.FC = ({children}) => {
 
-    const [isOpen, setIsOpen] = useState(false)
+const useOutSideClick = (ref: any, setOpen: (open: boolean) => void) => {
+    useEffect(() => {
+        const handleOnClickOutSide = (event: any) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                setOpen(false)
+            }
+        }
+        document.addEventListener("mousedown", handleOnClickOutSide);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOnClickOutSide);
+        };
+    }, [ref])
+}
+
+const DropDown: React.FC = ({children}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const elem = useRef(null);
+    const handleOnClick = () => {
+        setIsOpen(!isOpen);
+    }
+    useOutSideClick(elem, setIsOpen)
 
     return (
-        <div className={style.block}>
+        <div ref={elem} className={[style.block, "dropdown"].join(" ")}>
             <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => handleOnClick()}
                 className={`${style.control} ${isOpen ? style.active : ''}`}
                 type={`button`}>
                 <DotsVerticalIcon/>
@@ -19,6 +39,7 @@ const DropDown: React.FC = ({children}) => {
             {
                 isOpen && (
                     <motion.div
+                        onClick={() => setIsOpen(false)}
                         initial={{
                             opacity: 0,
                             scale: 0,

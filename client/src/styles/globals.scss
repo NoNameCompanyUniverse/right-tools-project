@@ -311,6 +311,67 @@ button {
   &-6 {
     font-size: 1rem!important;
   }
+  &-7 {
+    font-size: .75rem !important;
+  }
+  &-8 {
+    font-size: .5rem !important;
+  }
+  &-9 {
+    font-size: .25rem !important;
+  }
 }
 
+.badge {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: .75em;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: var(--radius-value);
 
+
+  &.md {
+    font-size: 1rem;
+    padding: .5rem .9rem;
+  }
+
+  &.lg {
+    font-size: 1.25rem;
+    padding: .9rem 1.15rem;
+  }
+
+  &.wood {
+    background: var(--wood);
+  }
+  &.green {
+    background: var(--green);
+  }
+  &.dark {
+    background: var(--secondary);
+  }
+  &.primary {
+    background: var(--primary);
+  }
+  &.success {
+    background: var(--success);
+  }
+
+
+}
+
+.fw {
+  &-bold {
+    font-weight: 700 !important;
+  }
+  &-normal {
+    font-weight: 400 !important;
+  }
+  &-lighter {
+    font-weight: lighter !important;
+  }
+}

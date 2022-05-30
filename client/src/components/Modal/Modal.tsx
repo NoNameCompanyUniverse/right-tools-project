@@ -6,7 +6,7 @@ import {AnimatePresence, motion, Variants} from "framer-motion"
 type IModal = {
     modal: { id: string, isOpen: boolean },
     onClose: (id: string) => void,
-    title: string
+    title?: string
 }
 
 
@@ -57,9 +57,7 @@ const Modal: React.FC<IModal> = (
                                     className={style.close}>
                                     <XIcon/>
                                 </motion.button>
-                                <div className={style.header}>
-                                    <h2>{title}</h2>
-                                </div>
+                                {title && <div className={style.header}><h2>{title}</h2></div>}
                                 <div className={style.body}>
                                     {children}
                                 </div>

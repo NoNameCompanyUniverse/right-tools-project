@@ -1,6 +1,7 @@
 import React, {ReactElement, useState, useEffect} from 'react';
 import style from './index.module.scss';
 import {motion, AnimatePresence} from "framer-motion";
+import {fadeScroll} from "../../motion";
 
 type ITabs = {
     tabs: Array<string>,
@@ -44,9 +45,10 @@ const Tabs: React.FC<ITabs> = ({tabs, children}) => {
                 <AnimatePresence exitBeforeEnter>
                     <motion.div
                         key={selectedTab ? selectedTab : "empty"}
-                        animate={{opacity: 1, y: 0}}
-                        initial={{opacity: 0, y: 20}}
-                        exit={{opacity: 0, y: -20}}
+                        variants={fadeScroll}
+                        animate={'animate'}
+                        initial={'initial'}
+                        exit={'exit'}
                         transition={{duration: 0.15}}
                     >
                         {state[activeTab]}

@@ -1,14 +1,19 @@
 import React, {ReactElement, useCallback, useState} from 'react';
 import MindMapBoard  from '../../../../containers/MindMap';
 import LayoutPanel from "../../../../layout/LayoutPanel";
-
+import {motion} from "framer-motion";
+import {PageTransition} from "../../../../motion";
 
 const MindMap = () => {
 
     return (
-        <div className={`flex-grow-1 d-flex flex-column`}>
+        <motion.div
+            variants={PageTransition}
+            initial={`initial`}
+            animate={`animate`}
+            className={`flex-grow-1 d-flex flex-column`}>
             <MindMapBoard/>
-        </div>
+        </motion.div>
     );
 };
 

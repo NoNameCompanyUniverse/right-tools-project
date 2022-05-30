@@ -88,7 +88,7 @@ export const fadeIn: Variants = {
 }
 
 export const fadeUpRotateRight: Variants = {
-    initial : {
+    initial: {
         opacity: 0,
         y: 100,
         rotate: 5,
@@ -105,4 +105,16 @@ export const fadeUpRotateRight: Variants = {
             duration: 0.8
         }
     })
+}
+
+export const fadeScroll: Variants = {
+    initial: {
+        opacity: 0, y: 20
+    },
+    animate: {
+        opacity: 1, y: 0
+    },
+    exit: {
+        opacity: 0, y: -20
+    }
 }

@@ -69,10 +69,6 @@ const KanBan: React.FC = () => {
     }
 
 
-    useEffect(() => {
-        console.log(boardData)
-    }, [])
-
 
     return (
         <>

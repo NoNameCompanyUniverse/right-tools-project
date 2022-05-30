@@ -1,23 +1,19 @@
 import React from 'react';
 import {Handle, Position} from 'react-flow-renderer';
-import {XIcon} from "@heroicons/react/outline";
+import {AdjustmentsIcon} from "@heroicons/react/solid";
+import {motion} from "framer-motion";
 
 import style from './index.module.scss';
+import {INode} from "../../../types/INode";
 
 
-type INode = {
-    label: string,
-    description?: string,
-    type: 'source' | 'target' | 'default'
-}
+const Node: React.FC<{ data: INode}> = ({data}) => {
 
-const Node: React.FC<{ data: INode }> = ({data}) => {
-
-    const {label, description, type} = data;
+const {label, description, type, id} = data;
 
 
     return (
-        <div className={`${style.container} ${style[type]}`} >
+        <motion.div className={[style.container, style[type]].join(" ")} whileHover={{scale: 1.03}}>
             {
                 type === 'source' ? (
                     <>
@@ -50,16 +46,13 @@ const Node: React.FC<{ data: INode }> = ({data}) => {
                     </>
                 )
             }
-            <button type={"button"} className={style.close}>
-                <XIcon/>
-            </button>
             <h3>{label}</h3>
             {
-                description && (
+                description.length > 0 && (
                     <p>{description}</p>
                 )
             }
-        </div>
+        </motion.div>
     );
 };
 
