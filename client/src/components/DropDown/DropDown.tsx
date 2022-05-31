@@ -12,7 +12,6 @@ const useOutSideClick = (ref: any, setOpen: (open: boolean) => void) => {
             }
         }
         document.addEventListener("mousedown", handleOnClickOutSide);
-
         return () => {
             document.removeEventListener("mousedown", handleOnClickOutSide);
         };
@@ -22,11 +21,8 @@ const useOutSideClick = (ref: any, setOpen: (open: boolean) => void) => {
 const DropDown: React.FC = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
     const elem = useRef(null);
-    const handleOnClick = () => {
-        setIsOpen(!isOpen);
-    }
+    const handleOnClick = () => setIsOpen(!isOpen);
     useOutSideClick(elem, setIsOpen)
-
     return (
         <div ref={elem} className={[style.block, "dropdown"].join(" ")}>
             <button

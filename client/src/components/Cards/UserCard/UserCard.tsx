@@ -55,7 +55,7 @@ const UserCard: React.FC<{ props: IUserCard }> = ({props}) => {
                                     y: -5,
                                     transformOrigin: 'left top'
                                 }}
-                            key={index} className={style.tag}>
+                            key={index} className='tag'>
                             {tag.name}
                         </motion.div>
                     ))

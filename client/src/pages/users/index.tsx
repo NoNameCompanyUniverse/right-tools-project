@@ -4,7 +4,7 @@ import {PageTransition} from "../../motion";
 import Title from "../../components/Panel/Title";
 import LayoutPanel from "../../layout/LayoutPanel";
 import Search from "../../components/Search";
-import UserInfo from "../../components/Panel/User";
+import user_data from '../../../data-profile.json'
 import User from "../../components/Panel/User";
 import UserCard from "../../components/Cards/UserCard";
 
@@ -135,14 +135,7 @@ const Users = () => {
                     <div className="col-auto">
                         <div className={`mb-3`}>
                             <User
-                                firstname={user.firstname}
-                                status={user.status}
-                                login={user.login}
-                                avatar={user.avatar}
-                                banner={user.banner}
-                                email={user.email}
-                                lastname={user.lastname}
-                                tel={user.tel}
+                                data={user_data}
                             />
                         </div>
                     </div>

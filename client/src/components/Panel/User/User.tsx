@@ -1,29 +1,28 @@
 import React from 'react';
 import style from './index.module.scss';
+import {IUser} from "../../../types/IUser";
+import {motion} from "framer-motion";
 
 
-type IUser = {
-    firstname: string,
-    lastname: string,
-    login: string,
-    email: string,
-    tel: string,
-    status: string,
-    avatar: string,
-    banner: string
+interface UserInfo {
+    data: IUser,
+    isEdit?: boolean,
 }
 
-const User: React.FC<IUser> = (
-    {
+const User: React.FC<UserInfo> = ({data, isEdit = false}) => {
+
+    const {
+        id,
         firstname,
-        tel,
-        login,
+        tel, login,
         status,
         email,
         lastname,
         avatar,
-        banner
-    }) => {
+        banner,
+        tags
+    } = data;
+
     return (
         <div className={style.block}>
             <div className={style.title}>
@@ -72,6 +71,24 @@ const User: React.FC<IUser> = (
                         <div className={`text-black`}>
                             {tel}
                         </div>
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <div className="text-gray mb-2">Мои способности</div>
+                    <div className='d-flex flex-wrap align-items-center'>
+                        {
+                            tags.map((tag: { id: number, value: string }) => (
+                                <motion.div
+                                    whileHover={
+                                        {
+                                            y: -5,
+                                            transformOrigin: 'left top'
+                                        }}
+                                    key={tag.id} className='tag'>
+                                    {tag.value}
+                                </motion.div>
+                            ))
+                        }
                     </div>
                 </div>
             </div>

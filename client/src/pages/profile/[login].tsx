@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import LayoutPanel from "../../layout/LayoutPanel";
 import Title from "../../components/Panel/Title";
 import StatisticsCard from "../../components/Panel/StatisticsCard";
@@ -8,17 +8,9 @@ import {PageTransition} from "../../motion";
 import ProjectCard from "../../components/Cards/ProjectCard";
 import Users from "../../components/Panel/Users";
 
-
-const user = {
-    firstname: 'Sergey',
-    lastname: 'Maksimov',
-    login: '_l0stvayne_',
-    email: 'sergey.maksimov2000@gmail.com',
-    tel: '+7 (903) 869-48-67',
-    status: 'Front-end developer',
-    avatar: '/profile/user.PNG',
-    banner: '/profile/user-banner.jpg'
-}
+import user_data from '../../../data-profile.json';
+import {IUser} from "../../types/IUser";
+import ControlProfile from "../../blocks/Profile/ControlProfile";
 
 const projects: Array<any> = [
     {
@@ -129,8 +121,15 @@ const users:Array<any> = [
 ]
 
 const Profile = () => {
+
+    const [userData, setUserData] = useState<IUser>(user_data)
+
+
+    const handleSetProfile = (data: IUser) => setUserData(data)
+
     return (
         <>
+            <ControlProfile data={userData} onProfile={handleSetProfile}/>
             <motion.div
                 variants={PageTransition}
                 initial={`initial`}
@@ -182,14 +181,7 @@ const Profile = () => {
                     <div className="col-auto">
                         <div className={`mb-3`}>
                             <User
-                                firstname={user.firstname}
-                                status={user.status}
-                                login={user.login}
-                                avatar={user.avatar}
-                                banner={user.banner}
-                                email={user.email}
-                                lastname={user.lastname}
-                                tel={user.tel}
+                                data={userData}
                             />
                         </div>
                         <div className={`mb-3`}>
