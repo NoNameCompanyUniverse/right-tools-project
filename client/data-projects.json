@@ -1,0 +1,203 @@
+[
+  {
+    "id": 1,
+    "name": "Разработка интернет-магазина",
+    "status": {
+      "id": 1,
+      "value": "Администратор"
+    },
+    "team": [
+      {
+        "id": 1,
+        "firstname": "Sergey",
+        "lastname": "Maksimov",
+        "login": "_l0stvayne_",
+        "email": "sergey.maksimov2000@gmail.com",
+        "tel": "+7 (903) 869-48-67",
+        "status": "Front-end developer",
+        "avatar": "/profile/user.PNG",
+        "banner": "/profile/user-banner.jpg",
+        "tags": [
+          {
+            "id": 1,
+            "value": "JavaScript"
+          },
+          {
+            "id": 2,
+            "value": "React"
+          },
+          {
+            "id": 3,
+            "value": "Next.js"
+          },
+          {
+            "id": 4,
+            "value": "Redux"
+          },
+          {
+            "id": 5,
+            "value": "Git"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstname": "Pavel",
+        "lastname": "Kartel",
+        "login": "pryanik",
+        "email": "pavel.kartel@gmail.com",
+        "tel": "+7 (999) 999-99-99",
+        "status": "UI/UX Designer",
+        "avatar": "/test/pavel.jpg",
+        "banner": "/profile/user-banner.jpg",
+        "tags": [
+          {
+            "id": 1,
+            "value": "Figma"
+          },
+          {
+            "id": 2,
+            "value": "PhotoShop"
+          },
+          {
+            "id": 3,
+            "value": "Adobe XD"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "firstname": "Roma",
+        "lastname": "Sotnikov",
+        "login": "ramzes",
+        "email": "roma.sotnikov@gmail.com",
+        "tel": "+7 (999) 999-99-99",
+        "status": "Back-end developer",
+        "avatar": "/test/roma.jpg",
+        "banner": "/profile/user-banner.jpg",
+        "tags": [
+          {
+            "id": 1,
+            "value": "Python"
+          },
+          {
+            "id": 2,
+            "value": "Git"
+          },
+          {
+            "id": 3,
+            "value": "PHP"
+          },
+          {
+            "id": 4,
+            "value": "Django"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "firstname": "Liza",
+        "lastname": "Primoshina",
+        "login": "li_monali",
+        "email": "liza.primoshina@gmail.com",
+        "tel": "+7 (999) 999-99-99",
+        "status": "Manager",
+        "avatar": "/test/liza.jpg",
+        "banner": "/profile/user-banner.jpg",
+        "tags": [
+          {
+            "id": 1,
+            "value": "Яндекс Метрика"
+          }
+        ]
+      }
+    ],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam at aut autem consectetur consequuntur excepturi exercitationem, illum, non quibusdam ratione sapiente similique tempora. Animi eius expedita inventore qui rerum!"
+  },
+  {
+    "id": 2,
+    "name": "Доработка функционала",
+    "status": {
+      "id": 2,
+      "value": "Разработчик"
+    },
+    "team": [
+      {
+        "id": 1,
+        "firstname": "Sergey",
+        "lastname": "Maksimov",
+        "login": "_l0stvayne_",
+        "email": "sergey.maksimov2000@gmail.com",
+        "tel": "+7 (903) 869-48-67",
+        "status": "Front-end developer",
+        "avatar": "/profile/user.PNG",
+        "banner": "/profile/user-banner.jpg",
+        "tags": [
+          {
+            "id": 1,
+            "value": "JavaScript"
+          },
+          {
+            "id": 2,
+            "value": "React"
+          },
+          {
+            "id": 3,
+            "value": "Next.js"
+          },
+          {
+            "id": 4,
+            "value": "Redux"
+          },
+          {
+            "id": 5,
+            "value": "Git"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstname": "Pavel",
+        "lastname": "Kartel",
+        "login": "pryanik",
+        "email": "pavel.kartel@gmail.com",
+        "tel": "+7 (999) 999-99-99",
+        "status": "UI/UX Designer",
+        "avatar": "/test/pavel.jpg",
+        "banner": "/profile/user-banner.jpg",
+        "tags": [
+          {
+            "id": 1,
+            "value": "Figma"
+          },
+          {
+            "id": 2,
+            "value": "PhotoShop"
+          },
+          {
+            "id": 3,
+            "value": "Adobe XD"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "firstname": "Liza",
+        "lastname": "Primoshina",
+        "login": "li_monali",
+        "email": "liza.primoshina@gmail.com",
+        "tel": "+7 (999) 999-99-99",
+        "status": "Manager",
+        "avatar": "/test/liza.jpg",
+        "banner": "/profile/user-banner.jpg",
+        "tags": [
+          {
+            "id": 1,
+            "value": "Яндекс Метрика"
+          }
+        ]
+      }
+    ],
+    "description": "Lorem ipsum dolor sit amet, consectetur adipisicing que tempora."
+  }
+]

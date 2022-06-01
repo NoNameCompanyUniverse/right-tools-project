@@ -17,16 +17,15 @@ type IPanelInfo = {
     id: number,
     name: string,
     description: string,
-    banner: string,
     team: Array<{ id: number, avatar: string }>,
-    maps: Array<{ id: number, name: string }>,
-    boards: Array<{ id: number, name: string }>,
-    files: Array<{ id: number, name: string }>,
+    mindmap: Array<{ id: number, name: string }>,
+    kanban: Array<{ id: number, name: string }>,
+    file: Array<{ id: number, name: string }>,
 }
 
 const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
 
-    const {id, boards, name, files, maps, description, team, banner} = props;
+    const {id, kanban, name, file, mindmap, description, team} = props;
 
 
     const Title: React.FC<{ value: string }> = ({value}) => {
@@ -57,7 +56,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                     <div className={`mb-4`}>
                         <div className={style.banner}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={banner} alt=""/>
+                            <img src={'/profile/user-banner.jpg'} alt=""/>
                         </div>
                     </div>
                     <div className={`mb-4`}>
@@ -86,7 +85,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                         </div>
                     </div>
                     <div className={`mb-4`}>
-                        <Title value={`Mind Maps проекта(${maps.length})`}/>
+                        <Title value={`Mind Maps проекта(${mindmap.length})`}/>
                     </div>
                     <div className={`mb-5`}>
                         <>
@@ -98,7 +97,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                                 modules={[Mousewheel, Pagination]}
                                 centeredSlides={true}>
                                 {
-                                    maps.map((item: { id: number, name: string }, index: number) => (
+                                    mindmap.map((item: { id: number, name: string }, index: number) => (
                                         <SwiperSlide key={index}>
                                             <div key={index} className={style.item}>
                                                 <Link href={`/`}>
@@ -114,7 +113,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                         </>
                     </div>
                     <div className={`mb-4`}>
-                        <Title value={`KanBan boards(${boards.length})`}/>
+                        <Title value={`KanBan boards(${kanban.length})`}/>
                     </div>
                     <div className={`mb-5`}>
                         <>
@@ -126,7 +125,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                                 modules={[Mousewheel, Pagination]}
                                 centeredSlides={true}>
                                 {
-                                    boards.map((item: { id: number, name: string }, index: number) => (
+                                    kanban.map((item: { id: number, name: string }, index: number) => (
                                         <SwiperSlide key={index}>
                                             <div key={index} className={style.item}>
                                                 <Link href={`/`}>
@@ -142,7 +141,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                         </>
                     </div>
                     <div className={`mb-4`}>
-                        <Title value={`Вложение проекта(${files.length})`}/>
+                        <Title value={`Вложение проекта(${file.length})`}/>
                     </div>
                     <div className={`mb-5`}>
                         <>
@@ -154,7 +153,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                                 modules={[Mousewheel, Pagination]}
                                 centeredSlides={true}>
                                 {
-                                    files.map((item: { id: number, name: string }, index: number) => (
+                                    file.map((item: { id: number, name: string }, index: number) => (
                                         <SwiperSlide key={index}>
                                             <div key={index} className={style.item}>
                                                 <Link href={`/`}>

@@ -2,18 +2,15 @@ import React from 'react';
 import style from './index.module.scss';
 import DropDown from "../../DropDown";
 import {motion} from "framer-motion";
+import {IUser} from "../../../types/IUser";
 
 type IUserCard = {
-    id: number,
-    avatar: string,
-    name: string,
-    status: string,
-    tags: Array<{ id: number, name: string }>
+   data: IUser
 }
 
-const UserCard: React.FC<{ props: IUserCard }> = ({props}) => {
+const UserCard: React.FC<IUserCard> = ({data}) => {
 
-    const {id, status, name, avatar, tags} = props;
+    const {id, status, firstname, lastname, avatar, tags} = data;
 
     return (
         <div className={style.block}>
@@ -38,7 +35,7 @@ const UserCard: React.FC<{ props: IUserCard }> = ({props}) => {
             </div>
             <div className={style.name}>
                 <span className="text-black">
-                    {name}
+                    {`${lastname} ${firstname}`}
                 </span>
             </div>
             <div className={style.status}>
@@ -48,7 +45,7 @@ const UserCard: React.FC<{ props: IUserCard }> = ({props}) => {
             </div>
             <div className={`d-flex align-items-center flex-wrap`}>
                 {
-                    tags.map((tag: { id: number, name: string }, index: number) => (
+                    tags.map((tag: { id: number, value: string }, index: number) => (
                         <motion.div
                             whileHover={
                                 {
@@ -56,7 +53,7 @@ const UserCard: React.FC<{ props: IUserCard }> = ({props}) => {
                                     transformOrigin: 'left top'
                                 }}
                             key={index} className='tag'>
-                            {tag.name}
+                            {tag.value}
                         </motion.div>
                     ))
                 }

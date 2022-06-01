@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {motion} from "framer-motion";
 import {PageTransition} from "../../../motion";
 import LayoutPanel from "../../../layout/LayoutPanel";
@@ -8,295 +8,16 @@ import PanelInfo from "../../../components/Project/PanelInfo";
 import Tabs from "../../../components/Tabs";
 import Card from '../../../components/Project/Card';
 import FileCard from "../../../components/Cards/FileCard";
-
-const user = {
-    id: 2,
-    avatar: '/test/avatar.jpg',
-    name: 'Liza Primoshina',
-    status: 'Manager',
-    tags: [
-        {
-            id: 1,
-            name: 'Менеджер'
-        },
-        {
-            id: 2,
-            name: 'Яндекс Метрика'
-        },
-    ]
-};
-
-const project = {
-    id: 1,
-    name: 'Доработка проекта',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at dolores enim excepturi explicabo facilis fuga illum iste magnam minus mollitia nam natus, nihil nulla numquam perferendis porro praesentium qui, quidem quis quo repellat sint temporibus vitae voluptatem. At aut beatae blanditiis deleniti id magni maxime perspiciatis qui ratione unde?',
-    banner: '/profile/user-banner.jpg',
-    team: [
-        {
-            id: 1,
-            avatar: '/profile/user.PNG'
-        },
-        {
-            id: 2,
-            avatar: '/test/avatar.jpg'
-        },
-        {
-            id: 3,
-            avatar: '/profile/user.PNG'
-        },
-        {
-            id: 4,
-            avatar: '/test/avatar.jpg'
-        },
-        {
-            id: 5,
-            avatar: '/profile/user.PNG'
-        },
-
-    ],
-    maps: [
-        {id: 1, name: 'Board #1', path: '/kanban/'},
-        {id: 2, name: 'Board #2', path: '/kanban/'},
-        {id: 3, name: 'Board #3', path: '/kanban/'},
-        {id: 4, name: 'Board #4', path: '/kanban/'},
-        {id: 5, name: 'Board #5', path: '/kanban/'}
-    ],
-    boards: [
-        {id: 1, name: 'Board #1', path: '/mindmap/'},
-        {id: 2, name: 'Board #2', path: '/mindmap/'},
-        {id: 3, name: 'Board #3', path: '/mindmap/'},
-        {id: 4, name: 'Board #4', path: '/mindmap/'},
-        {id: 5, name: 'Board #5', path: '/mindmap/'}
-    ],
-    files: [
-        {id: 1, name: 'File #1'},
-        {id: 2, name: 'File #2'},
-        {id: 3, name: 'File #3'},
-        {id: 4, name: 'File #4'},
-        {id: 5, name: 'File #5'}
-    ]
-}
-
-const users:Array<any> = [
-    {
-        id: 1,
-        avatar: '/profile/user.PNG',
-        name: 'Alice Zuberg',
-        status: 'UI/UX Designer',
-        tags: [
-            {
-                id: 1,
-                name: 'Дизайнер'
-            },
-            {
-                id: 2,
-                name: 'Figma'
-            },
-            {
-                id: 3,
-                name: 'PhotoShop'
-            }
-        ]
-    },
-    {
-        id: 2,
-        avatar: '/test/avatar.jpg',
-        name: 'Liza Primoshina',
-        status: 'Manager',
-        tags: [
-            {
-                id: 1,
-                name: 'Менеджер'
-            },
-            {
-                id: 2,
-                name: 'Яндекс Метрика'
-            },
-        ]
-    },
-    {
-        id: 3,
-        avatar: '/profile/user.PNG',
-        name: 'Sergey Maksimov',
-        status: 'Front-end developer',
-        tags: [
-            {
-                id: 1,
-                name: 'JavaScript'
-            },
-            {
-                id: 2,
-                name: 'React'
-            },
-            {
-                id: 3,
-                name: 'Next.js'
-            },
-            {
-                id: 4,
-                name: 'Redux'
-            },
-            {
-                id: 5,
-                name: 'Redux-toolkit'
-            },
-        ]
-    },
-    {
-        id: 4,
-        avatar: '/profile/user.PNG',
-        name: 'Roman Sotnikov',
-        status: 'Back-end developer',
-        tags: [
-            {
-                id: 1,
-                name: 'Python'
-            },
-            {
-                id: 2,
-                name: 'PHP'
-            },
-        ]
-    },
-];
-
-type ICard = {
-    id: number,
-    name: string,
-    banner: string,
-    path: 'kanban' | 'mindmap'
-}
-
-const maps:Array<ICard> = [
-    {
-        id: 1,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #1',
-        path: 'mindmap'
-    },
-    {
-        id: 2,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #2',
-        path: 'mindmap'
-    },
-    {
-        id: 3,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #3',
-        path: 'mindmap'
-    },
-    {
-        id: 4,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #4',
-        path: 'mindmap'
-    },
-    {
-        id: 5,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #5',
-        path: 'mindmap'
-    },
-
-];
-
-const kambans:Array<ICard> = [
-    {
-        id: 1,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #1',
-        path: 'kanban'
-    },
-    {
-        id: 2,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #2',
-        path: 'kanban'
-    },
-    {
-        id: 3,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #3',
-        path: 'kanban'
-    },
-    {
-        id: 4,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #4',
-        path: 'kanban'
-    },
-    {
-        id: 5,
-        banner: '/profile/user-banner.jpg',
-        name: 'Board #5',
-        path: 'kanban'
-    },
-
-];
-
-const files = [
-    {
-        id: 1,
-        date: 'Jan 30 / 2020',
-        name: 'ID Photo',
-        size: '537Kb',
-        type: 'PNG',
-    },
-    {
-        id: 2,
-        date: 'Jan 30 / 2020',
-        name: 'Design',
-        size: '537Kb',
-        type: 'JPG',
-    },
-    {
-        id: 3,
-        date: 'Jan 30 / 2020',
-        name: 'Table Plan',
-        size: '537Kb',
-        type: 'xls',
-    },
-    {
-        id: 4,
-        date: 'Jan 30 / 2020',
-        name: 'ТЗ',
-        size: '537Kb',
-        type: 'doc',
-    },
-    {
-        id: 1,
-        date: 'Jan 30 / 2020',
-        name: 'ID Photo',
-        size: '537Kb',
-        type: 'PNG',
-    },
-    {
-        id: 2,
-        date: 'Jan 30 / 2020',
-        name: 'Design',
-        size: '537Kb',
-        type: 'JPG',
-    },
-    {
-        id: 3,
-        date: 'Jan 30 / 2020',
-        name: 'Table Plan',
-        size: '537Kb',
-        type: 'xls',
-    },
-    {
-        id: 4,
-        date: 'Jan 30 / 2020',
-        name: 'ТЗ',
-        size: '537Kb',
-        type: 'doc',
-    },
+import project_data from '../../../../data-project.json';
+import {IProjectFull} from "../../../types/IProject";
 
 
-]
 
 const Project = () => {
+
+
+    const [projectData, setProjectData] = useState<IProjectFull>(project_data)
+
     return (
         <>
             <motion.div
@@ -309,7 +30,7 @@ const Project = () => {
                             <Title value={`Администратор проекта`}/>
                         </div>
                         <div className="col-xl-4 mt-3 mb-5">
-                            <UserCard props={user}/>
+                            <UserCard data={projectData.team[0]}/>
                         </div>
                         <div>
                             <Tabs tabs={[
@@ -324,9 +45,9 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    users.map((user, index) => (
+                                                    projectData.team.map((user, index) => (
                                                         <div key={index} className={`col-xl-4 mb-3`}>
-                                                            <UserCard props={user}/>
+                                                            <UserCard data={user}/>
                                                         </div>
                                                     ))
                                                 }
@@ -338,9 +59,9 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    maps.map((map, index) => (
+                                                    projectData.mindmap.map((map, index) => (
                                                         <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card props={map}/>
+                                                            <Card data={map} type={'MINDMAP'}/>
                                                         </div>
                                                     ))
                                                 }
@@ -352,9 +73,9 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    kambans.map((map, index) => (
+                                                    projectData.kanban.map((map, index) => (
                                                         <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card props={map}/>
+                                                            <Card data={map} type={'KANBAN'}/>
                                                         </div>
                                                     ))
                                                 }
@@ -366,7 +87,7 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className="row gx-3">
                                                 {
-                                                    files.map((file, index) => (
+                                                    projectData.file.map((file, index) => (
                                                         <div key={index} className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
                                                             <FileCard props={file}/>
                                                         </div>
@@ -380,7 +101,7 @@ const Project = () => {
                         </div>
                     </div>
                     <div className="col-auto">
-                        <PanelInfo props={project}/>
+                        <PanelInfo props={projectData}/>
                     </div>
                 </div>
             </motion.div>

@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import LayoutPanel from "../../layout/LayoutPanel";
 import Title from "../../components/Panel/Title";
 import StatisticsCard from "../../components/Panel/StatisticsCard";
@@ -9,127 +9,37 @@ import ProjectCard from "../../components/Cards/ProjectCard";
 import Users from "../../components/Panel/Users";
 
 import user_data from '../../../data-profile.json';
+import users_data from '../../../data-users.json';
+import projects_data from '../../../data-projects.json';
 import {IUser} from "../../types/IUser";
 import ControlProfile from "../../blocks/Profile/ControlProfile";
+import {IModal} from "../../types/IModal";
+import {IProject} from "../../types/IProject";
 
-const projects: Array<any> = [
-    {
-        id: 1,
-        name: 'Разработка интернет-магазина',
-        status: {
-            id: 1,
-            name: 'Администратор'
-        },
-        team: [
-            {
-                id: 1,
-                avatar: '/profile/user.PNG'
-            },
-            {
-                id: 2,
-                avatar: '/test/avatar.jpg'
-            },
-            {
-                id: 3,
-                avatar: '/profile/user.PNG'
-            },
-            {
-                id: 4,
-                avatar: '/test/avatar.jpg'
-            },
-            {
-                id: 5,
-                avatar: '/profile/user.PNG'
-            },
-
-        ],
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam at aut autem consectetur consequuntur excepturi exercitationem, illum, non quibusdam ratione sapiente similique tempora. Animi eius expedita inventore qui rerum!'
-    },
-    {
-        id: 2,
-        name: 'Разработка интернет-магазина',
-        status: {
-            id: 2,
-            name: 'Участник'
-        },
-        team: [
-            {
-                id: 1,
-                avatar: '/profile/user.PNG'
-            },
-            {
-                id: 2,
-                avatar: '/test/avatar.jpg'
-            },
-            {
-                id: 3,
-                avatar: '/profile/user.PNG'
-            },
-
-        ],
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam at aut autem consectetur consequuntur excepturi exercitationem, illum, non quibusdam ratione sapiente similique tempora. Animi eius expedita inventore qui rerum!'
-    },
-    {
-        id: 3,
-        name: 'Разработка интернет-магазина',
-        status: {
-            id: 1,
-            name: 'Администратор'
-        },
-        team: [
-            {
-                id: 1,
-                avatar: '/profile/user.PNG'
-            },
-            {
-                id: 2,
-                avatar: '/test/avatar.jpg'
-            },
-
-        ],
-        description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam at aut autem consectetur consequuntur excepturi exercitationem, illum, non quibusdam ratione sapiente similique tempora. Animi eius expedita inventore qui rerum!'
-    },
-];
-
-
-const users:Array<any> = [
-    {
-        id: 1,
-        name: 'Alice Zuberg',
-        status: 'UI/UX designer',
-        avatar: '/profile/user.PNG'
-    },
-    {
-        id: 2,
-        name: 'Liza Primoshina',
-        status: 'Manager',
-        avatar: '/test/avatar.jpg'
-    },
-    {
-        id: 1,
-        name: 'Alice Zuberg',
-        status: 'UI/UX designer',
-        avatar: '/profile/user.PNG'
-    },
-    {
-        id: 2,
-        name: 'Liza Primoshina',
-        status: 'Manager',
-        avatar: '/test/avatar.jpg'
-    },
-
-]
 
 const Profile = () => {
 
-    const [userData, setUserData] = useState<IUser>(user_data)
+    const [userData, setUserData] = useState<IUser>(user_data);
+
+    const [projectsData, setProjectsData] = useState<Array<IProject>>(projects_data);
+
+    const [modal, setModal] = useState<IModal>({id: '#controlUser', isOpen: false});
+
+    const handleSetProfile = (data: IUser) => setUserData(data);
+
+    const handleDeleteProject = (id: number) => {
+        setProjectsData(projectsData.filter(i => i.id !== id))
+    }
 
 
-    const handleSetProfile = (data: IUser) => setUserData(data)
+    const handleOnModal = () => {
+        setModal({...modal, isOpen: !modal.isOpen});
+    }
+
 
     return (
         <>
-            <ControlProfile data={userData} onProfile={handleSetProfile}/>
+            <ControlProfile modal={modal} setModal={handleOnModal} data={userData} onProfile={handleSetProfile}/>
             <motion.div
                 variants={PageTransition}
                 initial={`initial`}
@@ -170,9 +80,11 @@ const Profile = () => {
                         </div>
                         <div className="row my-5 gx-4">
                             {
-                                projects.map((project, index: number) => (
+                                projectsData.map((project, index: number) => (
                                     <div key={index} className="col-xxl-4 col-lg-6 mb-4">
-                                        <ProjectCard props={project}/>
+                                        <ProjectCard
+                                            onDelete={handleDeleteProject}
+                                            data={project}/>
                                     </div>
                                 ))
                             }
@@ -182,10 +94,12 @@ const Profile = () => {
                         <div className={`mb-3`}>
                             <User
                                 data={userData}
+                                isEdit={true}
+                                onUser={handleOnModal}
                             />
                         </div>
                         <div className={`mb-3`}>
-                            <Users users={users}/>
+                            <Users users={users_data}/>
                         </div>
                     </div>
                 </div>

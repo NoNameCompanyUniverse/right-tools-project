@@ -2,17 +2,11 @@ import React from 'react';
 import style from './index.module.scss';
 import {DocumentTextIcon} from "@heroicons/react/outline";
 import {motion} from "framer-motion";
+import {IFile} from "../../../types/IFile";
 
 
-type IFileCard = {
-    id: number,
-    name: string,
-    type: string,
-    size: string,
-    date: string,
-}
 
-const FileCard:React.FC<{props: IFileCard}> = ({props}) => {
+const FileCard:React.FC<{props: IFile}> = ({props}) => {
 
     const {id, date, size, name, type} = props;
 
@@ -32,7 +26,7 @@ const FileCard:React.FC<{props: IFileCard}> = ({props}) => {
                             </div>
                             <div className={style.typeSize}>
                                 <span className="text-gray">
-                                    {type.toUpperCase()} / {size}
+                                    {type.toUpperCase()} / {size} Kb
                                 </span>
                             </div>
                         </div>

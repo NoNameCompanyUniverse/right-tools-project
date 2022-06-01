@@ -1,16 +1,17 @@
 import React from 'react';
+import { IUser } from '../../../types/IUser';
 import style from './index.module.scss';
 
 
 type IUsers = {
-    users: Array<{id: number, name: string, status: string, avatar: string}>
+    users: Array<IUser>
 }
 
 const Users:React.FC<IUsers> = ({users}) => {
 
-    const User:React.FC<{props: {id: number, name: string, status: string, avatar: string}}> = ({props}) => {
+    const User:React.FC<{props: IUser}> = ({props}) => {
 
-        const {id, status, name, avatar} = props;
+        const {id, status, firstname, lastname, avatar} = props;
 
         return (
             <>
@@ -22,7 +23,7 @@ const Users:React.FC<IUsers> = ({users}) => {
                     <div className={`ms-3`}>
                         <div className={style.name}>
                             <span className={`text-black`}>
-                                {name}
+                                {[lastname, firstname].join(" ")}
                             </span>
                         </div>
                         <div className={style.status}>
@@ -39,7 +40,7 @@ const Users:React.FC<IUsers> = ({users}) => {
     return (
         <div className={style.block}>
             <div className={style.title}>
-                Пользователи
+                Ваши коллеги
             </div>
             {
 

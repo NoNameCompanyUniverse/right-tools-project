@@ -2,23 +2,20 @@ import React from 'react';
 import style from './index.module.scss';
 import Link from 'next/link'
 import DropDown from "../../DropDown";
+import {IUser} from "../../../types/IUser";
+import {IProject} from "../../../types/IProject";
 
 
-type IProjectCard = {
-    id: number,
-    name: string,
-    status: {
-        id: number,
-        name: string
-    },
-    team: Array<{ id: number, avatar: string }>,
-    description: string,
+interface IProjectCard  {
+    data: IProject,
+    onDelete: (id: number) => void
 }
 
-const ProjectCard: React.FC<{ props: IProjectCard }> = ({props}) => {
+const ProjectCard: React.FC<IProjectCard> = ({data, onDelete}) => {
 
-    const {name, status, description, team, id} = props;
+    const {name, status, description, team, id} = data;
 
+    const handleOnDelete = (id: number) => onDelete(id);
 
     const User: React.FC<{ id: number, avatar: string }> = ({id, avatar}) => {
         return (
@@ -52,9 +49,13 @@ const ProjectCard: React.FC<{ props: IProjectCard }> = ({props}) => {
                 <DropDown>
                     <ul>
                         <li>
-                            Подробнее
+                            <Link href={`/project/${id}`}>
+                                <a>
+                                    Подробнее
+                                </a>
+                            </Link>
                         </li>
-                        <li>
+                        <li onClick={() => handleOnDelete(id)}>
                             Удалить
                         </li>
                     </ul>
@@ -69,7 +70,7 @@ const ProjectCard: React.FC<{ props: IProjectCard }> = ({props}) => {
             </div>
             <div
                 className={`${style.status} ${status.id === 1 ? style.admin : status.id === 2 ? style.developer : ''}`}>
-                {status.name}
+                {status.value}
             </div>
             <div className={style.description}>
                 {description}

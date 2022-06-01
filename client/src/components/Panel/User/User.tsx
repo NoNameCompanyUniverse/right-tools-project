@@ -7,9 +7,10 @@ import {motion} from "framer-motion";
 interface UserInfo {
     data: IUser,
     isEdit?: boolean,
+    onUser?: () => void,
 }
 
-const User: React.FC<UserInfo> = ({data, isEdit = false}) => {
+const User: React.FC<UserInfo> = ({data, isEdit = false, onUser}) => {
 
     const {
         id,
@@ -38,9 +39,12 @@ const User: React.FC<UserInfo> = ({data, isEdit = false}) => {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={avatar} alt=""/>
                     </div>
-                    <button type={`button`} className={`btn btn-sm btn-green ms-2 rounded-pill`}>
-                        Изменить
-                    </button>
+                    {
+                        (isEdit && onUser) &&  <button type={`button`} onClick={() => onUser()} className={`btn btn-sm btn-green ms-2 rounded-pill`}>
+                            Изменить
+                        </button>
+                    }
+
                 </div>
                 <div className={`mt-3`}>
                     <div className={style.name}>

@@ -1,0 +1,240 @@
+{
+  "id": 2,
+  "name": "Доработка функционала",
+  "status": {
+    "id": 2,
+    "value": "Разработчик"
+  },
+  "team": [
+    {
+      "id": 1,
+      "firstname": "Sergey",
+      "lastname": "Maksimov",
+      "login": "_l0stvayne_",
+      "email": "sergey.maksimov2000@gmail.com",
+      "tel": "+7 (903) 869-48-67",
+      "status": "Front-end developer",
+      "avatar": "/profile/user.PNG",
+      "banner": "/profile/user-banner.jpg",
+      "tags": [
+        {
+          "id": 1,
+          "value": "JavaScript"
+        },
+        {
+          "id": 2,
+          "value": "React"
+        },
+        {
+          "id": 3,
+          "value": "Next.js"
+        },
+        {
+          "id": 4,
+          "value": "Redux"
+        },
+        {
+          "id": 5,
+          "value": "Git"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "firstname": "Pavel",
+      "lastname": "Kartel",
+      "login": "pryanik",
+      "email": "pavel.kartel@gmail.com",
+      "tel": "+7 (999) 999-99-99",
+      "status": "UI/UX Designer",
+      "avatar": "/test/pavel.jpg",
+      "banner": "/profile/user-banner.jpg",
+      "tags": [
+        {
+          "id": 1,
+          "value": "Figma"
+        },
+        {
+          "id": 2,
+          "value": "PhotoShop"
+        },
+        {
+          "id": 3,
+          "value": "Adobe XD"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "firstname": "Liza",
+      "lastname": "Primoshina",
+      "login": "li_monali",
+      "email": "liza.primoshina@gmail.com",
+      "tel": "+7 (999) 999-99-99",
+      "status": "Manager",
+      "avatar": "/test/liza.jpg",
+      "banner": "/profile/user-banner.jpg",
+      "tags": [
+        {
+          "id": 1,
+          "value": "Яндекс Метрика"
+        }
+      ]
+    }
+  ],
+  "description": "Lorem ipsum dolor sit amet, consectetur adipisicing que tempora.",
+  "mindmap": [
+    {
+      "id": 1,
+      "name": "MinMap #1",
+      "nodes": [
+        {
+          "id": "1",
+          "type": "nodeCard",
+          "data": {
+            "id": "1",
+            "label": "Hello World",
+            "description": "Нужно просто взять и сделать этот ваш гребаный сайт и забыть про эту фигню как страшный сон.",
+            "type": "source"
+          },
+          "position": {
+            "x": 250,
+            "y": 550
+          }
+        },
+        {
+          "id": "2",
+          "type": "nodeCard",
+          "data": {
+            "id": "2",
+            "label": "Hello World 2",
+            "description": "",
+            "type": "target"
+          },
+          "position": {
+            "x": 450,
+            "y": 350
+          }
+        },
+        {
+          "id": "3",
+          "type": "nodeCard",
+          "data": {
+            "id": "3",
+            "label": "Hello World 3",
+            "description": "Нужно просто взять и сделать этот ваш гребаный сайт и забыть про эту фигню как страшный сон.",
+            "type": "default"
+          },
+          "position": {
+            "x": 450,
+            "y": 150
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1-2",
+          "source": "1",
+          "target": "3",
+          "animated": true
+        },
+        {
+          "id": "e1-3",
+          "source": "3",
+          "target": "2",
+          "animated": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "MinMap #2",
+      "nodes": [],
+      "edges": []
+    }
+  ],
+  "kanban": [
+    {
+      "id": 1,
+      "name": "Kanban#1",
+      "board": [
+        {
+          "name": "Backlog",
+          "items": [
+            {
+              "id": 1,
+              "title": "Hello World",
+              "priority": 2,
+              "description": "lorem input..."
+            }
+          ]
+        },
+        {
+          "name": "In Progress",
+          "items": []
+        },
+        {
+          "name": "На проверку",
+          "items": []
+        },
+        {
+          "name": "Done",
+          "items": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Kanban#2",
+      "board": [
+        {
+          "name": "Backlog",
+          "items": []
+        },
+        {
+          "name": "In Progress",
+          "items": []
+        },
+        {
+          "name": "На проверку",
+          "items": []
+        },
+        {
+          "name": "Done",
+          "items": []
+        }
+      ]
+    }
+  ],
+  "file": [
+    {
+      "id": 1,
+      "date": "",
+      "name": "ID Photo",
+      "size": 537,
+      "type": "PNG"
+    },
+    {
+      "id": 2,
+      "date": "",
+      "name": "Design",
+      "size": 537,
+      "type": "JPG"
+    },
+    {
+      "id": 3,
+      "date": "",
+      "name": "Table Plan",
+      "size": 537,
+      "type": "XLS"
+    },
+    {
+      "id": 4,
+      "date": "",
+      "name": "ТЗ",
+      "size": 537,
+      "type": "DOC"
+    }
+  ]
+}
+
