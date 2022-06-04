@@ -12,6 +12,7 @@ import ReactFlow, {
 import NodeCard from '../../components/MindMap/Node'
 import CreateNode from "../../blocks/MindMap/CreateNode";
 import ControlNode from "../../blocks/MindMap/ControlNode";
+import {useRouter} from "next/router";
 
 
 

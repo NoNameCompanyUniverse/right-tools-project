@@ -3,15 +3,16 @@ import style from './index.module.scss';
 import {DocumentTextIcon} from "@heroicons/react/outline";
 import {motion} from "framer-motion";
 import {IFile} from "../../../types/IFile";
+import DropDown from "../../DropDown";
 
 
 
 const FileCard:React.FC<{props: IFile}> = ({props}) => {
 
-    const {id, date, size, name, type} = props;
+    const {id, size, link, name, type} = props;
 
     return (
-        <motion.div whileTap={{scale: 0.95}} className={style.container}>
+        <motion.div whileTap={{scale: 0.97}} className={style.container}>
             <div className={`row align-items-center justify-content-between`}>
                 <div className="col-auto">
                     <div className={`d-flex align-items-center`}>
@@ -33,13 +34,18 @@ const FileCard:React.FC<{props: IFile}> = ({props}) => {
                     </div>
 
                 </div>
-                <div className="col-auto">
-                    <div className={style.date}>
-                        <span className="text-gray">
-                            {date}
-                        </span>
-                    </div>
-                </div>
+            </div>
+            <div className={style.control}>
+                <DropDown>
+                    <ul>
+                        <li>
+                            <a href={link} download target={'_blank'}>
+                                Скачать
+                            </a>
+                        </li>
+                        <li>Удалить</li>
+                    </ul>
+                </DropDown>
             </div>
         </motion.div>
     );

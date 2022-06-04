@@ -5,6 +5,7 @@
   border: 1px solid #eee;
   padding: 1.5rem;
   cursor: pointer;
+  position: relative;
 }
 
 .icon {
@@ -43,7 +44,10 @@
 .typeSize{
   font-size: .8rem;
 }
-
-.date {
-  font-size: .95rem;
+.control {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  z-index: 888;
 }

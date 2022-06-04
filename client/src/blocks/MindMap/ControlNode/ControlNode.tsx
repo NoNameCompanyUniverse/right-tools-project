@@ -84,7 +84,7 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
                                     </button>
                                 </div>
                                 <div className={['col-12'].join(" ")}>
-                                    <span className={['d-block', 'f-7', 'mb-2', 'fw-bold'].join(" ")}>
+                                    <span className={['d-block', 'fs-6', 'mb-2', 'fw-bold'].join(" ")}>
                                         Название
                                     </span>
                                     {
@@ -115,7 +115,7 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
                                     }
                                 </div>
                                 <div className={['col-12', 'mt-4'].join(" ")}>
-                                    <span className={['d-block', 'f-7', 'mb-2', 'fw-bold'].join(" ")}>
+                                    <span className={['d-block', 'fs-6', 'mb-2', 'fw-bold'].join(" ")}>
                                         Тип карточки
                                     </span>
                                     {
@@ -160,7 +160,7 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
                                     }
                                 </div>
                                 <div className={['col-12', 'mt-4'].join(" ")}>
-                                     <span className={['d-block', 'f-7', 'mb-2', 'fw-bold'].join(" ")}>
+                                     <span className={['d-block', 'fs-6', 'mb-2', 'fw-bold'].join(" ")}>
                                         Описание карточки
                                     </span>
                                     {
@@ -171,7 +171,7 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
                                                 initial={'initial'}
                                                 exit={'exit'}
                                                 transition={{duration: 0.15}}
-                                                className={['f-7'].join(" ")}>
+                                                className={['fs-6'].join(" ")}>
                                                 {
                                                     (data.data.description.length) <= 0
                                                         ? "Описание отсутствует"

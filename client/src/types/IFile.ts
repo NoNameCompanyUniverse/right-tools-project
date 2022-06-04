@@ -1,6 +1,6 @@
 export interface IFile {
     id: number,
-    date: string,
+    link: string,
     name: string,
     size: number,
     type: string

@@ -408,3 +408,22 @@ button {
     color: #fff;
   }
 }
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+
+  &-sm {
+    width: .75rem;
+    height: .75rem;
+  }
+
+  &-md {
+    width: 1rem;
+    height: 1rem;
+  }
+  &-lg {
+    width: 2rem;
+    height: 2rem;
+  }
+}

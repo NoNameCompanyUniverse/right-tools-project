@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {motion} from "framer-motion";
 import {PageTransition} from "../../../motion";
 import LayoutPanel from "../../../layout/LayoutPanel";
@@ -10,10 +10,15 @@ import Card from '../../../components/Project/Card';
 import FileCard from "../../../components/Cards/FileCard";
 import project_data from '../../../../data-project.json';
 import {IProjectFull} from "../../../types/IProject";
+import {useRouter} from "next/router";
 
 
 
 const Project = () => {
+
+    const router = useRouter();
+
+
 
 
     const [projectData, setProjectData] = useState<IProjectFull>(project_data)
@@ -61,7 +66,7 @@ const Project = () => {
                                                 {
                                                     projectData.mindmap.map((map, index) => (
                                                         <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card data={map} type={'MINDMAP'}/>
+                                                            <Card path={router.asPath} data={map} type={'MINDMAP'}/>
                                                         </div>
                                                     ))
                                                 }
@@ -75,7 +80,7 @@ const Project = () => {
                                                 {
                                                     projectData.kanban.map((map, index) => (
                                                         <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card data={map} type={'KANBAN'}/>
+                                                            <Card path={router.asPath} data={map} type={'KANBAN'}/>
                                                         </div>
                                                     ))
                                                 }

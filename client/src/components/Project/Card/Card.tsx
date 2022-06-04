@@ -9,11 +9,17 @@ type ICard = {
         id: number,
         name: string,
     },
+    path: string,
     type: 'MINDMAP' | "KANBAN"
 }
 
 
-const Card:React.FC<ICard> = ({data, type}) => {
+const Card: React.FC<ICard> = (
+    {
+        data,
+        type,
+        path
+    }) => {
 
     const {id, name} = data;
 
@@ -26,14 +32,20 @@ const Card:React.FC<ICard> = ({data, type}) => {
                 <motion.img whileHover={{scale: 1.05}} src={'/profile/user-banner.jpg'} alt=""/>
             </motion.div>
             <div className={style.title}>
-                {/*<Link href={`1/${path}/${id}`}>*/}
+                <Link href={`${path}${type === 'KANBAN' ? `/kanban/${id}` : `/mindmap/${id}`}`}>
                     <a><span className={`text-black`}>{name}</span></a>
-                {/*</Link>*/}
+                </Link>
             </div>
             <div className={style.control}>
                 <DropDown>
                     <ul>
-                        <li>Открыть</li>
+                        <li>
+                            <Link href={`${path}${type === 'KANBAN' ? `/kanban/${id}` : `/mindmap/${id}`}`}>
+                                <a>
+                                    Открыть
+                                </a>
+                            </Link>
+                        </li>
                         <li>Удалить</li>
                     </ul>
                 </DropDown>
