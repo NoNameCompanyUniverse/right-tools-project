@@ -148,4 +148,6 @@ Profile.getLayout = function getLayout(page: ReactElement) {
     )
 }
 
+Profile.auth = true;
+
 export default Profile;

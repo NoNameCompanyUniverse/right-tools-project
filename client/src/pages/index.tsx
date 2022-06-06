@@ -8,16 +8,17 @@ import {motion} from 'framer-motion'
 import {fadeIn, fadeUp, fadeUpRotateRight, leftIn, PageTransition, rightIn} from "../motion";
 import axios from "axios";
 import {useSession} from "next-auth/react";
+import NavBar from "../blocks/Home/NavBar";
 
 
 const Home: NextPage = () => {
 
 
-    const {data: session} = useSession();
-
-    useEffect(() => {
-        console.log(session)
-    }, [])
+    // const {data: session} = useSession();
+    //
+    // useEffect(() => {
+    //     //console.log(session)
+    // }, [])
 
     return (
         <>
@@ -29,46 +30,7 @@ const Home: NextPage = () => {
                 initial={'initial'}
                 animate={`animate`}
             >
-                <div className={style.nav}>
-                    <div className={`container-fluid`}>
-                        <div className={`row justify-content-between align-items-center`}>
-                            <div className={`col-auto`}>
-                                <div className={style.logo}>
-                                    <Link href={`/`}>
-                                        <a>
-                                            Right <span>Tools</span>
-                                        </a>
-                                    </Link>
-                                </div>
-                            </div>
-                            <div className={`col-auto`}>
-                                <ul className={`d-flex align-items-center`}>
-                                    <li><a href="#" className={style.link}>Item 1</a></li>
-                                    <li><a href="#" className={style.link}>Item 2</a></li>
-                                    <li><a href="#" className={style.link}>Item 3</a></li>
-                                    <li><a href="#" className={style.link}>Item 4</a></li>
-                                </ul>
-                            </div>
-                            <div className={`col-auto`}>
-                                <Link href={'/auth'}>
-                                    <a className={style.link}>Авторизация</a>
-                                </Link>
-                                {/*<div className={`d-flex align-items-center`}>*/}
-                                {/*    <div className={`me-3`}>*/}
-                                {/*        <Link href={`/profile/_l0stvayne_`}>*/}
-                                {/*            <a className={style.link}>*/}
-                                {/*                Maksimov, S*/}
-                                {/*            </a>*/}
-                                {/*        </Link>*/}
-                                {/*    </div>*/}
-                                {/*    <div className={style.avatar}>*/}
-                                {/*        <img src="/profile/user.PNG" alt=""/>*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <NavBar/>
                 <div className={style.header}>
                     <div className={`container-fluid`}>
                         <div className={`d-flex flex-column align-items-center`}>

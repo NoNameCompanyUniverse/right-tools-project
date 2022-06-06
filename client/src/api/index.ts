@@ -7,8 +7,12 @@ class Api {
         baseURL: this.BASE_URL,
     })
 
-    getMe() {
-
+    getMe(token: string) {
+        return this.api.get(`${this.BASE_URL}users/me/`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
     }
 }
 

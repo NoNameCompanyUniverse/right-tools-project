@@ -64,4 +64,6 @@ Projects.getLayout = function getLayout(page: ReactElement) {
     )
 }
 
+Projects.auth = true;
+
 export default Projects;

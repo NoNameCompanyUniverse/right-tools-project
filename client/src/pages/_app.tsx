@@ -70,12 +70,11 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 function Auth({children}) {
     const router = useRouter()
     const {data: session, status} = useSession()
-    const isUser = !!session?.user
     useEffect(() => {
         if (status === 'loading') return // Do nothing while loading
-        if (!isUser) router.push('/auth') //Redirect to login
-    }, [isUser, router, status])
-    if (isUser) {
+        if (status === 'unauthenticated') router.push('/auth') //Redirect to login
+    }, [router, status])
+    if (status === 'authenticated') {
         return children
     }
     return <div>loading...</div>

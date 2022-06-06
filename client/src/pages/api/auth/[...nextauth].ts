@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from 'next-auth/providers/credentials';
 import axios from "axios";
+import {JWT} from "next-auth/jwt";
+
 
 export default NextAuth({
     providers: [
@@ -49,12 +51,13 @@ export default NextAuth({
     },
     session: {
         strategy: 'jwt',
-        maxAge: 60 * 60
+        maxAge: 60 * 60,
     },
     callbacks: {
         jwt: async ({token, user}) => {
 
             if (user) {
+                console.log(user)
                 //token.jwt = user.jwt;
                 //token.user = user.user;
                 token.access = user?.access;
@@ -63,10 +66,12 @@ export default NextAuth({
         }, // called whenever session is checked
         session: async ({session, token}) => {
 
-
+            
             session.jwt = token.jwt;
             // @ts-ignore
             session.accessToken = token.access ? token.access : '';
+            // @ts-ignore
+            session.user = token.user ? token.user : '';
             return Promise.resolve(session);
         },
     }
