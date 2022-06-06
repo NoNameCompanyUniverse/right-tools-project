@@ -45,7 +45,6 @@ const Projects = () => {
                                     key={project.id}
                                     className="col-xxl-4 col-lg-6 mb-4">
                                     <ProjectCard
-                                        onDelete={handleDeleteProject}
                                         data={project}
                                     />
                                 </motion.div>

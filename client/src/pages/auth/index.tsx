@@ -1,14 +1,32 @@
-import React, {useState} from 'react';
+import React, {FormEvent, useState} from 'react';
 import Link from 'next/link';
 import {motion} from "framer-motion";
-
+import {signIn, useSession} from "next-auth/react";
 import style from '../../styles/auth/index.module.scss';
 import {fadeIn, fadeUp, rightIn, scaleIn} from '../../motion';
 
 
 const Auth = () => {
 
-    const [isRegistration, setIsRegistration] = useState<boolean>(false)
+    const [isRegistration, setIsRegistration] = useState<boolean>(true);
+
+
+    const [auth, setAuth] = useState({username: '', password: ''});
+
+    const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const value: string = e.currentTarget.value,
+            name: string = e.currentTarget.name;
+        setAuth(state => ({...state, [name]: value}))
+    }
+
+    const handleOnLogin = async (e: FormEvent) => {
+        e.preventDefault();
+        await signIn('credentials', {
+            username: auth.username,
+            password: auth.password,
+            callbackUrl: process.env.baseURL
+        })
+    }
 
     return (
         <section className={style.container}>
@@ -26,7 +44,7 @@ const Auth = () => {
                     </Link>
                 </motion.div>
                 {
-                    isRegistration && (
+                    !isRegistration && (
                         <form className={style.form}>
                             <div className={style.title}>
                                 <motion.h2
@@ -98,7 +116,7 @@ const Auth = () => {
                                         animate={`animate`}
                                         className={style.registration}>
                                         У вас есть аккаунт?
-                                        <span className={`ms-1`} onClick={() => setIsRegistration(false)}>
+                                        <span className={`ms-1`} onClick={() => setIsRegistration(true)}>
                                             Войти
                                         </span>
                                     </motion.div>
@@ -108,8 +126,8 @@ const Auth = () => {
                     )
                 }
                 {
-                    !isRegistration && (
-                        <form className={style.form}>
+                    isRegistration && (
+                        <form onSubmit={handleOnLogin} className={style.form}>
                             <div className={style.title}>
                                 <motion.h2
                                     variants={fadeUp}
@@ -133,23 +151,29 @@ const Auth = () => {
                             <div className={`row`}>
                                 <div className={`col-12`}>
                                     <motion.input
+                                        onChange={handleOnChange}
                                         variants={rightIn}
+                                        value={auth.username}
                                         custom={3}
                                         initial={`initial`}
                                         animate={`animate`}
                                         className={`form-control`}
+                                        name={'username'}
                                         placeholder={`Введите логин`}
                                         type="text"/>
                                 </div>
                                 <div className={`col-12 mt-4`}>
                                     <motion.input
+                                        onChange={handleOnChange}
                                         variants={rightIn}
                                         custom={6}
+                                        value={auth.password}
                                         initial={`initial`}
                                         animate={`animate`}
                                         className={`form-control`}
+                                        name={'password'}
                                         placeholder={`Введите пароль`}
-                                        type="text"/>
+                                        type="password"/>
                                 </div>
                                 <div className={`col-12 mt-4 d-flex`}>
                                     <motion.button
@@ -170,7 +194,7 @@ const Auth = () => {
                                         animate={`animate`}
                                         className={style.registration}>
                                         Вы здесь впервые?
-                                        <span className={`ms-1`} onClick={() => setIsRegistration(true)}>
+                                        <span className={`ms-1`} onClick={() => setIsRegistration(false)}>
                                              Регистрация
                                         </span>
                                     </motion.div>
@@ -209,5 +233,8 @@ const Auth = () => {
         </section>
     );
 };
+
+
+
 
 export default Auth;

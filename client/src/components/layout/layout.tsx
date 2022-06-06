@@ -3,10 +3,10 @@ import style from './index.module.scss';
 import Link from 'next/link'
 import {CollectionIcon, LogoutIcon, MenuAlt1Icon, UserGroupIcon, UserIcon} from "@heroicons/react/outline";
 import TodayDate from "../Panel/TodayDate";
+import {motion} from "framer-motion";
 
 
-
-const Layout:React.FC = ({children}) => {
+const Layout: React.FC = ({children}) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -60,7 +60,9 @@ const Layout:React.FC = ({children}) => {
                         </ul>
                     </div>
                     <div className="mt-auto">
-                        <button type={`button`} className={style.link}>
+                        <button
+                            type={`button`}
+                            className={style.link}>
                             <i className={style.icon}>
                                 <LogoutIcon/>
                             </i>
@@ -73,13 +75,16 @@ const Layout:React.FC = ({children}) => {
             </div>
             <div className={style.main}>
                 <div className="d-flex align-items-center mb-4">
-                    <button type={'button'}
-                            onClick={() => setIsOpen(!isOpen)}
-                            className={[style.menu, 'me-4'].join(" ")}>
+                    <motion.button
+                        type={'button'}
+                        initial={false}
+                        animate={isOpen ? {scaleX: 1, scaleY: 1} : {scaleX: -1, scaleY: 1}}
+                        onClick={() => setIsOpen(!isOpen)}
+                        className={[style.menu, 'me-4'].join(" ")}>
                             <span className="icon">
                                 <MenuAlt1Icon/>
                             </span>
-                    </button>
+                    </motion.button>
                     <TodayDate/>
                 </div>
                 {

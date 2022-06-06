@@ -5,11 +5,11 @@ import type {ReactElement, ReactNode} from 'react'
 import type {NextPage} from 'next'
 import {AnimatePresence} from "framer-motion";
 import type {AppProps} from 'next/app'
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import {useState, useEffect} from "react";
 import Preloader from "../components/Preloader";
 import {ToastContainer} from "react-toastify";
-
+import {SessionProvider, useSession} from "next-auth/react";
 
 
 type NextPageWithLayout = NextPage & {
@@ -46,14 +46,39 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
     return (
         <>
             {isLoading && <Preloader/>}
-            <AnimatePresence exitBeforeEnter>
-                {
-                    getLayout(<Component {...pageProps} />)
-                }
-            </AnimatePresence>
+            <SessionProvider session={pageProps.session}>
+                <AnimatePresence exitBeforeEnter>
+                    {
+                        Component.auth ? (
+                            <Auth>
+                                {
+                                    getLayout(<Component {...pageProps} />)
+                                }
+                            </Auth>
+                        ) : (
+                            getLayout(<Component {...pageProps} />)
+                        )
+                    }
+                </AnimatePresence>
+            </SessionProvider>
             <ToastContainer theme={'colored'} position={'bottom-right'}/>
         </>
     )
+}
+
+// @ts-ignore
+function Auth({children}) {
+    const router = useRouter()
+    const {data: session, status} = useSession()
+    const isUser = !!session?.user
+    useEffect(() => {
+        if (status === 'loading') return // Do nothing while loading
+        if (!isUser) router.push('/auth') //Redirect to login
+    }, [isUser, router, status])
+    if (isUser) {
+        return children
+    }
+    return <div>loading...</div>
 }
 
 export default MyApp

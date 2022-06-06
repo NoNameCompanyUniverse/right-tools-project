@@ -7,9 +7,17 @@ import React, {useEffect} from "react";
 import {motion} from 'framer-motion'
 import {fadeIn, fadeUp, fadeUpRotateRight, leftIn, PageTransition, rightIn} from "../motion";
 import axios from "axios";
+import {useSession} from "next-auth/react";
 
 
 const Home: NextPage = () => {
+
+
+    const {data: session} = useSession();
+
+    useEffect(() => {
+        console.log(session)
+    }, [])
 
     return (
         <>
@@ -42,18 +50,21 @@ const Home: NextPage = () => {
                                 </ul>
                             </div>
                             <div className={`col-auto`}>
-                                <div className={`d-flex align-items-center`}>
-                                    <div className={`me-3`}>
-                                        <Link href={`/profile/_l0stvayne_`}>
-                                            <a className={style.link}>
-                                                Maksimov, S
-                                            </a>
-                                        </Link>
-                                    </div>
-                                    <div className={style.avatar}>
-                                        <img src="/profile/user.PNG" alt=""/>
-                                    </div>
-                                </div>
+                                <Link href={'/auth'}>
+                                    <a className={style.link}>Авторизация</a>
+                                </Link>
+                                {/*<div className={`d-flex align-items-center`}>*/}
+                                {/*    <div className={`me-3`}>*/}
+                                {/*        <Link href={`/profile/_l0stvayne_`}>*/}
+                                {/*            <a className={style.link}>*/}
+                                {/*                Maksimov, S*/}
+                                {/*            </a>*/}
+                                {/*        </Link>*/}
+                                {/*    </div>*/}
+                                {/*    <div className={style.avatar}>*/}
+                                {/*        <img src="/profile/user.PNG" alt=""/>*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
                             </div>
                         </div>
                     </div>
