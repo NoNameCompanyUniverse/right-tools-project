@@ -4,7 +4,7 @@ import Link from 'next/link'
 import {CollectionIcon, LogoutIcon, MenuAlt1Icon, UserGroupIcon, UserIcon} from "@heroicons/react/outline";
 import TodayDate from "../Panel/TodayDate";
 import {motion} from "framer-motion";
-
+import {signOut} from 'next-auth/react';
 
 const Layout: React.FC = ({children}) => {
 
@@ -62,6 +62,7 @@ const Layout: React.FC = ({children}) => {
                     <div className="mt-auto">
                         <button
                             type={`button`}
+                            onClick={() => signOut()}
                             className={style.link}>
                             <i className={style.icon}>
                                 <LogoutIcon/>

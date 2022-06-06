@@ -25,4 +25,7 @@ MindMap.getLayout = function getLayout(page: ReactElement) {
     )
 }
 
+MindMap.auth = true;
+
+
 export default MindMap;

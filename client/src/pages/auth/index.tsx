@@ -24,7 +24,7 @@ const Auth = () => {
         await signIn('credentials', {
             username: auth.username,
             password: auth.password,
-            callbackUrl: 'http://139.28.222.233/'
+            callbackUrl: '/'
         })
     }
 

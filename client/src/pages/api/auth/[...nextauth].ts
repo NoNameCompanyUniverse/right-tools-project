@@ -1,7 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from 'next-auth/providers/credentials';
-import axios from "axios";
-import {JWT} from "next-auth/jwt";
 
 
 export default NextAuth({
@@ -15,24 +13,20 @@ export default NextAuth({
             },
             async authorize(credentials, req) {
                 try {
-                    if (credentials) {
-                        const data = {
-                            username: credentials.username,
-                            password: credentials.password,
-                        }
-                        const res = await fetch('http://139.28.222.233/api/v1/auth/token/', {
-                            method: 'POST',
-                            body: JSON.stringify(data),
-                            headers: {"Content-Type": "application/json"}
-                        })
-                        const user = await res.json()
-                        console.log(user)
-                        if (res.ok && user) {
-                            return user
-                        } else {
-                            return null;
-                        }
+
+                    const res = await fetch('http://139.28.222.233/api/v1/auth/token/', {
+                        method: 'POST',
+                        body: JSON.stringify(credentials),
+                        headers: {"Content-Type": "application/json"}
+                    })
+                    const user = await res.json()
+                    console.log(user)
+                    if (res.ok && user) {
+                        return user
+                    } else {
+                        return null;
                     }
+
 
                 } catch (e) {
                     // @ts-ignore
@@ -47,7 +41,7 @@ export default NextAuth({
     pages: {
         signIn: "/auth",
         error: "/auth",
-        signOut: "/auth",
+        signOut: "/",
     },
     session: {
         strategy: 'jwt',
@@ -65,8 +59,6 @@ export default NextAuth({
             return Promise.resolve(token);
         }, // called whenever session is checked
         session: async ({session, token}) => {
-
-            
             session.jwt = token.jwt;
             // @ts-ignore
             session.accessToken = token.access ? token.access : '';

@@ -28,5 +28,6 @@ Kanban.getLayout = function getLayout(page: ReactElement) {
     )
 }
 
+Kanban.auth = true;
 
 export default Kanban;
