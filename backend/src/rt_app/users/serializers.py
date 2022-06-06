@@ -8,24 +8,10 @@ from rest_framework import fields
 from rest_framework.exceptions import ValidationError
 
 from rt_app.models import User
+from rt_app.common.serializers import ServiceSerializer
 from rt_app.subdivisions.serializers import SubdivisionShortInfoSerializer
 
 from .exceptions import *
-
-
-class ServiceSerializer:
-    def is_online(self, user: User):
-        if user.last_login is None:
-            return False
-        time = now()
-        last_login = user.last_login
-        dif = time - last_login
-        if dif.seconds // 60 > 15:
-            return False
-        return True
-
-    def get_full_name(self, user: User):
-        return user.get_full_name()
 
 
 class UserListSerializer(ServiceSerializer, ModelSerializer):
@@ -101,10 +87,14 @@ class UserCreateUpdateSerializer(ModelSerializer):
         return User.objects.create_user(**validated_data, last_login=time)
 
     def check_password(self, password):
-        if password:
-            validate_password(password)
-            return password
-        raise ValidationError({"password": "Пароль обязательное поле"})
+        try:
+            if password:
+                validate_password(password)
+                return password
+        except Exception as e:
+            raise ValidationError({"password": list(e)})
+        else:
+            raise ValidationError({"password": ["Пароль обязательное поле"]})
 
     class Meta:
         model = User

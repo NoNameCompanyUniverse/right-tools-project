@@ -30,3 +30,32 @@ class Background(models.Model):
     picture_url = models.URLField(null=False)
     compress_url = models.URLField(null=False)
     category = models.CharField(max_length=150, null=False)
+
+
+class Project(models.Model):
+    picture = models.ImageField(upload_to=BASE_DIR / 'media/images', null=True, storage=OverwriteStorage)
+    name = models.CharField(max_length=150, null=False)
+    description = models.TextField(null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=False, related_name='manager')
+    participant = models.ManyToManyField(User)
+    date_create = models.DateField(auto_now_add=True)
+
+
+class MindMap(models.Model):
+    name = models.CharField(max_length=150, null=False)
+    description = models.TextField(null=True)
+    compress_background_url = models.URLField(null=False)
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, null=False)
+
+
+class KanbanBoard(models.Model):
+    name = models.CharField(max_length=150, null=False)
+    description = models.TextField(null=True)
+    original_background_url = models.URLField(null=False)
+    compress_background_url = models.URLField(null=False)
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, null=False)
+
+
+class Document(models.Model):
+    file = models.FileField(upload_to=BASE_DIR / 'media/documents', null=False, storage=OverwriteStorage)
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, null=False)

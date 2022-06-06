@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'django_simple_logs',
-    'django_bot_exceptions'
+    # 'django_bot_exceptions'
 ]
 
 MIDDLEWARE = [
@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_simple_logs.middlewares.LoguruMiddleware',
-    'django_bot_exceptions.middlewares.TelegramExceptionsMiddleware'
+    # 'django_bot_exceptions.middlewares.TelegramExceptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'

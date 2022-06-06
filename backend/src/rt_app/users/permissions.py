@@ -3,7 +3,7 @@ from rt_app.models import User
 
 
 class IsSuperUser(BasePermission):
-    message = "Вы не можете изменить статус суперпользователя."
+    message = "Вы не можете изменить статус у этого пользователя."
 
     def has_permission(self, request, view):
         return request.user and request.user.is_superuser
@@ -28,7 +28,7 @@ class IsAdmin(BasePermission):
 
 
 class IsOwner(BasePermission):
-    message = "Вы не являетесь владельцем профиля для выполнения данного действия."
+    message = "Вы не являетесь владельцем для выполнения данного действия."
 
     def has_permission(self, request, view):
         return request.user and request.user.is_authenticated
