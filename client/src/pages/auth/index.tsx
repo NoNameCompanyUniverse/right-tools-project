@@ -135,7 +135,7 @@ const Auth = () => {
                                     initial={`initial`}
                                     animate={`animate`}
                                     className={`mb-3`}>
-                                    Добро пожаловать!
+                                    Добро пожаловать! 1
                                 </motion.h2>
                                 <motion.p
                                     variants={fadeUp}
