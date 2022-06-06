@@ -2,13 +2,13 @@ module.exports = {
     apps: [
         {
             name: "right-tools-client-dev",
-            script: "npm",
-            args: "run dev"
+            script: "yarn",
+            args: "yarn dev"
         },
         {
             name: "right-tools-client-prod",
-            script: "npm",
-            args: "run start"
+            script: "yarn",
+            args: "yarn start"
         }
     ]
 }
