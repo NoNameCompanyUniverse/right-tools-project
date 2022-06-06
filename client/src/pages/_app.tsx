@@ -46,7 +46,7 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
     return (
         <>
             {isLoading && <Preloader/>}
-            <SessionProvider session={pageProps.session} basePath={"/api/v1/auth/token/"}>
+            <SessionProvider session={pageProps.session} basePath={"/api/v1/auth/token"}>
                 <AnimatePresence exitBeforeEnter>
                     {
                         Component.auth ? (
