@@ -7,7 +7,7 @@
 
 module.exports = {
     env: {
-        baseURL: process.env.NEXTAUTH_URL_INTERNAL,
+        baseURL: process.env.NEXTAUTH_URL,
         fetchURL: process.env.FETCH_URL,
     },
     reactStrictMode: true,
