@@ -13,23 +13,25 @@ export default NextAuth({
             },
             async authorize(credentials, req) {
                 try {
-                    // @ts-ignore
-                    const data = {
-                        username: credentials.username,
-                        password: credentials.password,
+                    if (credentials) {
+                        const data = {
+                            username: credentials.username,
+                            password: credentials.password,
+                        }
+                        const res = await fetch('http://139.28.222.233/api/v1/auth/token/', {
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {"Content-Type": "application/json"}
+                        })
+                        const user = await res.json()
+                        console.log(user)
+                        if (res.ok && user) {
+                            return user
+                        } else {
+                            return null;
+                        }
                     }
-                    const res = await fetch('http://139.28.222.233/api/v1/auth/token/', {
-                        method: 'POST',
-                        body: JSON.stringify(data),
-                        headers: {"Content-Type": "application/json"}
-                    })
-                    const user = await res.json()
-                    console.log(user)
-                    if (res.ok && user) {
-                        return user
-                    } else {
-                        return null;
-                    }
+
                 } catch (e) {
                     // @ts-ignore
                     const errorMessage = e.response.data.message;
