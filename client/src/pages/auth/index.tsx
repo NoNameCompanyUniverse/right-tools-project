@@ -24,7 +24,7 @@ const Auth = () => {
         await signIn('credentials', {
             username: auth.username,
             password: auth.password,
-            callbackUrl: process.env.baseURL
+            callbackUrl: '/'
         })
     }
 
