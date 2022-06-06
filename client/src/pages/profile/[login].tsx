@@ -15,6 +15,8 @@ import {IUser} from "../../types/IUser";
 import ControlProfile from "../../blocks/Profile/ControlProfile";
 import {IModal} from "../../types/IModal";
 import {IProject} from "../../types/IProject";
+import Link from "next/link";
+import {toast} from "react-toastify";
 
 
 const Profile = () => {
@@ -23,23 +25,35 @@ const Profile = () => {
 
     const [projectsData, setProjectsData] = useState<Array<IProject>>(projects_data);
 
-    const [modal, setModal] = useState<IModal>({id: '#controlUser', isOpen: false});
+    const [modal, setModal] = useState<IModal []>([
+        {id: '#controlUser', isOpen: false},
+        {id: '#popup', isOpen: false}
+    ]);
 
-    const handleSetProfile = (data: IUser) => setUserData(data);
+
+    const handleSetProfile = (data: IUser) => {
+        setUserData(data)
+        toast.success('Профиль изменен')
+    };
 
     const handleDeleteProject = (id: number) => {
-        setProjectsData(projectsData.filter(i => i.id !== id))
+        setProjectsData(projectsData.filter(i => i.id !== id));
+        toast.error('Проект удален')
     }
 
 
-    const handleOnModal = () => {
-        setModal({...modal, isOpen: !modal.isOpen});
+    const handleOnModal = (id: string) => {
+        let clone = modal.concat();
+        clone = clone.map((e:IModal) => (
+            e.id === id ? {id: e.id, isOpen: !e.isOpen} : e
+        ))
+        setModal(clone)
     }
 
 
     return (
         <>
-            <ControlProfile modal={modal} setModal={handleOnModal} data={userData} onProfile={handleSetProfile}/>
+            <ControlProfile modal={modal[0]} setModal={handleOnModal} data={userData} onProfile={handleSetProfile}/>
             <motion.div
                 variants={PageTransition}
                 initial={`initial`}
@@ -83,8 +97,20 @@ const Profile = () => {
                                 projectsData.map((project, index: number) => (
                                     <div key={index} className="col-xxl-4 col-lg-6 mb-4">
                                         <ProjectCard
-                                            onDelete={handleDeleteProject}
-                                            data={project}/>
+                                            data={project}>
+                                            <ul>
+                                                <li>
+                                                    <Link href={`/project/${project.id}`}>
+                                                        <a>
+                                                            Подробнее
+                                                        </a>
+                                                    </Link>
+                                                </li>
+                                                <li onClick={() => handleDeleteProject(project.id)}>
+                                                    Удалить
+                                                </li>
+                                            </ul>
+                                        </ProjectCard>
                                     </div>
                                 ))
                             }
@@ -94,9 +120,14 @@ const Profile = () => {
                         <div className={`mb-3`}>
                             <User
                                 data={userData}
-                                isEdit={true}
-                                onUser={handleOnModal}
-                            />
+                            >
+                                <button
+                                    type={`button`}
+                                    onClick={() => handleOnModal(modal[0].id)}
+                                    className={`btn btn-sm btn-green ms-2 rounded-pill`}>
+                                    Изменить
+                                </button>
+                            </User>
                         </div>
                         <div className={`mb-3`}>
                             <Users users={users_data}/>

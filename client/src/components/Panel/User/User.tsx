@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import {IUser} from "../../../types/IUser";
 import {motion} from "framer-motion";
@@ -6,11 +6,10 @@ import {motion} from "framer-motion";
 
 interface UserInfo {
     data: IUser,
-    isEdit?: boolean,
-    onUser?: () => void,
+    children?: ReactNode | ReactNode []
 }
 
-const User: React.FC<UserInfo> = ({data, isEdit = false, onUser}) => {
+const User: React.FC<UserInfo> = ({data, children}) => {
 
     const {
         id,
@@ -40,9 +39,7 @@ const User: React.FC<UserInfo> = ({data, isEdit = false, onUser}) => {
                         <img src={avatar} alt=""/>
                     </div>
                     {
-                        (isEdit && onUser) &&  <button type={`button`} onClick={() => onUser()} className={`btn btn-sm btn-green ms-2 rounded-pill`}>
-                            Изменить
-                        </button>
+                        children && children
                     }
 
                 </div>

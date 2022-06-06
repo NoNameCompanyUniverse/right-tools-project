@@ -1,3 +1,4 @@
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.scss'
 import '../styles/bootstrap-grid.min.css';
 import type {ReactElement, ReactNode} from 'react'
@@ -7,6 +8,9 @@ import type {AppProps} from 'next/app'
 import { useRouter } from 'next/router';
 import {useState, useEffect} from "react";
 import Preloader from "../components/Preloader";
+import {ToastContainer} from "react-toastify";
+
+
 
 type NextPageWithLayout = NextPage & {
     getLayout?: (page: ReactElement) => ReactNode,
@@ -41,12 +45,13 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
     const getLayout = Component.getLayout || ((page) => page);
     return (
         <>
+            {isLoading && <Preloader/>}
             <AnimatePresence exitBeforeEnter>
-                {isLoading && <Preloader/>}
                 {
                     getLayout(<Component {...pageProps} />)
                 }
             </AnimatePresence>
+            <ToastContainer theme={'colored'} position={'bottom-right'}/>
         </>
     )
 }

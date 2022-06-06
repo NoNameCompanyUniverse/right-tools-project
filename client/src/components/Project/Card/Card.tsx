@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import DropDown from "../../DropDown";
 import {motion} from "framer-motion";
@@ -9,16 +9,14 @@ type ICard = {
         id: number,
         name: string,
     },
-    path: string,
-    type: 'MINDMAP' | "KANBAN"
+    children?: ReactNode | ReactNode []
 }
 
 
 const Card: React.FC<ICard> = (
     {
         data,
-        type,
-        path
+        children
     }) => {
 
     const {id, name} = data;
@@ -32,26 +30,30 @@ const Card: React.FC<ICard> = (
                 <motion.img whileHover={{scale: 1.05}} src={'/profile/user-banner.jpg'} alt=""/>
             </motion.div>
             <div className={style.title}>
-                <Link href={`${path}${type === 'KANBAN' ? `/kanban/${id}` : `/mindmap/${id}`}`}>
-                    <a><span className={`text-black`}>{name}</span></a>
-                </Link>
+                <span className={`text-black`}>{name}</span>
             </div>
             <div className={style.control}>
-                <DropDown>
-                    <ul>
-                        <li>
-                            <Link href={`${path}${type === 'KANBAN' ? `/kanban/${id}` : `/mindmap/${id}`}`}>
-                                <a>
-                                    Открыть
-                                </a>
-                            </Link>
-                        </li>
-                        <li>Удалить</li>
-                    </ul>
-                </DropDown>
+                {
+                    children && (
+                        <DropDown>
+
+                                {/*<li>*/}
+                                {/*    <Link href={`${path}${type === 'KANBAN' ? `/kanban/${id}` : `/mindmap/${id}`}`}>*/}
+                                {/*        <a>*/}
+                                {/*            Открыть*/}
+                                {/*        </a>*/}
+                                {/*    </Link>*/}
+                                {/*</li>*/}
+                                {/*<li>Удалить</li>*/}
+                                {children}
+
+                        </DropDown>
+                    )
+                }
+
             </div>
         </div>
     );
 };
 
-export default Card;
+export default React.memo(Card);

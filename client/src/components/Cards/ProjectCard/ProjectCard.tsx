@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import Link from 'next/link'
 import DropDown from "../../DropDown";
@@ -8,14 +8,14 @@ import {IProject} from "../../../types/IProject";
 
 interface IProjectCard  {
     data: IProject,
-    onDelete: (id: number) => void
+    children?: ReactNode | ReactNode []
 }
 
-const ProjectCard: React.FC<IProjectCard> = ({data, onDelete}) => {
+const ProjectCard: React.FC<IProjectCard> = ({data, children}) => {
 
     const {name, status, description, team, id} = data;
 
-    const handleOnDelete = (id: number) => onDelete(id);
+
 
     const User: React.FC<{ id: number, avatar: string }> = ({id, avatar}) => {
         return (
@@ -46,20 +46,15 @@ const ProjectCard: React.FC<IProjectCard> = ({data, onDelete}) => {
                 })}
             </div>
             <div className={style.control}>
-                <DropDown>
-                    <ul>
-                        <li>
-                            <Link href={`/project/${id}`}>
-                                <a>
-                                    Подробнее
-                                </a>
-                            </Link>
-                        </li>
-                        <li onClick={() => handleOnDelete(id)}>
-                            Удалить
-                        </li>
-                    </ul>
-                </DropDown>
+                {
+                    children && (
+                        <DropDown>
+                            {
+                                children
+                            }
+                        </DropDown>
+                    )
+                }
             </div>
             <div className={style.title}>
                 <Link href={`/project/${id}`}>
@@ -79,4 +74,4 @@ const ProjectCard: React.FC<IProjectCard> = ({data, onDelete}) => {
     );
 };
 
-export default ProjectCard;
+export default React.memo(ProjectCard);

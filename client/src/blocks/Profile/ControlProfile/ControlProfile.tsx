@@ -11,22 +11,23 @@ interface IControlProfile {
     data: IUser | null,
     onProfile: (data: IUser) => void,
     modal: IModal,
-    setModal: () => void
+    setModal: (id:string) => void
 }
 
 const ControlProfile: React.FC<IControlProfile> = (
     {data, onProfile, modal, setModal}) => {
 
+    const {id, isOpen} = modal;
 
     const [state, setState] = useState<IUser | null>(null);
     const [tag, setTag] = useState('')
 
-    const handleOnModal = (id: string) => setModal();
+    const handleOnModal = (id: string) => setModal(id);
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
         state && onProfile(state as IUser);
-        setModal();
+        setModal(id);
     }
 
     const handleAddTag = () => {
@@ -72,7 +73,7 @@ const ControlProfile: React.FC<IControlProfile> = (
                                 <FormFile
                                     onFile={handleOnFile}
                                     value={state.banner}
-                                    name={'BANNER'}/>
+                                    name={'banner'}/>
                             </div>
                             <div className={['col-12', 'mx-4', 'mb-3'].join(" ")} style={{"marginTop": "-3rem"}}>
                                 <FormFile

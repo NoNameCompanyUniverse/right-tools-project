@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import DropDown from "../../DropDown";
 import {motion} from "framer-motion";
 import {IUser} from "../../../types/IUser";
 
 type IUserCard = {
-   data: IUser
+    data: IUser,
+    children?: ReactNode | ReactNode []
 }
 
-const UserCard: React.FC<IUserCard> = ({data}) => {
+const UserCard: React.FC<IUserCard> = ({data, children}) => {
 
     const {id, status, firstname, lastname, avatar, tags} = data;
 
@@ -26,12 +27,11 @@ const UserCard: React.FC<IUserCard> = ({data}) => {
                 <img src={avatar} alt=""/>
             </motion.div>
             <div className={style.control}>
-                <DropDown>
-                    <ul>
-                        <li>Подробнее</li>
-                        <li>Добавить</li>
-                    </ul>
-                </DropDown>
+                {
+                    children && (
+                        <DropDown>{children}</DropDown>
+                    )
+                }
             </div>
             <div className={style.name}>
                 <span className="text-black">
@@ -62,4 +62,4 @@ const UserCard: React.FC<IUserCard> = ({data}) => {
     );
 };
 
-export default UserCard;
+export default React.memo(UserCard);

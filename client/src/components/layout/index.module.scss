@@ -8,7 +8,12 @@
   flex-direction: column;
 }
 
-
+.menu {
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  background: none;
+}
 .aside {
   display: block;
   position: fixed;
@@ -22,7 +27,9 @@
   background: #fff;
   border-right: 1px solid #eee;
 
-  &:hover {
+
+
+  &.open {
     max-width: 14rem;
 
     .link {

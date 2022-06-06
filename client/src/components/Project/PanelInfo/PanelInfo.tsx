@@ -14,6 +14,7 @@ import "swiper/css/pagination";
 import {Mousewheel, Pagination} from "swiper";
 import {IModal} from "../../../types/IModal";
 import Modal from "../../Modal";
+import AddBoard from "../../../blocks/Project/AddBoard";
 
 
 type IPanelInfo = {
@@ -30,13 +31,42 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
 
     const {id, kanban, name, file, mindmap, description, team} = props;
 
+    const [type, setType] = useState<"KANBAN" | "MINDMAP">("KANBAN")
 
-    const [modal, setModal] = useState<IModal>({id: '#DESCRIPTION', isOpen: false});
-
-    const handleOnModal = (id: string) => {
-        setModal({...modal, isOpen: !modal.isOpen});
+    const handleCreateBoard = (id: string, type: "KANBAN" | "MINDMAP") => {
+        setType(type);
+        handleOnModal(id)
     }
 
+    const [modal, setModal] = useState<IModal []>([
+        {id: '#DESCRIPTION', isOpen: false},
+        {id: '#ADDBOARD', isOpen: false}
+    ]);
+
+    const handleOnModal = (id: string) => {
+        let clone = modal.concat();
+        clone = clone.map((e:IModal) => (
+            e.id === id ? {id: e.id, isOpen: !e.isOpen} : e
+        ))
+        setModal(clone)
+    }
+
+    const handleOnProject = (action: {type: "KANBAN" | "MINDMAP", payload: {name: string}}) => {
+        const {type, payload} = action;
+        switch (type) {
+            case "KANBAN": {
+
+                break;
+            }
+            case "MINDMAP": {
+
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
 
     const Title: React.FC<{ value: string }> = ({value}) => {
         return (
@@ -71,7 +101,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                             </div>
                         </div>
                         <div className="mb-2">
-                            <button onClick={() => handleOnModal(modal.id)}
+                            <button onClick={() => handleOnModal(modal[0].id)}
                                     type={'button'}
                                     className="btn-green btn">
                                 Подробнее
@@ -116,6 +146,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                                     centeredSlides={true}>
                                     <SwiperSlide>
                                         <motion.div
+                                            onClick={() => handleCreateBoard(modal[1].id, "MINDMAP")}
                                             whileTap={{scale: 0.95}}
                                             className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
                                             <i className={'icon icon-lg'}>
@@ -154,12 +185,14 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                                     modules={[Mousewheel, Pagination]}
                                     centeredSlides={true}>
                                     <SwiperSlide>
-                                        <div
+                                        <motion.div
+                                            onClick={() => handleCreateBoard(modal[1].id, "KANBAN")}
+                                            whileTap={{scale: 0.95}}
                                             className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
                                             <i className={'icon icon-lg'}>
                                                 <FolderAddIcon/>
                                             </i>
-                                        </div>
+                                        </motion.div>
                                     </SwiperSlide>
                                     {
                                         kanban.map((item: { id: number, name: string }, index: number) => (
@@ -193,6 +226,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                                         <motion.div
                                             whileTap={{scale: 0.95}}
                                             className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
+                                            <input type="file"/>
                                             <i className={'icon icon-lg'}>
                                                 <FolderAddIcon/>
                                             </i>
@@ -219,7 +253,7 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                     </div>
                 </div>
             </div>
-            <Modal modal={modal} onClose={handleOnModal}>
+            <Modal modal={modal[0]} onClose={handleOnModal}>
                 <div className="row">
                     <div className="col-12">
                         <div className="fs-6 mb-2 fw-bold">Название</div>
@@ -237,8 +271,13 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
                     </div>
                 </div>
             </Modal>
+            <AddBoard
+                onProject={handleOnProject}
+                modal={modal[1]}
+                setModal={handleOnModal}
+                type={type} />
         </>
     );
 };
 
-export default PanelInfo;
+export default React.memo(PanelInfo);

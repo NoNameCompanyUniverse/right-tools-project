@@ -11,6 +11,9 @@ import FileCard from "../../../components/Cards/FileCard";
 import project_data from '../../../../data-project.json';
 import {IProjectFull} from "../../../types/IProject";
 import {useRouter} from "next/router";
+import Link from 'next/link'
+import Modal from "../../../components/Modal";
+import {IModal} from "../../../types/IModal";
 
 
 
@@ -19,7 +22,9 @@ const Project = () => {
     const router = useRouter();
 
 
+    const [modal, setModal] = useState<IModal>({id: '#popup', isOpen: false});
 
+    const handleOnModal = (id:string) => setModal({...modal, isOpen: !modal.isOpen});
 
     const [projectData, setProjectData] = useState<IProjectFull>(project_data)
 
@@ -52,7 +57,11 @@ const Project = () => {
                                                 {
                                                     projectData.team.map((user, index) => (
                                                         <div key={index} className={`col-xl-4 mb-3`}>
-                                                            <UserCard data={user}/>
+                                                            <UserCard data={user}>
+                                                                <ul>
+                                                                    <li onClick={() => handleOnModal(modal.id)}>Удалить</li>
+                                                                </ul>
+                                                            </UserCard>
                                                         </div>
                                                     ))
                                                 }
@@ -66,7 +75,18 @@ const Project = () => {
                                                 {
                                                     projectData.mindmap.map((map, index) => (
                                                         <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card path={router.asPath} data={map} type={'MINDMAP'}/>
+                                                            <Card data={map}>
+                                                                <ul>
+                                                                    <li>
+                                                                        <Link href={`${router.asPath}/mindmap/${map.id}`}>
+                                                                            <a>
+                                                                                Открыть
+                                                                            </a>
+                                                                        </Link>
+                                                                    </li>
+                                                                    <li onClick={() => handleOnModal(modal.id)}>Удалить</li>
+                                                                </ul>
+                                                            </Card>
                                                         </div>
                                                     ))
                                                 }
@@ -78,9 +98,20 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    projectData.kanban.map((map, index) => (
+                                                    projectData.kanban.map((kanban, index) => (
                                                         <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card path={router.asPath} data={map} type={'KANBAN'}/>
+                                                            <Card data={kanban}>
+                                                                <ul>
+                                                                    <li>
+                                                                        <Link href={`${router.asPath}/kanban/${kanban.id}`}>
+                                                                            <a>
+                                                                                Открыть
+                                                                            </a>
+                                                                        </Link>
+                                                                    </li>
+                                                                    <li onClick={() => handleOnModal(modal.id)}>Удалить</li>
+                                                                </ul>
+                                                            </Card>
                                                         </div>
                                                     ))
                                                 }
@@ -110,6 +141,26 @@ const Project = () => {
                     </div>
                 </div>
             </motion.div>
+            <Modal modal={modal} onClose={handleOnModal} title={'Внимание'}>
+                <form>
+                    <div className="row">
+                        <div className="col-12">
+                            <p className={'text-black fs-5'}>
+                                Вы точно хотите продолжить действие?
+                                <br/>
+                                Данные будут утеряны без возможности их восстановления
+                            </p>
+                        </div>
+                        <div className="col-12 mt-5">
+                            <div className="d-flex justify-content-end">
+                                <button type={'submit'} className={'btn btn-danger'}>
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
         </>
     );
 };
