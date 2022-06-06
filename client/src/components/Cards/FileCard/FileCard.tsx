@@ -39,7 +39,7 @@ const FileCard:React.FC<{props: IFile}> = ({props}) => {
                 <DropDown>
                     <ul>
                         <li>
-                            <a href={link} download target={'_blank'} rel="noreferrer">
+                            <a href={link}>
                                 Скачать
                             </a>
                         </li>
