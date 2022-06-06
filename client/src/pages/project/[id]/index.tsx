@@ -26,7 +26,9 @@ const Project = () => {
 
     const handleOnModal = (id:string) => setModal({...modal, isOpen: !modal.isOpen});
 
-    const [projectData, setProjectData] = useState<IProjectFull>(project_data)
+    const [projectData, setProjectData] = useState<IProjectFull>(project_data);
+
+
 
     return (
         <>
