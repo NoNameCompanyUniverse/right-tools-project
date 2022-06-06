@@ -4,7 +4,6 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 
 export default NextAuth({
     providers: [
-
         CredentialsProvider({
             name: 'credentials',
             credentials: {
@@ -13,7 +12,6 @@ export default NextAuth({
             },
             async authorize(credentials, req) {
                 try {
-
                     const res = await fetch('http://139.28.222.233/api/v1/auth/token/', {
                         method: 'POST',
                         body: JSON.stringify(credentials),
@@ -26,8 +24,6 @@ export default NextAuth({
                     } else {
                         return null;
                     }
-
-
                 } catch (e) {
                     // @ts-ignore
                     const errorMessage = e.response.data.message;

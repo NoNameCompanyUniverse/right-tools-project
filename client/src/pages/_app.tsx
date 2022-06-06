@@ -52,11 +52,11 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
                         Component.auth ? (
                             <Auth>
                                 {
-                                    getLayout(<Component {...pageProps} />)
+                                    getLayout(<><Component {...pageProps} /></>)
                                 }
                             </Auth>
                         ) : (
-                            getLayout(<Component {...pageProps} />)
+                            getLayout(<><Component {...pageProps} /></>)
                         )
                     }
                 </AnimatePresence>
