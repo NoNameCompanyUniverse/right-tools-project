@@ -150,6 +150,7 @@ const Auth = () => {
                             </div>
                             <div className={`row`}>
                                 <div className={`col-12`}>
+                                    {process.env.fetchURL}
                                     <motion.input
                                         onChange={handleOnChange}
                                         variants={rightIn}
