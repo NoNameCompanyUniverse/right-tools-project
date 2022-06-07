@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import style from "../../../styles/home/Home.module.scss";
 import Link from "next/link";
 import {useSession} from "next-auth/react";
-import API from "../../../api";
+import API from "../../../helpers/api";
 
 const NavBar = () => {
 
