@@ -6,6 +6,7 @@ import FormFile from "../../../components/Form/FormFile";
 import {motion} from "framer-motion";
 import {genId} from "../../../helpers/functions";
 import {XIcon} from "@heroicons/react/outline";
+import FormInput from "../../../components/Form/FormInput/FormInput";
 
 interface IControlProfile {
     data: IUser | null,
@@ -84,53 +85,53 @@ const ControlProfile: React.FC<IControlProfile> = (
                             </div>
                             <div className="col-6 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Фамилия</div>
-                                <input
-                                    type="text"
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
+                                <FormInput
                                     name={'lastname'}
+                                    type={'text'}
                                     value={state.lastname}
+                                    setValue={handleSetValue}
                                     placeholder={'Введите фамилия'}
-                                    className='form-control'/>
+                                />
                             </div>
                             <div className="col-6 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Имя</div>
-                                <input
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    type="text"
+                                <FormInput
                                     name={'firstname'}
-                                    placeholder={'Введите имя'}
+                                    type={'text'}
                                     value={state.firstname}
-                                    className='form-control'/>
+                                    setValue={handleSetValue}
+                                    placeholder={'Введите фамилия'}
+                                />
                             </div>
                             <div className="col-12 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Статус</div>
-                                <input
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    type="text"
+                                <FormInput
                                     name={'status'}
-                                    placeholder={'Введите статус'}
+                                    type={'text'}
                                     value={state.status}
-                                    className='form-control'/>
+                                    setValue={handleSetValue}
+                                    placeholder={'Введите имя'}
+                                />
                             </div>
                             <div className="col-6 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Телефон</div>
-                                <input
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    type="text"
+                                <FormInput
                                     name={'tel'}
-                                    placeholder={'Введите телефон'}
+                                    type={'tel'}
                                     value={state.tel}
-                                    className='form-control'/>
+                                    setValue={handleSetValue}
+                                    placeholder={'Введите телефон'}
+                                />
                             </div>
                             <div className="col-6 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Email</div>
-                                <input
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    type="text"
+                                <FormInput
                                     name={'email'}
-                                    placeholder={'Введите почту'}
+                                    type={'email'}
                                     value={state.email}
-                                    className='form-control'/>
+                                    setValue={handleSetValue}
+                                    placeholder={'Введите email'}
+                                />
                             </div>
                             <div className="col-12">
                                 <div className="f-7 mb-2 fw-bold">Ваши способности</div>

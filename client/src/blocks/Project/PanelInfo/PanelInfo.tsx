@@ -13,23 +13,30 @@ import "swiper/css/pagination";
 // import required modules
 import {Mousewheel, Pagination} from "swiper";
 import {IModal} from "../../../types/IModal";
-import Modal from "../../Modal";
-import AddBoard from "../../../blocks/Project/AddBoard";
+import Modal from "../../../components/Modal";
+import AddBoard from "../AddBoard";
+import {IMindMap} from "../../../types/IMindMap";
+import {IKanBan} from "../../../types/IKanBan";
+import {IFile} from "../../../types/IFile";
+import {IUser} from "../../../types/IUser";
 
 
-type IPanelInfo = {
-    id: number,
-    name: string,
-    description: string,
-    team: Array<{ id: number, avatar: string }>,
-    mindmap: Array<{ id: number, name: string }>,
-    kanban: Array<{ id: number, name: string }>,
-    file: Array<{ id: number, name: string }>,
+interface IPanelInfo  {
+    data: {
+        id: number,
+        name: string,
+        description: string,
+        team: Array<{ id: number, avatar: string }>,
+        mindmap: Array<{ id: number, name: string }>,
+        kanban: Array<{ id: number, name: string }>,
+        file: Array<{ id: number, name: string }>,
+    },
+    addData: (data: IMindMap | IKanBan | IFile | IUser, type: 'KANBAN' | 'MINDMAP' | 'FILE' | 'TEAM' | string) => void,
 }
 
-const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
+const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
 
-    const {id, kanban, name, file, mindmap, description, team} = props;
+    const {id, kanban, name, file, mindmap, description, team} = data;
 
     const [type, setType] = useState<"KANBAN" | "MINDMAP">("KANBAN")
 
@@ -51,21 +58,9 @@ const PanelInfo: React.FC<{ props: IPanelInfo }> = ({props}) => {
         setModal(clone)
     }
 
-    const handleOnProject = (action: {type: "KANBAN" | "MINDMAP", payload: {name: string}}) => {
+    const handleOnProject = (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUser}) => {
         const {type, payload} = action;
-        switch (type) {
-            case "KANBAN": {
-
-                break;
-            }
-            case "MINDMAP": {
-
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+        addData(payload, type)
     }
 
     const Title: React.FC<{ value: string }> = ({value}) => {

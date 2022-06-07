@@ -2,13 +2,16 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from '../../../components/Modal';
 import {IModal} from "../../../types/IModal";
 import FormFile from "../../../components/Form/FormFile";
+import {IMindMap} from "../../../types/IMindMap";
+import {IKanBan} from "../../../types/IKanBan";
+import {IFile} from "../../../types/IFile";
+import {IUser} from "../../../types/IUser";
+import {genId} from "../../../helpers/functions";
+import columns from '../../../../data-board-kanban.json'
 
-type IData = {
-    name: string
-}
 
 interface IAddBoard {
-    onProject: (action: {type: "KANBAN" | "MINDMAP", payload: IData}) => void,
+    onProject: (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUser}) => void,
     modal: IModal,
     setModal: (id: string) => void,
     type: "KANBAN" | "MINDMAP"
@@ -35,7 +38,31 @@ const AddBoard:React.FC<IAddBoard> = (
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        setModal(id)
+        switch (type) {
+            case "MINDMAP": {
+                const newEl: IMindMap = {
+                    id: genId(),
+                    name: state.name,
+                    nodes: [],
+                    edges: [],
+                }
+                onProject({type, payload: newEl})
+                break;
+            }
+            case 'KANBAN' : {
+                const newEl: IKanBan = {
+                    id: genId(),
+                    name: state.name,
+                    board: columns
+                }
+                onProject({type, payload: newEl})
+                break;
+            }
+            default : {
+                break;
+            }
+        }
+        setModal(id);
     }
 
     const handleOnFile = (data: any, name: string) => {
