@@ -70,16 +70,16 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 function Auth({children}) {
     const router = useRouter()
     const {data: session, status} = useSession()
-    // useEffect(() => {
-    //     if (status === 'loading') return // Do nothing while loading
-    //     if (status === 'unauthenticated') router.push('/auth') //Redirect to login
-    // }, [router, status])
-    // if (status === 'authenticated') {
-    //     return children
-    // }
-    // return <div>loading...</div>
+    useEffect(() => {
+        if (status === 'loading') return // Do nothing while loading
+        if (status === 'unauthenticated') router.push('/auth') //Redirect to login
+    }, [router, status])
+    if (status === 'authenticated') {
+        return children
+    }
+    return <div>loading...</div>
 
-    return children
+    //return children
 }
 
 export default MyApp
