@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import {DocumentTextIcon} from "@heroicons/react/outline";
 import {motion} from "framer-motion";
@@ -7,7 +7,7 @@ import DropDown from "../../DropDown";
 
 
 
-const FileCard:React.FC<{props: IFile}> = ({props}) => {
+const FileCard:React.FC<{props: IFile, children?: ReactNode | ReactNode[]}> = ({props, children}) => {
 
     const {id, size, link, name, type} = props;
 
@@ -36,16 +36,13 @@ const FileCard:React.FC<{props: IFile}> = ({props}) => {
                 </div>
             </div>
             <div className={style.control}>
-                <DropDown>
-                    <ul>
-                        <li>
-                            <a href={link}>
-                                Скачать
-                            </a>
-                        </li>
-                        <li>Удалить</li>
-                    </ul>
-                </DropDown>
+                {
+                    children && (
+                        <DropDown>
+                            {children}
+                        </DropDown>
+                    )
+                }
             </div>
         </motion.div>
     );

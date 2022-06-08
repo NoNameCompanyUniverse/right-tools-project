@@ -19,6 +19,7 @@ import {IMindMap} from "../../../types/IMindMap";
 import {IKanBan} from "../../../types/IKanBan";
 import {IFile} from "../../../types/IFile";
 import {IUser} from "../../../types/IUser";
+import {genId} from "../../../helpers/functions";
 
 
 interface IPanelInfo  {
@@ -61,6 +62,19 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
     const handleOnProject = (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUser}) => {
         const {type, payload} = action;
         addData(payload, type)
+    }
+
+    const handleOnFile = (e:any) => {
+        const file = e.currentTarget.files[0];
+        console.log(file)
+        const newFile: IFile = {
+            id: genId(),
+            link: '',
+            name: file.name,
+            size: Math.ceil(file.size / 1024),
+            type: file.type.split('image/').join("")
+        }
+        addData(newFile, 'FILE')
     }
 
     const Title: React.FC<{ value: string }> = ({value}) => {
@@ -220,8 +234,11 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                                     <SwiperSlide>
                                         <motion.div
                                             whileTap={{scale: 0.95}}
+                                            style={{"position" : "relative"}}
                                             className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
-                                            <input type="file"/>
+                                            <label style={{"width" : "100%", "height" : "100%", "position" : "absolute", "cursor" : "pointer"}}>
+                                                <input onChange={handleOnFile} type="file" hidden={true}/>
+                                            </label>
                                             <i className={'icon icon-lg'}>
                                                 <FolderAddIcon/>
                                             </i>

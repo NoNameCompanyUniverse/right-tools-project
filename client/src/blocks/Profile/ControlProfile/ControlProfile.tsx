@@ -118,20 +118,27 @@ const ControlProfile: React.FC<IControlProfile> = (
                                 <FormInput
                                     name={'tel'}
                                     type={'tel'}
-                                    value={state.tel}
+                                    value={state.status}
                                     setValue={handleSetValue}
-                                    placeholder={'Введите телефон'}
+                                    placeholder={'Введите фамилия'}
                                 />
+                                <input
+                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
+                                    type="text"
+                                    name={'tel'}
+                                    placeholder={'Введите телефон'}
+                                    value={state.tel}
+                                    className='form-control'/>
                             </div>
                             <div className="col-6 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Email</div>
-                                <FormInput
+                                <input
+                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
+                                    type="text"
                                     name={'email'}
-                                    type={'email'}
+                                    placeholder={'Введите почту'}
                                     value={state.email}
-                                    setValue={handleSetValue}
-                                    placeholder={'Введите email'}
-                                />
+                                    className='form-control'/>
                             </div>
                             <div className="col-12">
                                 <div className="f-7 mb-2 fw-bold">Ваши способности</div>

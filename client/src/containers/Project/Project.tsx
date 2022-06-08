@@ -45,7 +45,7 @@ const Project = () => {
     const handleOnDelete = (e: FormEvent) => {
         e.preventDefault();
         const type = buf.type.toLowerCase();
-        setProjectData((state:any) => ({
+        setProjectData((state: any) => ({
             ...state,
             [type]: state[type].filter((i: { id: number; }) => i.id !== buf.id)
         }))
@@ -56,7 +56,7 @@ const Project = () => {
 
     const handleAddData = (data: IMindMap | IUser | IKanBan | IFile, type: string) => {
         const path = type.toLowerCase();
-        setProjectData((state:any) => ({
+        setProjectData((state: any) => ({
             ...state,
             [path]: [...state[path], data]
         }))
@@ -165,7 +165,13 @@ const Project = () => {
                                                     projectData.file.map((file, index) => (
                                                         <div key={index}
                                                              className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
-                                                            <FileCard props={file}/>
+                                                            <FileCard props={file}>
+                                                                <ul>
+
+                                                                    <li onClick={() => handleDeleteProject(file.id, 'FILE')}>Удалить</li>
+
+                                                                </ul>
+                                                            </FileCard>
                                                         </div>
                                                     ))
                                                 }
