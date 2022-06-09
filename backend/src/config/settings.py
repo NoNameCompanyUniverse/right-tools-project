@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'django_simple_logs',
-    # 'django_bot_exceptions'
 ]
 
 MIDDLEWARE = [
@@ -65,7 +64,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_simple_logs.middlewares.LoguruMiddleware',
-    # 'django_bot_exceptions.middlewares.TelegramExceptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -216,8 +214,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://139.28.222.233:8000",
-    "http://139.28.222.233:3000",
+    os.getenv('CORS_ALLOWED_ORIGINS'),
 ]
 
 
