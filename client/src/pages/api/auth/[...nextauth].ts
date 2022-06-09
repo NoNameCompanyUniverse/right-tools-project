@@ -6,24 +6,16 @@ export default NextAuth({
     providers: [
         CredentialsProvider({
             name: 'credentials',
-            credentials: {
-                username: {label: 'username', type: 'text'},
-                password: {label: 'password', type: 'password'},
-            },
+            credentials: {username: {label: 'username', type: 'text'}, password: {label: 'password', type: 'password'},},
             async authorize(credentials, req) {
                 try {
-                    const res = await fetch('http://139.28.222.233/api/v1/auth/token/', {
+                    const res = await fetch(`${process.env.fetchURL}auth/token/`, {
                         method: 'POST',
                         body: JSON.stringify(credentials),
                         headers: {"Content-Type": "application/json"}
                     })
                     const user = await res.json()
-                    console.log(user)
-                    if (res.ok && user) {
-                        return user
-                    } else {
-                        return null;
-                    }
+                    if (res.ok && user) {return user} else {return null;}
                 } catch (e) {
                     // @ts-ignore
                     const errorMessage = e.response.data.message;
@@ -34,26 +26,11 @@ export default NextAuth({
         })
     ],
     secret: process.env.JWT_SECRET,
-    pages: {
-        signIn: "/auth",
-        error: "/auth",
-        signOut: "/",
-    },
-    session: {
-        strategy: 'jwt',
-        maxAge: 60 * 60,
-    },
+    pages: {signIn: "/auth", error: "/auth", signOut: "/",},
+    session: {strategy: 'jwt', maxAge: 60 * 60,},
     callbacks: {
-        jwt: async ({token, user}) => {
-
-            if (user) {
-                console.log(user)
-                //token.jwt = user.jwt;
-                //token.user = user.user;
-                token.access = user?.access;
-            }
-            return Promise.resolve(token);
-        }, // called whenever session is checked
+        jwt: async ({token, user}) => {if (user) {token.access = user?.access;}
+            return Promise.resolve(token);},
         session: async ({session, token}) => {
             session.jwt = token.jwt;
             // @ts-ignore

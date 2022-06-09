@@ -7,17 +7,12 @@ import {motion} from "framer-motion";
 const useOutSideClick = (ref: any, setOpen: (open: boolean) => void) => {
     useEffect(() => {
         const handleOnClickOutSide = (event: any) => {
-            if (ref.current && !ref.current.contains(event.target)) {
-                setOpen(false)
-            }
+            if (ref.current && !ref.current.contains(event.target)) {setOpen(false)}
         }
         document.addEventListener("mousedown", handleOnClickOutSide);
-        return () => {
-            document.removeEventListener("mousedown", handleOnClickOutSide);
-        };
+        return () => {document.removeEventListener("mousedown", handleOnClickOutSide);};
     }, [ref])
 }
-
 const DropDown: React.FC = ({children}) => {
     const [isOpen, setIsOpen] = useState(false);
     const elem = useRef(null);
@@ -31,30 +26,15 @@ const DropDown: React.FC = ({children}) => {
                 type={`button`}>
                 <DotsVerticalIcon/>
             </button>
-
             {
                 isOpen && (
-                    <motion.div
-                        onClick={() => setIsOpen(false)}
-                        initial={{
-                            opacity: 0,
-                            scale: 0,
-                            translateX: '-100%',
-                            transformOrigin: 'top right'
-                        }}
-                        animate={{
-                            translateX: '-100%',
-                            opacity: 1,
-                            scale: 1,
-                        }}
-                        className={style.list}>
-                        {
-                            children
-                        }
+                    <motion.div onClick={() => setIsOpen(false)}
+                        initial={{opacity: 0, scale: 0, translateX: '-100%', transformOrigin: 'top right'}}
+                        animate={{translateX: '-100%', opacity: 1, scale: 1,}}
+                        className={style.list}>{children}
                     </motion.div>
                 )
             }
-
         </div>
     );
 };

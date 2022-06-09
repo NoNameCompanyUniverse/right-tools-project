@@ -26,7 +26,7 @@ const Auth = () => {
         await signIn('credentials', {
             username: username,
             password: password,
-            callbackUrl: `${process.env.baseURL}`
+            callbackUrl: `${process.env.baseURL}/profile/`
         })
     }
 

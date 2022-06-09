@@ -22,10 +22,8 @@ type AppPropsWithLayout = AppProps & {
 }
 
 function MyApp({Component, pageProps}: AppPropsWithLayout) {
-
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
-
     useEffect(() => {
         const handleRouteChange = () => {
             setIsLoading(true);
@@ -40,7 +38,6 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
         router.events.on('routeChangeStart', handleRouteChange);
         router.events.on('routeChangeComplete', handleRouteComplete);
     }, [router.events]);
-
     // Use the layout defined at the page level, if available
     const getLayout = Component.getLayout || ((page) => page);
     return (
@@ -55,9 +52,7 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
                                     getLayout(<><Component {...pageProps} /></>)
                                 }
                             </Auth>
-                        ) : (
-                            getLayout(<><Component {...pageProps} /></>)
-                        )
+                        ) : (getLayout(<><Component {...pageProps} /></>))
                     }
                 </AnimatePresence>
             </SessionProvider>
@@ -71,15 +66,13 @@ function Auth({children}) {
     const router = useRouter()
     const {data: session, status} = useSession()
     useEffect(() => {
-        if (status === 'loading') return // Do nothing while loading
-        if (status === 'unauthenticated') router.push('/auth') //Redirect to login
+        if (status === 'loading') return
+        if (status === 'unauthenticated') router.push('/auth')
     }, [router, status])
     if (status === 'authenticated') {
         return children
     }
-    return <div>loading...</div>
-
-    //return children
+    return <Preloader/>
 }
 
 export default MyApp

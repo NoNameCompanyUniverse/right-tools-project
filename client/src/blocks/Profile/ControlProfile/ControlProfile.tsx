@@ -113,32 +113,25 @@ const ControlProfile: React.FC<IControlProfile> = (
                                     placeholder={'Введите имя'}
                                 />
                             </div>
-                            <div className="col-6 mb-3">
+                            <div className="col-6 mb-4">
                                 <div className="f-7 mb-2 fw-bold">Телефон</div>
                                 <FormInput
                                     name={'tel'}
                                     type={'tel'}
-                                    value={state.status}
+                                    value={state.tel}
                                     setValue={handleSetValue}
                                     placeholder={'Введите фамилия'}
                                 />
-                                <input
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    type="text"
-                                    name={'tel'}
-                                    placeholder={'Введите телефон'}
-                                    value={state.tel}
-                                    className='form-control'/>
                             </div>
-                            <div className="col-6 mb-3">
+                            <div className="col-6 mb-4">
                                 <div className="f-7 mb-2 fw-bold">Email</div>
-                                <input
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    type="text"
+                                <FormInput
                                     name={'email'}
                                     placeholder={'Введите почту'}
+                                    type={'email'}
                                     value={state.email}
-                                    className='form-control'/>
+                                    setValue={handleSetValue}
+                                />
                             </div>
                             <div className="col-12">
                                 <div className="f-7 mb-2 fw-bold">Ваши способности</div>

@@ -8,9 +8,7 @@ import DropDown from "../../DropDown";
 
 
 const FileCard:React.FC<{props: IFile, children?: ReactNode | ReactNode[]}> = ({props, children}) => {
-
     const {id, size, link, name, type} = props;
-
     return (
         <motion.div whileTap={{scale: 0.97}} className={style.container}>
             <div className={`row align-items-center justify-content-between`}>
@@ -32,7 +30,6 @@ const FileCard:React.FC<{props: IFile, children?: ReactNode | ReactNode[]}> = ({
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div className={style.control}>

@@ -16,7 +16,8 @@
   &.png {
     color: var(--info);
   }
-  &.jpg {
+  &.jpg,
+  &.jpeg{
     color: var(--danger);
   }
   &.xls {

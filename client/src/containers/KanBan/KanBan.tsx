@@ -14,10 +14,9 @@ import ControlDrag from "../../blocks/KanBan/ControlDrag";
 
 
 const KanBan: React.FC = () => {
-
-    const [boardData, setBoardData] = useState<Array<{ name: string, items: Array<IDrag> }>>(BoardData);
+    const [boardData, setBoardData] = useState<Array<
+        { name: string, items: Array<IDrag> }>>(BoardData);
     const [boardItem, setBoardItem] = useState<IDrag | null>(null);
-
     const onDragEnd = (re: any) => {
         if (!re.destination) return;
         let newBoardData = Array.from(boardData);
@@ -26,8 +25,6 @@ const KanBan: React.FC = () => {
         newBoardData[parseInt(re.destination.droppableId)].items.splice(re.destination.index, 0, dragItem);
         setBoardData(newBoardData);
     };
-
-
     const handleOnDrag = (action: { type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: IDrag }) => {
         const {type, payload} = action
         switch (type) {
@@ -59,17 +56,10 @@ const KanBan: React.FC = () => {
                 break;
             }
         }
-
-
     }
-
-
     const handleOnLookDrag = (data: IDrag) => {
         setBoardItem(JSON.parse(JSON.stringify(data)));
     }
-
-
-
     return (
         <>
             <CreateDrag onDrag={handleOnDrag}/>
@@ -111,7 +101,6 @@ const KanBan: React.FC = () => {
                     }
                 </div>
             </DragDropContext>
-
         </>
     );
 };

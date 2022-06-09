@@ -54,7 +54,7 @@ const NavBar = () => {
                             state ? (
                                 <div className={`d-flex align-items-center`}>
                                     <div className={`me-3`}>
-                                        <Link href={`/profile/${state.username}`}>
+                                        <Link href={`/profile/`}>
                                             <a className={style.link}>
                                                 {state.full_name}
                                             </a>
