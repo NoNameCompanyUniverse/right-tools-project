@@ -4,6 +4,7 @@ import Modal from "../../../components/Modal";
 import {genId} from '../../../helpers/functions';
 import {IDrag, INewDrag} from '../../../types/IDrag';
 import {IModal} from "../../../types/IModal";
+import FormInput from "../../../components/Form/FormInput/FormInput";
 
 
 interface ICreateDrag {
@@ -81,13 +82,13 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
                     <form onSubmit={event => handleOnSubmit(event)}>
                         <div className="row">
                             <div className="col-12">
-                                <input
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
+                                <FormInput
+                                    name={'title'}
+                                    type={'text'}
                                     value={state.title}
-                                    name={`title`}
-                                    type="text"
-                                    placeholder={`Введите название`}
-                                    className="form-control"/>
+                                    placeholder={'Введите название'}
+                                    setValue={handleSetValue}
+                                />
                             </div>
                             <div className="col-12 mt-3">
                                 <select

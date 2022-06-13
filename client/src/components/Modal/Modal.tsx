@@ -31,7 +31,13 @@ const Modal: React.FC<IModal> = (
 
     const {id, isOpen} = modal;
 
-    const handleOnClose = () => onClose(id)
+    const handleOnClose = () => onClose(id);
+
+    const handleOnModal = (event:any) => {
+        (!event.target.closest(`${'.'+style.dialog}`)) ? onClose(id) : ''
+
+    }
+
 
     return (
         <>
@@ -42,6 +48,7 @@ const Modal: React.FC<IModal> = (
                             initial={{opacity: 0}}
                             animate={{opacity: 1}}
                             exit={{opacity: 0}}
+                            onClick={handleOnModal}
                             className={style.container}>
                             <motion.div
                                 variants={scaleModal}

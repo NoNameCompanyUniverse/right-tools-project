@@ -84,3 +84,9 @@
     transform: scale(1);
   }
 }
+
+@media (max-width: 1200px) {
+  .block {
+    width: 100%;
+  }
+}

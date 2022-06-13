@@ -39,7 +39,7 @@ const Profile = () => {
         setId(id);
         handleOnModal(modal[1].id);
     }
-    
+
     const handleOnModal = (id: string) => {
         let clone = modal.concat();
         clone = clone.map((e:IModal) => (
@@ -55,7 +55,7 @@ const Profile = () => {
         setId(0);
         handleOnModal(modal[1].id);
     }
-    
+
     return (
         <>
             <ControlProfile modal={modal[0]} setModal={handleOnModal} data={userData} onProfile={handleSetProfile}/>
@@ -68,8 +68,8 @@ const Profile = () => {
                         <div>
                             <Title value={'С возвращением в RightTool'}/>
                         </div>
-                        <div className="row my-5 gx-3">
-                            <div className="col-xl-4">
+                        <div className="row mt-5 mb-3 gx-3">
+                            <div className="col-sm-4">
                                 <StatisticsCard
                                     title={`Количество сотрудников`}
                                     count={56}
@@ -77,7 +77,7 @@ const Profile = () => {
                                     background={'#868974'}
                                 />
                             </div>
-                            <div className="col-xl-4">
+                            <div className="col-sm-4">
                                 <StatisticsCard
                                     title={`Количество проектов вашим участием`}
                                     count={17}
@@ -85,7 +85,7 @@ const Profile = () => {
                                     background={`#F0B878`}
                                 />
                             </div>
-                            <div className="col-xl-4">
+                            <div className="col-sm-4">
                                 <StatisticsCard
                                     title={`Количество ваших проектов`}
                                     count={25}
@@ -134,9 +134,9 @@ const Profile = () => {
                                 </button>
                             </User>
                         </div>
-                        <div className={`mb-3`}>
-                            <Users users={users_data}/>
-                        </div>
+                        {/*<div className={`mb-3`}>*/}
+                        {/*    <Users users={users_data}/>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             </motion.div>

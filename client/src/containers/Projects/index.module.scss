@@ -1,0 +1,9 @@
+.create {
+  padding: 1rem;
+  border: 2px dashed  var(--gray);
+  background: #fff;
+  cursor: pointer;
+  border-radius: var(--radius-value);
+  min-height: 100px;
+  max-width: 200px;
+}

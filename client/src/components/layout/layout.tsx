@@ -28,7 +28,7 @@ const Layout: React.FC = ({children}) => {
                     <div className="flex-grow-1">
                         <ul className={style.nav}>
                             <li>
-                                <Link href={`/profile/1`}>
+                                <Link href={`/profile`}>
                                     <a className={style.link}>
                                         <i className={style.icon}>
                                             <UserIcon/>

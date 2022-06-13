@@ -16,3 +16,4 @@ export interface IProjectFull extends IProject{
     kanban: Array<IKanBan> ,
     file: Array<IFile>
 }
+
