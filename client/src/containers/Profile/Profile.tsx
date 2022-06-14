@@ -134,9 +134,9 @@ const Profile = () => {
                                 </button>
                             </User>
                         </div>
-                        {/*<div className={`mb-3`}>*/}
-                        {/*    <Users users={users_data}/>*/}
-                        {/*</div>*/}
+                        <div className={`mb-3`}>
+                            <Users users={users_data}/>
+                        </div>
                     </div>
                 </div>
             </motion.div>

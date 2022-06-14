@@ -1,5 +1,38 @@
 [
   {
+    "id": 1,
+    "firstname": "Sergey",
+    "lastname": "Maksimov",
+    "login": "_l0stvayne_",
+    "email": "sergey.maksimov2000@gmail.com",
+    "tel": "+7 (903) 869-48-67",
+    "status": "Front-end developer",
+    "avatar": "/profile/user.PNG",
+    "banner": "/profile/user-banner.jpg",
+    "tags": [
+      {
+        "id": 1,
+        "value": "JavaScript"
+      },
+      {
+        "id": 2,
+        "value": "React"
+      },
+      {
+        "id": 3,
+        "value": "Next.js"
+      },
+      {
+        "id": 4,
+        "value": "Redux"
+      },
+      {
+        "id": 5,
+        "value": "Git"
+      }
+    ]
+  },
+  {
     "id": 2,
     "firstname": "Pavel",
     "lastname": "Kartel",
@@ -54,7 +87,7 @@
     ]
   },
   {
-    "id": 3,
+    "id": 4,
     "firstname": "Liza",
     "lastname": "Pimoshina",
     "login": "li_monali",

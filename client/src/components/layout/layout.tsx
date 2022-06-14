@@ -5,14 +5,31 @@ import {CollectionIcon, LogoutIcon, MenuAlt1Icon, UserGroupIcon, UserIcon} from 
 import TodayDate from "../Panel/TodayDate";
 import {motion} from "framer-motion";
 import {signOut} from 'next-auth/react';
+import {IModal} from "../../types/IModal";
+import Modal from '../Modal';
 
 const Layout: React.FC = ({children}) => {
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
 
+    const [modal, setModal] = useState<IModal>({id: '#exit', isOpen: false});
+
+    const handleOnModal = (id: string) => {
+        setModal({id, isOpen: !modal.isOpen})
+    }
 
     return (
         <>
+            <Modal modal={modal} onClose={handleOnModal} title={'Внимание'}>
+                <p className={'text-black fs-5 mb-3'}>
+                    Вы точно хотите выйти из аккаунта?
+                </p>
+                <div className={'d-flex justify-content-end'}>
+                    <button className={'btn btn-danger'} onClick={() => signOut()} type={'button'}>
+                        Выйти
+                    </button>
+                </div>
+            </Modal>
             <div className={[style.aside, isOpen ? style.open : ''].join(" ")}>
                 <div className="d-flex flex-column" style={{'height': '100%'}}>
                     <div className="mb-5">
@@ -62,7 +79,7 @@ const Layout: React.FC = ({children}) => {
                     <div className="mt-auto">
                         <button
                             type={`button`}
-                            onClick={() => signOut()}
+                            onClick={() => handleOnModal(modal.id)}
                             className={style.link}>
                             <i className={style.icon}>
                                 <LogoutIcon/>

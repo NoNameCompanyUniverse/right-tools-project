@@ -17,8 +17,8 @@ const Projects = () => {
     const [query, setQuery] = useState("")
     const [id, setId] = useState(0)
     const [modal, setModal] = useState<IModal []>([
-        {id: '#create', isOpen: false},
-        {id: '#popup', isOpen: false}
+        {id: '#users', isOpen: false},
+        {id: '#popup', isOpen: false},
     ]);
 
     const [projectsData, setProjectsData] = useState<Array<IProject>>(projects_data);
