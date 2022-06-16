@@ -8,7 +8,7 @@ import styleColumn from '../../components/KanBan/DragColumn/index.module.scss';
 import BoardData from '../../../data-board.json';
 import DragItem from "../../components/KanBan/DragItem";
 import CreateDrag from "../../blocks/KanBan/CreateDrag";
-import {IDrag} from "../../types/IDrag";
+import {IDrag} from "../../types/old/IDrag";
 import Modal from "../../components/Modal";
 import ControlDrag from "../../blocks/KanBan/ControlDrag";
 

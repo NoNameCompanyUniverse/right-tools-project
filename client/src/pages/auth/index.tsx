@@ -1,25 +1,32 @@
-import React, {FormEvent, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {motion} from "framer-motion";
-import {signIn, useSession} from "next-auth/react";
+import {signIn} from "next-auth/react";
 import style from '../../styles/auth/index.module.scss';
-import {fadeIn, fadeUp, rightIn, scaleIn} from '../../motion';
+import {fadeIn, scaleIn} from '../../motion';
 import SignIn from "../../blocks/Auth/SignIn";
 import SignUp from "../../blocks/Auth/SignUp";
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 
 const Auth = () => {
 
     const [isRegistration, setIsRegistration] = useState<boolean>(true);
 
+    const router = useRouter()
 
-    const [auth, setAuth] = useState({username: '', password: ''});
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value: string = e.currentTarget.value,
-            name: string = e.currentTarget.name;
-        setAuth(state => ({...state, [name]: value}))
-    }
+    useEffect(() => {
+        // Getting the error details from URL
+        if (router.query.error) {
+            toast.error('Неверный логин или пароль', {
+                position: "bottom-right", autoClose: false})
+        }
+    }, [router])
+
+
+
 
     const handleOnLogin = async (data: { username: string, password: string }) => {
         const {username, password} = data;

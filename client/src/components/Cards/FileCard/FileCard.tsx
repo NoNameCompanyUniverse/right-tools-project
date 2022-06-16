@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import {DocumentTextIcon} from "@heroicons/react/outline";
 import {motion} from "framer-motion";
-import {IFile} from "../../../types/IFile";
+import {IFile} from "../../../types/old/IFile";
 import DropDown from "../../DropDown";
 
 

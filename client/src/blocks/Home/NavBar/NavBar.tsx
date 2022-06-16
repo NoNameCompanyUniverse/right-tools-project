@@ -1,32 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import style from "../../../styles/home/Home.module.scss";
 import Link from "next/link";
-import {useSession} from "next-auth/react";
-import API from "../../../helpers/api";
+import {useAppSelector} from "../../../redux/hooks";
 
 const NavBar = () => {
 
-    const {data: session, status} = useSession();
+    const {auth} = useAppSelector(state => state.usersSlice)
 
-    const [state, setState] = useState<any>();
-
-    useEffect(() => {
-        async function load() {
-            console.log(status)
-            if (status === 'authenticated') {
-                //@ts-ignore
-                const token: string = session?.accessToken;
-                const res = await API.getMe(token);
-                setState(res)
-            }
-        }
-        load()
-    }, [status])
-
-
-    useEffect(() => {
-        console.log(state)
-    }, [state])
 
     return (
         <div className={style.nav}>
@@ -51,17 +31,17 @@ const NavBar = () => {
                     </div>
                     <div className={`col-auto`}>
                         {
-                            state ? (
+                            auth ? (
                                 <div className={`d-flex align-items-center`}>
                                     <div className={`me-3`}>
                                         <Link href={`/profile/`}>
                                             <a className={style.link}>
-                                                {state.full_name}
+                                                {[auth.last_name, auth.first_name].join(" ")}
                                             </a>
                                         </Link>
                                     </div>
                                     <div className={style.avatar}>
-                                        <img src={state.photo} alt=""/>
+                                        <img src={auth.photo ? auth.photo : '/profile/default-profile.png'} alt=""/>
                                     </div>
                                 </div>
                             ) : (

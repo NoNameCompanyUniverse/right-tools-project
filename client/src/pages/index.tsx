@@ -383,8 +383,8 @@ const Home: NextPage = () => {
                                                 viewport={{once: true}}
                                                 className={style.card__title}>
                                                 <span>Right Tools</span><br/>
-                                                Был разработан от
-                                                <i className={`text-wood`}> людей</i> для
+                                                Был разработан
+                                                <i className={`text-wood`}> людьми</i> для
                                                 <i className={`text-success`}> людей</i>
                                             </motion.div>
                                         </div>

@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {IModal} from "../../../types/IModal";
-import {IUser} from "../../../types/IUser";
+import {IUser} from "../../../types/old/IUser";
 import FormFile from "../../../components/Form/FormFile";
 import {motion} from "framer-motion";
 import {genId} from "../../../helpers/functions";

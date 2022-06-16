@@ -1,7 +1,7 @@
 import React, {FormEvent, useState} from 'react';
 import {useRouter} from "next/router";
 import {IModal} from "../../types/IModal";
-import {IProjectFull} from "../../types/IProject";
+import {IProjectFull} from "../../types/old/IProject";
 import project_data from "../../../data-project.json";
 import {motion} from "framer-motion";
 import {PageTransition} from "../../motion";
@@ -14,10 +14,10 @@ import FileCard from "../../components/Cards/FileCard";
 import PanelInfo from "../../blocks/Project/PanelInfo";
 import Modal from "../../components/Modal";
 import {toast} from "react-toastify";
-import {IMindMap} from "../../types/IMindMap";
-import {IUser} from "../../types/IUser";
-import {IKanBan} from "../../types/IKanBan";
-import {IFile} from "../../types/IFile";
+import {IMindMap} from "../../types/old/IMindMap";
+import {IUser} from "../../types/old/IUser";
+import {IKanBan} from "../../types/old/IKanBan";
+import {IFile} from "../../types/old/IFile";
 
 const Project = () => {
     const router = useRouter();

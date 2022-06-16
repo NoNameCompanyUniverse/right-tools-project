@@ -1,34 +1,35 @@
 import React from 'react';
-import { IUser } from '../../../types/IUser';
+import { IUserMin } from '../../../types/IUser';
 import style from './index.module.scss';
+import Link from 'next/link'
 
 
 type IUsers = {
-    users: Array<IUser>
+    users: Array<IUserMin>
 }
 
 const Users:React.FC<IUsers> = ({users}) => {
 
-    const User:React.FC<{props: IUser}> = ({props}) => {
+    const User:React.FC<{props: IUserMin}> = ({props}) => {
 
-        const {id, status, firstname, lastname, avatar} = props;
+        const {id, subdivision, full_name, photo} = props;
 
         return (
             <>
                 <div className={`d-flex align-items-center`}>
                     <div className={style.avatar}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={avatar} alt=""/>
+                        <img src={photo ? photo : '/profile/default-profile.png'} alt=""/>
                     </div>
                     <div className={`ms-3`}>
                         <div className={style.name}>
                             <span className={`text-black`}>
-                                {[lastname, firstname].join(" ")}
+                                {full_name}
                             </span>
                         </div>
                         <div className={style.status}>
                             <span className="text-gray">
-                                {status}
+                                {subdivision.name}
                             </span>
                         </div>
                     </div>
@@ -51,6 +52,11 @@ const Users:React.FC<IUsers> = ({users}) => {
                 ))
 
             }
+            <div className={'mt-3'}>
+                <Link href={'/users'}>
+                    <a className={'text-black'}>Смотреть еще</a>
+                </Link>
+            </div>
         </div>
     );
 };

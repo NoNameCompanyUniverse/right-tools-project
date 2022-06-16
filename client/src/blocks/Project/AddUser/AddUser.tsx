@@ -1,6 +1,6 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import users_data from '../../../../data-users.json'
-import {IUser} from "../../../types/IUser";
+import {IUser} from "../../../types/old/IUser";
 import {IModal} from "../../../types/IModal";
 import Modal from '../../../components/Modal';
 import style from "../../../styles/project/index.module.scss";

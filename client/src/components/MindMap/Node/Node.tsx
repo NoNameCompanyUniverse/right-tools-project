@@ -4,7 +4,7 @@ import {AdjustmentsIcon} from "@heroicons/react/solid";
 import {motion} from "framer-motion";
 
 import style from './index.module.scss';
-import {INode} from "../../../types/INode";
+import {INode} from "../../../types/old/INode";
 
 
 const Node: React.FC<{ data: INode}> = ({data}) => {

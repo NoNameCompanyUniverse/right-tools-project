@@ -10,7 +10,12 @@ import {useState, useEffect} from "react";
 import Preloader from "../components/Preloader";
 import {ToastContainer} from "react-toastify";
 import {SessionProvider, useSession} from "next-auth/react";
+import {setupStore} from "../redux";
+import {Provider as ReduxProvider} from "react-redux";
+import {useAppDispatch} from "../redux/hooks";
+import {getMe} from "../redux/actions/UsersAction";
 
+const store = setupStore();
 
 type NextPageWithLayout = NextPage & {
     getLayout?: (page: ReactElement) => ReactNode,
@@ -44,17 +49,19 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
         <>
             {isLoading && <Preloader/>}
             <SessionProvider session={pageProps.session}>
-                <AnimatePresence exitBeforeEnter>
-                    {
-                        Component.auth ? (
-                            <Auth>
-                                {
-                                    getLayout(<><Component {...pageProps} /></>)
-                                }
-                            </Auth>
-                        ) : (getLayout(<><Component {...pageProps} /></>))
-                    }
-                </AnimatePresence>
+                <ReduxProvider store={store}>
+                    <AnimatePresence exitBeforeEnter>
+                        {
+                            Component.auth ? (
+                                <Auth>
+                                    {
+                                        getLayout(<><Component {...pageProps} /></>)
+                                    }
+                                </Auth>
+                            ) : (getLayout(<><Component {...pageProps} /></>))
+                        }
+                    </AnimatePresence>
+                </ReduxProvider>
             </SessionProvider>
             <ToastContainer theme={'colored'} position={'bottom-right'}/>
         </>
@@ -64,12 +71,16 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 // @ts-ignore
 function Auth({children}) {
     const router = useRouter()
-    const {data: session, status} = useSession()
+    const {data: session, status} = useSession();
+    const dispatch = useAppDispatch();
     useEffect(() => {
         if (status === 'loading') return
         if (status === 'unauthenticated') router.push('/auth')
     }, [router, status])
     if (status === 'authenticated') {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(getMe(token))
         return children
     }
     return <Preloader/>

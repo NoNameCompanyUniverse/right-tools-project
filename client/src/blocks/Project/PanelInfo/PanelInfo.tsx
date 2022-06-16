@@ -15,10 +15,10 @@ import {Mousewheel, Pagination} from "swiper";
 import {IModal} from "../../../types/IModal";
 import Modal from "../../../components/Modal";
 import AddBoard from "../AddBoard";
-import {IMindMap} from "../../../types/IMindMap";
-import {IKanBan} from "../../../types/IKanBan";
-import {IFile} from "../../../types/IFile";
-import {IUser} from "../../../types/IUser";
+import {IMindMap} from "../../../types/old/IMindMap";
+import {IKanBan} from "../../../types/old/IKanBan";
+import {IFile} from "../../../types/old/IFile";
+import {IUser} from "../../../types/old/IUser";
 import {genId} from "../../../helpers/functions";
 
 

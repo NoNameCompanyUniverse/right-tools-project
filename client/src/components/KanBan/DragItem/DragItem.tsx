@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './index.module.scss';
-import {IDrag} from "../../../types/IDrag";
+import {IDrag} from "../../../types/old/IDrag";
 import {PencilAltIcon} from "@heroicons/react/outline";
 
 // @ts-ignore

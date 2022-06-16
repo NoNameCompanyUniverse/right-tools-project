@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {IModal} from "../../../types/IModal";
-import {IDrag, INewDrag} from "../../../types/IDrag";
+import {IDrag, INewDrag} from "../../../types/old/IDrag";
 import Tabs from "../../../components/Tabs";
 
 import style from './../../../components/KanBan/DragItem/index.module.scss'

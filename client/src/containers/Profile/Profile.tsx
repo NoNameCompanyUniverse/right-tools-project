@@ -1,7 +1,7 @@
-import React, {FormEvent, useState} from 'react';
-import {IUser} from "../../types/IUser";
+import React, {FormEvent, useEffect, useState} from 'react';
+import {IUser as IOldUserType} from "../../types/old/IUser";
 import user_data from "../../../data-profile.json";
-import {IProject} from "../../types/IProject";
+import {IProject} from "../../types/old/IProject";
 import projects_data from "../../../data-projects.json";
 import {IModal} from "../../types/IModal";
 import {toast} from "react-toastify";
@@ -14,12 +14,18 @@ import ProjectCard from "../../components/Cards/ProjectCard";
 import Link from "next/link";
 import User from "../../components/Panel/User";
 import Users from "../../components/Panel/Users";
-import users_data from "../../../data-users.json";
 import Modal from '../../components/Modal';
+import {useSession} from "next-auth/react";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {getUser, getUsers} from "../../redux/actions/UsersAction";
 
 const Profile = () => {
 
-    const [userData, setUserData] = useState<IUser>(user_data);
+    const [userData, setUserData] = useState<IOldUserType>(user_data);
+
+    const {users, count, auth} = useAppSelector(state => state.usersSlice);
+    const dispatch = useAppDispatch();
+
 
     const [projectsData, setProjectsData] = useState<Array<IProject>>(projects_data);
 
@@ -30,7 +36,7 @@ const Profile = () => {
 
     const [id, setId] = useState(0)
 
-    const handleSetProfile = (data: IUser) => {
+    const handleSetProfile = (data: IOldUserType) => {
         setUserData(data)
         toast.success('Профиль изменен')
     };
@@ -42,19 +48,30 @@ const Profile = () => {
 
     const handleOnModal = (id: string) => {
         let clone = modal.concat();
-        clone = clone.map((e:IModal) => (
+        clone = clone.map((e: IModal) => (
             e.id === id ? {id: e.id, isOpen: !e.isOpen} : e
         ))
         setModal(clone)
     }
 
-    const handleOnDelete = (e:FormEvent) => {
+    const handleOnDelete = (e: FormEvent) => {
         e.preventDefault();
         setProjectsData(projectsData.filter(i => i.id !== id));
         toast.error('Проект удален');
         setId(0);
         handleOnModal(modal[1].id);
     }
+
+
+    const {data: session} = useSession()
+
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(getUsers({token, limit: 4}));
+    }, [dispatch]);
+
+
 
     return (
         <>
@@ -72,8 +89,8 @@ const Profile = () => {
                             <div className="col-sm-4">
                                 <StatisticsCard
                                     title={`Количество сотрудников`}
-                                    count={56}
-                                    description={`Количество индивидуальных людей которое задействовано во всех проектах с вашим участием`}
+                                    count={count}
+                                    description={`Количество сотрудников в вашей корпоративной среде`}
                                     background={'#868974'}
                                 />
                             </div>
@@ -123,19 +140,23 @@ const Profile = () => {
                     </div>
                     <div className="col-auto">
                         <div className={`mb-3`}>
-                            <User
-                                data={userData}
-                            >
-                                <button
-                                    type={`button`}
-                                    onClick={() => handleOnModal(modal[0].id)}
-                                    className={`btn btn-sm btn-green ms-2 rounded-pill`}>
-                                    Изменить
-                                </button>
-                            </User>
+                            {
+                                auth && (
+                                    <User
+                                        data={auth}
+                                    >
+                                        <button
+                                            type={`button`}
+                                            onClick={() => handleOnModal(modal[0].id)}
+                                            className={`btn btn-sm btn-green ms-2 rounded-pill`}>
+                                            Изменить
+                                        </button>
+                                    </User>
+                                )
+                            }
                         </div>
                         <div className={`mb-3`}>
-                            <Users users={users_data}/>
+                            <Users users={users}/>
                         </div>
                     </div>
                 </div>

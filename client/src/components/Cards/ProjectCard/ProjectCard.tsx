@@ -2,8 +2,8 @@ import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import Link from 'next/link'
 import DropDown from "../../DropDown";
-import {IUser} from "../../../types/IUser";
-import {IProject} from "../../../types/IProject";
+import {IUser} from "../../../types/old/IUser";
+import {IProject} from "../../../types/old/IProject";
 
 
 interface IProjectCard  {

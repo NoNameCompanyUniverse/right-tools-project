@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {Node} from "react-flow-renderer";
 import {genId} from "../../../helpers/functions";
-import {INode} from "../../../types/INode";
+import {INode} from "../../../types/old/INode";
 
 
 

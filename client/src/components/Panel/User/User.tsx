@@ -13,14 +13,14 @@ const User: React.FC<UserInfo> = ({data, children}) => {
 
     const {
         id,
-        firstname,
-        tel, login,
-        status,
+        first_name,
+        username,
+        subdivision,
         email,
-        lastname,
-        avatar,
-        banner,
-        tags
+        last_name,
+        photo,
+        phone,
+        description
     } = data;
 
     return (
@@ -30,13 +30,13 @@ const User: React.FC<UserInfo> = ({data, children}) => {
             </div>
             <div className={style.banner}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={banner} alt=""/>
+                <img src={'/profile/user-banner.jpg'} alt=""/>
             </div>
             <div className={style.body}>
                 <div className={style.user}>
                     <div className={style.avatar}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={avatar} alt=""/>
+                        <img src={photo ? photo : '/profile/default-profile.png'} alt=""/>
                     </div>
                     {
                         children && children
@@ -46,17 +46,17 @@ const User: React.FC<UserInfo> = ({data, children}) => {
                 <div className={`mt-3`}>
                     <div className={style.name}>
                         <span className={`text-black`}>
-                            {`${lastname} ${firstname}`}
+                            {`${last_name} ${first_name}`}
                         </span>
                     </div>
                     <div className={style.login}>
                         <span className="text-gray">
-                            @{login}
+                            @{username}
                         </span>
                     </div>
                     <div className={`mt-3 ${style.status}`}>
                         <span className="text-black">
-                            {status}
+                            {subdivision.name}
                         </span>
                     </div>
                 </div>
@@ -70,28 +70,35 @@ const User: React.FC<UserInfo> = ({data, children}) => {
                     <div className={`mt-3`}>
                         <span className="text-gray">Телефон</span>
                         <div className={`text-black`}>
-                            {tel}
+                            {phone}
                         </div>
                     </div>
-                </div>
-                <div className="mt-4">
-                    <div className="text-gray mb-2">Мои способности</div>
-                    <div className='d-flex flex-wrap align-items-center'>
-                        {
-                            tags.map((tag: { id: number, value: string }) => (
-                                <motion.div
-                                    whileHover={
-                                        {
-                                            y: -5,
-                                            transformOrigin: 'left top'
-                                        }}
-                                    key={tag.id} className='tag'>
-                                    {tag.value}
-                                </motion.div>
-                            ))
-                        }
+                    <div className={`mt-3`}>
+                        <span className="text-gray">Описание</span>
+                        <div className={`text-black`}>
+                            {description}
+                        </div>
                     </div>
+
                 </div>
+                {/*<div className="mt-4">*/}
+                {/*    <div className="text-gray mb-2">Мои способности</div>*/}
+                {/*    <div className='d-flex flex-wrap align-items-center'>*/}
+                {/*        {*/}
+                {/*            tags.map((tag: { id: number, value: string }) => (*/}
+                {/*                <motion.div*/}
+                {/*                    whileHover={*/}
+                {/*                        {*/}
+                {/*                            y: -5,*/}
+                {/*                            transformOrigin: 'left top'*/}
+                {/*                        }}*/}
+                {/*                    key={tag.id} className='tag'>*/}
+                {/*                    {tag.value}*/}
+                {/*                </motion.div>*/}
+                {/*            ))*/}
+                {/*        }*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         </div>
     );

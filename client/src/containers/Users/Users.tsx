@@ -2,31 +2,38 @@ import React, {useEffect, useState} from 'react';
 import {fadeUp, PageTransition} from "../../motion";
 import Title from "../../components/Panel/Title";
 import Search from "../../components/Search";
-import users_data from "../../../data-users.json";
 import UserCard from "../../components/Cards/UserCard";
 import {motion} from "framer-motion";
-import {IUser} from "../../types/IUser";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {useSession} from "next-auth/react";
+import {getUsersAll} from "../../redux/actions/UsersAction";
+import {IUserMin} from "../../types/IUser";
 
 const Users = () => {
 
 
-    const [usersData, setUsersData] = useState<IUser[]>(users_data)
     const [query, setQuery] = useState("")
+
+    const {users} = useAppSelector(state => state.usersSlice);
+    const dispatch = useAppDispatch();
 
     const handleOnSearch = (value: string) => {
         setQuery(value)
     }
-    const [user, setUser] = useState<IUser | null>();
+    const [user, setUser] = useState<IUserMin | null>();
 
-    const handleOnUser = (data: IUser) => {
+    const handleOnUser = (data: IUserMin) => {
         setUser(data);
     }
 
+
+
+    const {data: session} = useSession()
     useEffect(() => {
-        if (users_data.length > 0) {
-            setUser(users_data[0])
-        }
-    }, [])
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(getUsersAll(token));
+    }, [dispatch])
 
     return (
         <>
@@ -44,7 +51,7 @@ const Users = () => {
                         </div>
                         <div className={`row`}>
                             {
-                                usersData.filter(user => user.firstname.toLowerCase().includes(query) || user.lastname.toLowerCase().includes(query))
+                                users.filter(user => user.full_name.toLowerCase().includes(query))
                                     .map((user, index) => (
                                     <motion.div
                                         variants={fadeUp}

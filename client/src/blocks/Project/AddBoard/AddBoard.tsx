@@ -2,10 +2,10 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from '../../../components/Modal';
 import {IModal} from "../../../types/IModal";
 import FormFile from "../../../components/Form/FormFile";
-import {IMindMap} from "../../../types/IMindMap";
-import {IKanBan} from "../../../types/IKanBan";
-import {IFile} from "../../../types/IFile";
-import {IUser} from "../../../types/IUser";
+import {IMindMap} from "../../../types/old/IMindMap";
+import {IKanBan} from "../../../types/old/IKanBan";
+import {IFile} from "../../../types/old/IFile";
+import {IUser} from "../../../types/old/IUser";
 import {genId} from "../../../helpers/functions";
 import columns from '../../../../data-board-kanban.json'
 

@@ -5,7 +5,7 @@ import Search from "../../components/Search";
 import {motion} from "framer-motion";
 import {fadeUp, PageTransition} from "../../motion";
 import ProjectCard from "../../components/Cards/ProjectCard";
-import {IProject} from "../../types/IProject";
+import {IProject} from "../../types/old/IProject";
 import projects_data from "../../../data-projects.json";
 import Link from 'next/link'
 import {IModal} from "../../types/IModal";

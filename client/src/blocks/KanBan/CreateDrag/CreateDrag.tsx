@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import {CollectionIcon} from "@heroicons/react/outline";
 import Modal from "../../../components/Modal";
 import {genId} from '../../../helpers/functions';
-import {IDrag, INewDrag} from '../../../types/IDrag';
+import {IDrag, INewDrag} from '../../../types/old/IDrag';
 import {IModal} from "../../../types/IModal";
 import FormInput from "../../../components/Form/FormInput/FormInput";
 
