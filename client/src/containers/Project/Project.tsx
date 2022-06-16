@@ -77,7 +77,7 @@ const Project = () => {
                             <Title value={`Администратор проекта`}/>
                         </div>
                         <div className="col-xl-4 mt-3 mb-5">
-                            <UserCard data={projectData.team[0]}/>
+                            {/*<UserCard data={projectData.team[0]}/>*/}
                         </div>
                         <div>
                             <Tabs tabs={[
@@ -94,11 +94,11 @@ const Project = () => {
                                                 {
                                                     projectData.team.map((user, index) => (
                                                         <div key={index} className={`col-xl-4 mb-3`}>
-                                                            <UserCard data={user}>
-                                                                <ul>
-                                                                    <li onClick={() => handleDeleteProject(user.id, 'TEAM')}>Удалить</li>
-                                                                </ul>
-                                                            </UserCard>
+                                                            {/*<UserCard data={user}>*/}
+                                                            {/*    <ul>*/}
+                                                            {/*        <li onClick={() => handleDeleteProject(user.id, 'TEAM')}>Удалить</li>*/}
+                                                            {/*    </ul>*/}
+                                                            {/*</UserCard>*/}
                                                         </div>
                                                     ))
                                                 }
