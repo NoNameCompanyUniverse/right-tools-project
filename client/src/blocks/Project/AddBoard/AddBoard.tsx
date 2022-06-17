@@ -53,7 +53,7 @@ const AddBoard:React.FC<IAddBoard> = (
                 const newEl: IKanBan = {
                     id: genId(),
                     name: state.name,
-                    board: columns
+                    board: []
                 }
                 onProject({type, payload: newEl})
                 break;
