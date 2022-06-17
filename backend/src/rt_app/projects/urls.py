@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:pk>/documents/', include('rt_app.projects.documents.urls')),
     path('<int:pk>/mind_maps/', include('rt_app.projects.mind_maps.urls')),
     path('<int:pk>/participants/', include('rt_app.projects.participants.urls')),
+    path('<int:pk>/picture/', PictureView.as_view()),
 ]

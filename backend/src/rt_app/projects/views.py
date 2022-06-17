@@ -1,13 +1,17 @@
+from django.http import Http404
 from django.utils.decorators import method_decorator
+from rest_framework.parsers import MultiPartParser, FormParser
 
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
 from rt_app.models import Project
 
 from .serializers import *
+from .permissions import *
 
 
 @method_decorator(name="list", decorator=swagger_auto_schema(
@@ -45,3 +49,24 @@ class ProjectView(ModelViewSet):
         instance.participant.clear()
         instance.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+class PictureView(APIView):
+    permission_classes = [IsOwner, ]
+
+    parser_classes = (MultiPartParser, FormParser)
+
+    def get_object(self, pk):
+        try:
+            return Project.objects.get(pk=pk)
+        except Project.DoesNotExist:
+            raise Http404
+
+    @swagger_auto_schema(tags=['Проекты'], operation_summary="Изменить картинку")
+    def patch(self, request, pk):
+        project = self.get_object(pk)
+        self.check_object_permissions(request, project)
+        serializer: PictureSerializer = PictureSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"code": HTTP_200_OK}, status=HTTP_200_OK)

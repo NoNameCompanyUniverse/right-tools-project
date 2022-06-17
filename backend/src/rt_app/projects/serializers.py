@@ -4,8 +4,11 @@ from rest_framework.serializers import (
     SerializerMethodField,
     ManyRelatedField,
     PrimaryKeyRelatedField,
-    IntegerField
+    IntegerField,
+    Serializer
 )
+
+from rest_framework import fields
 
 from rt_app.models import Project, User
 from rt_app.common.serializers import ServiceSerializer
@@ -42,4 +45,12 @@ class ProjectCreateUpdateSerializer(ModelSerializer):
     class Meta:
         model = Project
         exclude = ('admin',)
+
+
+class PictureSerializer(ModelSerializer):
+    picture = fields.ImageField(allow_null=True, max_length=100, required=False)
+
+    class Meta:
+        model = Project
+        fields = ('picture',)
 
