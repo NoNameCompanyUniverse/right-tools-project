@@ -27,7 +27,7 @@ const Project = () => {
 
     const handleOnModal = (id: string) => setModal({...modal, isOpen: !modal.isOpen});
 
-    const [projectData, setProjectData] = useState<IProjectFull>(project_data);
+    const [projectData, setProjectData] = useState<IProjectFull>();
 
     const [buf, setBuf] = useState<{
         type: string | 'TEAM' | 'MINDMAP' | 'KANBAN' | 'FILE',
@@ -92,15 +92,15 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    projectData.team.map((user, index) => (
-                                                        <div key={index} className={`col-xl-4 mb-3`}>
-                                                            {/*<UserCard data={user}>*/}
-                                                            {/*    <ul>*/}
-                                                            {/*        <li onClick={() => handleDeleteProject(user.id, 'TEAM')}>Удалить</li>*/}
-                                                            {/*    </ul>*/}
-                                                            {/*</UserCard>*/}
-                                                        </div>
-                                                    ))
+                                                    // projectData.team.map((user, index) => (
+                                                    //     <div key={index} className={`col-xl-4 mb-3`}>
+                                                    //         {/*<UserCard data={user}>*/}
+                                                    //         {/*    <ul>*/}
+                                                    //         {/*        <li onClick={() => handleDeleteProject(user.id, 'TEAM')}>Удалить</li>*/}
+                                                    //         {/*    </ul>*/}
+                                                    //         {/*</UserCard>*/}
+                                                    //     </div>
+                                                    // ))
                                                 }
                                             </div>
                                         </div>
@@ -110,23 +110,23 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    projectData.mindmap.map((map, index) => (
-                                                        <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card data={map}>
-                                                                <ul>
-                                                                    <li>
-                                                                        <Link
-                                                                            href={`${router.asPath}/mindmap/${map.id}`}>
-                                                                            <a>
-                                                                                Открыть
-                                                                            </a>
-                                                                        </Link>
-                                                                    </li>
-                                                                    <li onClick={() => handleDeleteProject(map.id, 'MINDMAP')}>Удалить</li>
-                                                                </ul>
-                                                            </Card>
-                                                        </div>
-                                                    ))
+                                                    // projectData.mindmap.map((map, index) => (
+                                                    //     <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                    //         <Card data={map}>
+                                                    //             <ul>
+                                                    //                 <li>
+                                                    //                     <Link
+                                                    //                         href={`${router.asPath}/mindmap/${map.id}`}>
+                                                    //                         <a>
+                                                    //                             Открыть
+                                                    //                         </a>
+                                                    //                     </Link>
+                                                    //                 </li>
+                                                    //                 <li onClick={() => handleDeleteProject(map.id, 'MINDMAP')}>Удалить</li>
+                                                    //             </ul>
+                                                    //         </Card>
+                                                    //     </div>
+                                                    // ))
                                                 }
                                             </div>
                                         </div>
@@ -136,23 +136,23 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    projectData.kanban.map((kanban, index) => (
-                                                        <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                            <Card data={kanban}>
-                                                                <ul>
-                                                                    <li>
-                                                                        <Link
-                                                                            href={`${router.asPath}/kanban/${kanban.id}`}>
-                                                                            <a>
-                                                                                Открыть
-                                                                            </a>
-                                                                        </Link>
-                                                                    </li>
-                                                                    <li onClick={() => handleDeleteProject(kanban.id, 'KANBAN')}>Удалить</li>
-                                                                </ul>
-                                                            </Card>
-                                                        </div>
-                                                    ))
+                                                    // projectData.kanban.map((kanban, index) => (
+                                                    //     <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                    //         <Card data={kanban}>
+                                                    //             <ul>
+                                                    //                 <li>
+                                                    //                     <Link
+                                                    //                         href={`${router.asPath}/kanban/${kanban.id}`}>
+                                                    //                         <a>
+                                                    //                             Открыть
+                                                    //                         </a>
+                                                    //                     </Link>
+                                                    //                 </li>
+                                                    //                 <li onClick={() => handleDeleteProject(kanban.id, 'KANBAN')}>Удалить</li>
+                                                    //             </ul>
+                                                    //         </Card>
+                                                    //     </div>
+                                                    // ))
                                                 }
                                             </div>
                                         </div>
@@ -162,18 +162,18 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className="row gx-3">
                                                 {
-                                                    projectData.file.map((file, index) => (
-                                                        <div key={index}
-                                                             className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
-                                                            <FileCard props={file}>
-                                                                <ul>
-
-                                                                    <li onClick={() => handleDeleteProject(file.id, 'FILE')}>Удалить</li>
-
-                                                                </ul>
-                                                            </FileCard>
-                                                        </div>
-                                                    ))
+                                                    // projectData.file.map((file, index) => (
+                                                    //     <div key={index}
+                                                    //          className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
+                                                    //         <FileCard props={file}>
+                                                    //             <ul>
+                                                    //
+                                                    //                 <li onClick={() => handleDeleteProject(file.id, 'FILE')}>Удалить</li>
+                                                    //
+                                                    //             </ul>
+                                                    //         </FileCard>
+                                                    //     </div>
+                                                    // ))
                                                 }
                                             </div>
                                         </div>
