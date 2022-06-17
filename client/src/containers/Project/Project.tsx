@@ -183,7 +183,7 @@ const Project = () => {
                         </div>
                     </div>
                     <div className="col-auto">
-                        <PanelInfo addData={handleAddData} data={projectData}/>
+                        {/*<PanelInfo addData={handleAddData} data={projectData}/>*/}
                     </div>
                 </div>
             </motion.div>
