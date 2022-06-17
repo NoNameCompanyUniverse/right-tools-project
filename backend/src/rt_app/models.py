@@ -1,17 +1,30 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.http import Http404
 
-from config.settings import BASE_DIR
+from .users.services import *
+
 from .storages import OverwriteStorage
 
 
 class User(AbstractUser):
-    photo = models.ImageField(upload_to=BASE_DIR / 'media/images', null=True, storage=OverwriteStorage)
+    photo = models.ImageField(
+        upload_to=get_path_to_photo,
+        null=True,
+        storage=OverwriteStorage,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
+    )
     description = models.TextField(null=True)
     date_birth = models.DateField(null=True)
     phone = models.CharField(unique=True, max_length=30, null=True)
     subdivision = models.ForeignKey('Subdivision', on_delete=models.PROTECT, null=False)
+    banner = models.ImageField(
+        upload_to=get_path_to_banner,
+        null=True,
+        storage=OverwriteStorage,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
+    )
 
 
 class Subdivision(models.Model):
