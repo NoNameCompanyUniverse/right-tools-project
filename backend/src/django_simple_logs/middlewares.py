@@ -37,6 +37,8 @@ class LoguruMiddleware:
             body = json.loads(request.body)
         except json.JSONDecodeError:
             logger.info(f"Data: {{{''}}}")
+        except UnicodeDecodeError:
+            logger.info(f"Data: {{{''}}}")
         else:
             logger.info(f"Data: {body}")
 
