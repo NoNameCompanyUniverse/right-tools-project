@@ -41,8 +41,7 @@ export const getMe = createAsyncThunk(
     'me/get',
     async (token:string, {rejectWithValue}) => {
         try {
-            const res:IAuth = await API.getMe(token);
-            return await API.getUser(token, res.id)
+            return await API.getMe(token);
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)
@@ -52,10 +51,13 @@ export const getMe = createAsyncThunk(
 
 export const putUser = createAsyncThunk(
     'user/put',
-    async ({token, data, id, photo} : {token:string, data:any, id: number, photo:any}, {rejectWithValue}) => {
+    async ({token, data, id, photo, banner} : {token:string, data:any, id: number, photo:any, banner: any}, {rejectWithValue}) => {
         try {
             if (photo) {
                 await API.patchUserPhoto(token, id, photo)
+            }
+            if (banner) {
+                await API.patchUserBanner(token, id, banner)
             }
             return  await API.putUser(token, id, data);
         } catch (e) {

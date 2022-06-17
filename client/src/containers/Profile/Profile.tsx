@@ -37,7 +37,7 @@ const Profile = () => {
 
     const [id, setId] = useState(0)
 
-    const handleSetProfile = (_data: IUser, photo:any) => {
+    const handleSetProfile = (_data: IUser, photo:any, banner:any) => {
         //@ts-ignore
         const token: string = session?.accessToken;
         const data = {
@@ -51,7 +51,7 @@ const Profile = () => {
             subdivision: _data.subdivision.id
         }
         console.log(photo)
-        dispatch(putUser({token, data, id: _data.id, photo: photo}))
+        dispatch(putUser({token, data, id: _data.id, photo, banner}))
     };
 
     const handleDeleteProject = (id: number) => {

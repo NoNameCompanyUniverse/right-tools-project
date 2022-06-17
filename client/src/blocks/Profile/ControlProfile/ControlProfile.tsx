@@ -11,7 +11,7 @@ import FormTextarea from "../../../components/Form/FormTextarea";
 
 interface IControlProfile {
     data: IUser | null,
-    onProfile: (data: IUser, photo:any) => void,
+    onProfile: (data: IUser, photo:any, banner:any) => void,
     modal: IModal,
     setModal: (id:string) => void
 }
@@ -23,17 +23,30 @@ const ControlProfile: React.FC<IControlProfile> = (
 
     const [state, setState] = useState<IUser | null>(null);
     const [photo, setPhoto] = useState<any | null>(null)
+    const [banner, setBanner] = useState<any | null>(null)
 
     const handleOnModal = (id: string) => setModal(id);
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        state && onProfile(state as IUser, photo);
+        state && onProfile(state as IUser, photo, banner);
         setModal(id);
     }
 
     const handleOnFile = (data: any, name: string) => {
-        setPhoto(data.file)
+        switch (name) {
+            case 'photo' : {
+                setPhoto(data.file);
+                break;
+            }
+            case 'banner' :{
+                setBanner(data.file);
+                break;
+            }
+            default : {
+                break;
+            }
+        }
     }
     const handleSetValue = (value: string, name: string) => {
         setState((state:any) => ({
@@ -58,7 +71,8 @@ const ControlProfile: React.FC<IControlProfile> = (
                                 <FormFile
                                     onFile={handleOnFile}
                                     //value={state.banner}
-                                    value={'/profile/user-banner.jpg'}
+                                    // value={'/profile/user-banner.jpg'}
+                                    value={state.banner ? state.banner : '/profile/user-banner.jpg'}
                                     name={'banner'}/>
                             </div>
                             <div className={['col-12', 'mx-4', 'mb-3'].join(" ")} style={{"marginTop": "-3rem"}}>

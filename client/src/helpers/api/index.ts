@@ -61,6 +61,14 @@ class Api {
         }).then(res => {return res.data});
     }
 
+    patchUserBanner(token: string, id: number, banner:any) {
+        let formData = new FormData();
+        formData.append('photo', banner);
+        this.api.patch(`${this.USERS_URL}${id}/banner/`, formData, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {return res.data});
+    }
+
     postUser(token: string, data: any) {
         return this.api.post(this.USERS_URL, data, {
             headers: {Authorization: `Bearer ${token}`}

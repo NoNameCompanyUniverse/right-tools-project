@@ -18,6 +18,7 @@ export interface IUser extends IUserBuf{
     description: string,
     date_birth: string,
     is_staff: boolean,
+    banner: string | null,
 }
 
 export interface IUserMin extends IUserBuf {

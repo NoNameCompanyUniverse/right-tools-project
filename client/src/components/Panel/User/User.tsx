@@ -20,7 +20,8 @@ const User: React.FC<UserInfo> = ({data, children}) => {
         last_name,
         photo,
         phone,
-        description
+        description,
+        banner
     } = data;
 
     return (
@@ -30,7 +31,7 @@ const User: React.FC<UserInfo> = ({data, children}) => {
             </div>
             <div className={style.banner}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={'/profile/user-banner.jpg'} alt=""/>
+                <img src={banner ? banner : '/profile/user-banner.jpg'} alt=""/>
             </div>
             <div className={style.body}>
                 <div className={style.user}>
