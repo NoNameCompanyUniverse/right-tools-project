@@ -3,7 +3,10 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.http import Http404
 
+
+from .common.services import *
 from .users.services import *
+from .projects.services import *
 
 from .storages import OverwriteStorage
 
@@ -46,7 +49,12 @@ class Background(models.Model):
 
 
 class Project(models.Model):
-    picture = models.ImageField(upload_to=BASE_DIR / 'media/images', null=True, storage=OverwriteStorage)
+    picture = models.ImageField(
+        upload_to=get_path_to_picture,
+        null=True,
+        storage=OverwriteStorage,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
+    )
     name = models.CharField(max_length=150, null=False)
     description = models.TextField(null=True)
     admin = models.ForeignKey(User, on_delete=models.PROTECT, null=False, related_name='admin')
