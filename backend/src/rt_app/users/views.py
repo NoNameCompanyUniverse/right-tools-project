@@ -22,14 +22,16 @@ class BaseUser:
             raise Http404
 
 
-
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(
     tags=['Текущий пользователь'], operation_summary="Текущий пользователь"
 ))
 class CurrentUserView(ModelViewSet):
-    serializer_class = UserShortInfoSerializer
+    serializer_class = UserDetailSerializer
 
     def get_object(self):
+        return self.request.user
+
+    def get_queryset(self):
         return self.request.user
 
 

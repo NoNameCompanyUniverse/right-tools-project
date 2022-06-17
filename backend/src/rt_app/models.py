@@ -36,7 +36,7 @@ class Project(models.Model):
     picture = models.ImageField(upload_to=BASE_DIR / 'media/images', null=True, storage=OverwriteStorage)
     name = models.CharField(max_length=150, null=False)
     description = models.TextField(null=True)
-    user = models.ForeignKey(User, on_delete=models.PROTECT, null=False, related_name='manager')
+    admin = models.ForeignKey(User, on_delete=models.PROTECT, null=False, related_name='admin')
     participant = models.ManyToManyField(User)
     date_create = models.DateField(auto_now_add=True)
 

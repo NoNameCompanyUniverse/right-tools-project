@@ -4,9 +4,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 ENV PYTHONUNBUFFERED=1
 
-ADD /backend /backend
+ADD . /var/www/backend
 
-WORKDIR /backend
+WORKDIR /var/www/backend
 
 RUN pip install -r requirements.txt
 
