@@ -62,6 +62,7 @@ class UserDetailSerializer(ServiceSerializer, ModelSerializer):
             'last_login',
             'photo',
             'phone',
+            'banner',
             'username',
             'first_name',
             'last_name',
@@ -133,4 +134,11 @@ class PhotoSerializer(Serializer):
 
     def save(self, **kwargs):
         self.context.user.photo = self.validated_data['photo']
+        return self.context.user.save()
+
+
+class BannerSerializer(PhotoSerializer):
+
+    def save(self, **kwargs):
+        self.context.user.banner = self.validated_data['photo']
         return self.context.user.save()

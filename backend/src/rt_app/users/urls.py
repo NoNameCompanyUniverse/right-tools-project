@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:pk>/staff/', StaffView.as_view()),
     path('<int:pk>/password/', PasswordView.as_view()),
     path('<int:pk>/photo/', PhotoView.as_view()),
+    path('<int:pk>/banner/', BannerView.as_view()),
 ]

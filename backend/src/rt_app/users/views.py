@@ -116,3 +116,18 @@ class PhotoView(BaseUser, APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"code": HTTP_200_OK}, status=HTTP_200_OK)
+
+
+class BannerView(BaseUser, APIView):
+    permission_classes = [IsOwner, ]
+
+    parser_classes = (MultiPartParser, FormParser)
+
+    @swagger_auto_schema(tags=['Пользователи'], operation_summary="Изменить баннер")
+    def patch(self, request, pk):
+        user = self.get_object(pk)
+        self.check_object_permissions(request, user)
+        serializer: BannerSerializer = BannerSerializer(data=request.data, context=request)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"code": HTTP_200_OK}, status=HTTP_200_OK)

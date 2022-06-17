@@ -41,5 +41,5 @@ class ProjectCreateUpdateSerializer(ModelSerializer):
 
     class Meta:
         model = Project
-        exclude = ('user',)
+        exclude = ('admin',)
 
