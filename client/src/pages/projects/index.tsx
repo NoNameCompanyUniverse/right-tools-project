@@ -1,13 +1,15 @@
 import React, {ReactElement, useState} from 'react';
 import LayoutPanel from "../../layout/LayoutPanel";
-import {motion} from "framer-motion";
-import {PageTransition} from "../../motion";
 import ProjectsContainer from '../../containers/Projects'
+import {ToastContainer} from "react-toastify";
 
 const Projects = () => {
     return (
+        <>
+            <ProjectsContainer/>
+            <ToastContainer theme={'colored'} position={'bottom-right'}/>
+        </>
 
-        <ProjectsContainer/>
     );
 };
 Projects.getLayout = function getLayout(page: ReactElement) {

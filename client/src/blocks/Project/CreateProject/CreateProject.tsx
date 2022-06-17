@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from '../../../styles/project/index.module.scss';
 import {FolderAddIcon, PlusSmIcon} from "@heroicons/react/outline";
 import {motion} from "framer-motion";
@@ -21,7 +21,7 @@ const CreateProject = () => {
         name: '',
         description: '',
         picture: '',
-        participant: [  ]
+        participant: []
     })
 
     const handleOnModal = (id: string) => {
@@ -52,6 +52,15 @@ const CreateProject = () => {
         }))
     }
 
+    useEffect(() => {
+        !modal[0].isOpen ? setState({
+            name: '',
+            description: '',
+            picture: '',
+            participant: []
+        }) : '';
+
+    }, [modal])
 
     return (
         <>

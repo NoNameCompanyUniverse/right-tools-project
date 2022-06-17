@@ -49,3 +49,30 @@ export const getMe = createAsyncThunk(
         }
     }
 )
+
+export const putUser = createAsyncThunk(
+    'user/put',
+    async ({token, data, id, photo} : {token:string, data:any, id: number, photo:any}, {rejectWithValue}) => {
+        try {
+            if (photo) {
+                await API.patchUserPhoto(token, id, photo)
+            }
+            return  await API.putUser(token, id, data);
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const postUser = createAsyncThunk(
+    'user/post',
+    async ({token, data}: {token:string, data:any}, {rejectWithValue}) => {
+        try {
+            return await API.postUser(token, data);
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)

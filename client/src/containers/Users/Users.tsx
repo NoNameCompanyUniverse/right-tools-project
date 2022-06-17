@@ -6,15 +6,16 @@ import UserCard from "../../components/Cards/UserCard";
 import {motion} from "framer-motion";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {useSession} from "next-auth/react";
-import {getUsersAll} from "../../redux/actions/UsersAction";
+import {getUsersAll, postUser} from "../../redux/actions/UsersAction";
 import {IUserMin} from "../../types/IUser";
+import CreateUser from "../../blocks/Users/CreateUser";
 
 const Users = () => {
 
 
     const [query, setQuery] = useState("")
 
-    const {users} = useAppSelector(state => state.usersSlice);
+    const {users, isFetching} = useAppSelector(state => state.usersSlice);
     const dispatch = useAppDispatch();
 
     const handleOnSearch = (value: string) => {
@@ -27,13 +28,30 @@ const Users = () => {
     }
 
 
-
     const {data: session} = useSession()
     useEffect(() => {
         //@ts-ignore
         const token: string = session?.accessToken;
         dispatch(getUsersAll(token));
-    }, [dispatch])
+    }, [dispatch]);
+
+
+    const handleOnSubmit = (data:any) => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(postUser({token, data}));
+    }
+
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        if (isFetching === 'FULFILLED') {
+            dispatch(getUsersAll(token))
+        }
+    }, [isFetching])
+
+
+
 
     return (
         <>
@@ -44,7 +62,11 @@ const Users = () => {
                 <div className="row">
                     <div className="col-xl">
                         <div>
-                            <Title value={'Поиск новых сотрудников'}/>
+                            <Title value={'Ваши сотрудники'}/>
+                        </div>
+                        <div className="mt-5">
+                            <CreateUser
+                                onSubmit={handleOnSubmit}/>
                         </div>
                         <div className={`col-xl-8 my-5`}>
                             <Search placeholder={'Поиск ...'} onSubmit={handleOnSearch}/>

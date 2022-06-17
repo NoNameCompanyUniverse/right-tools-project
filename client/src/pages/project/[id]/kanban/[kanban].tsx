@@ -5,17 +5,21 @@ import LayoutPanel from "../../../../layout/LayoutPanel";
 
 
 import KanBan from "../../../../containers/KanBan";
+import { ToastContainer } from 'react-toastify';
 
 
 const Kanban = () => {
     return (
-        <motion.div
-            variants={PageTransition}
-            initial={`initial`}
-            animate={`animate`}
-            className={`d-flex flex-column flex-grow-1`}>
-            <KanBan/>
-        </motion.div>
+        <>
+            <motion.div
+                variants={PageTransition}
+                initial={`initial`}
+                animate={`animate`}
+                className={`d-flex flex-column flex-grow-1`}>
+                <KanBan/>
+            </motion.div>
+            <ToastContainer theme={'colored'} position={'bottom-right'}/>
+        </>
     );
 };
 

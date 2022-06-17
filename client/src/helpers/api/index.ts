@@ -4,6 +4,8 @@ class Api {
     BASE_URL: string = `${process.env.fetchURL}`;
     USERS_URL: string = `users/`;
     PROJECTS_URL: string = `projects/`;
+    SUBDIVISIONS_URL: string = 'subdivisions/';
+
 
     api = axios.create({
         baseURL: this.BASE_URL,
@@ -51,6 +53,14 @@ class Api {
         })
     }
 
+    patchUserPhoto(token: string, id: number, photo:any) {
+        let formData = new FormData();
+        formData.append('photo', photo);
+        this.api.patch(`${this.USERS_URL}${id}/photo/`, formData, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {return res.data});
+    }
+
     postUser(token: string, data: any) {
         return this.api.post(this.USERS_URL, data, {
             headers: {Authorization: `Bearer ${token}`}
@@ -67,8 +77,16 @@ class Api {
         })
     }
 
-    getProjects(token: string) {
+    getProjectsAll(token: string) {
         return this.api.get(this.PROJECTS_URL, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {
+            return res.data
+        })
+    }
+
+    getProjects({token, limit = 5} : {token: string, limit?: number}) {
+        return this.api.get(`${this.PROJECTS_URL}?limit=${limit}`, {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {
             return res.data
@@ -106,6 +124,16 @@ class Api {
             return res.data
         })
     }
+
+
+    getSubdivisions(token:string) {
+        return this.api.get(this.SUBDIVISIONS_URL, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {
+            return res.data
+        })
+    }
+
 }
 
 const API = new Api();

@@ -17,13 +17,14 @@ import Users from "../../components/Panel/Users";
 import Modal from '../../components/Modal';
 import {useSession} from "next-auth/react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {getUser, getUsers} from "../../redux/actions/UsersAction";
+import {getMe, getUser, getUsers, putUser} from "../../redux/actions/UsersAction";
+import {IUser} from "../../types/IUser";
 
 const Profile = () => {
 
-    const [userData, setUserData] = useState<IOldUserType>(user_data);
+    const {data: session} = useSession()
 
-    const {users, count, auth} = useAppSelector(state => state.usersSlice);
+    const {users, count, auth, isFetching} = useAppSelector(state => state.usersSlice);
     const dispatch = useAppDispatch();
 
 
@@ -36,9 +37,21 @@ const Profile = () => {
 
     const [id, setId] = useState(0)
 
-    const handleSetProfile = (data: IOldUserType) => {
-        setUserData(data)
-        toast.success('Профиль изменен')
+    const handleSetProfile = (_data: IUser, photo:any) => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        const data = {
+            username: _data.username,
+            first_name: _data.first_name,
+            last_name: _data.last_name,
+            phone: _data.phone,
+            email: _data.email,
+            description: _data.description,
+            date_birth: _data.date_birth,
+            subdivision: _data.subdivision.id
+        }
+        console.log(photo)
+        dispatch(putUser({token, data, id: _data.id, photo: photo}))
     };
 
     const handleDeleteProject = (id: number) => {
@@ -63,19 +76,32 @@ const Profile = () => {
     }
 
 
-    const {data: session} = useSession()
-
     useEffect(() => {
         //@ts-ignore
         const token: string = session?.accessToken;
         dispatch(getUsers({token, limit: 4}));
     }, [dispatch]);
 
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        if (isFetching === 'FULFILLED') {
+            dispatch(getMe(token));
+        }
+    }, [isFetching, dispatch])
 
 
     return (
         <>
-            <ControlProfile modal={modal[0]} setModal={handleOnModal} data={userData} onProfile={handleSetProfile}/>
+            {
+                auth && (
+                    <ControlProfile
+                        modal={modal[0]}
+                        setModal={handleOnModal}
+                        data={auth}
+                        onProfile={handleSetProfile}/>
+                )
+            }
             <motion.div
                 variants={PageTransition}
                 initial={`initial`}

@@ -159,6 +159,7 @@
       "name": "Kanban#1",
       "board": [
         {
+          "id": 1,
           "name": "Backlog",
           "items": [
             {
@@ -170,14 +171,17 @@
           ]
         },
         {
+          "id": 2,
           "name": "In Progress",
           "items": []
         },
         {
+          "id": 3,
           "name": "На проверку",
           "items": []
         },
         {
+          "id": 4,
           "name": "Done",
           "items": []
         }

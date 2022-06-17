@@ -1,23 +1,27 @@
 [
   {
+    "id": 0,
     "name":"Backlog",
     "items": [
 
     ]
   },
   {
+    "id": 1,
     "name":"In Progress",
     "items": [
 
     ]
   },
   {
+    "id": 2,
     "name":"На проверку",
     "items": [
 
     ]
   },
   {
+    "id": 3,
     "name":"Done",
     "items": [
 

@@ -6,7 +6,7 @@ interface IFormInput {
     value: string,
     setValue: (value: string, name: string) => void,
     name?: string,
-    type?: 'text' | 'email' | 'tel' | 'number' | 'password'
+    type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'date'
 }
 
 const FormInput:React.FC<IFormInput> = (

@@ -11,16 +11,24 @@ import CreateDrag from "../../blocks/KanBan/CreateDrag";
 import {IDrag} from "../../types/old/IDrag";
 import Modal from "../../components/Modal";
 import ControlDrag from "../../blocks/KanBan/ControlDrag";
+import {convertKanBan} from "../../helpers/functions";
+
+
+const dataDrag = [
+    {id: 5051, title: '1', description: '1', priority: 0, board: 0},
+    {id: 2402, title: '2', description: '2', priority: 0, board: 1},
+    {id: 2428, title: '3', description: '3', priority: 0, board: 3}
+]
 
 
 const KanBan: React.FC = () => {
-    const [boardData, setBoardData] = useState<Array<
-        { name: string, items: Array<IDrag> }>>(BoardData);
+    const [boardData, setBoardData] = useState<Array<{id: number, name: string, items: Array<IDrag> }>>(BoardData);
     const [boardItem, setBoardItem] = useState<IDrag | null>(null);
     const onDragEnd = (re: any) => {
         if (!re.destination) return;
         let newBoardData = Array.from(boardData);
         let dragItem = newBoardData[parseInt(re.source.droppableId)].items[re.source.index];
+        dragItem.board = parseInt(re.destination.droppableId);
         newBoardData[parseInt(re.source.droppableId)].items.splice(re.source.index, 1);
         newBoardData[parseInt(re.destination.droppableId)].items.splice(re.destination.index, 0, dragItem);
         setBoardData(newBoardData);
@@ -37,6 +45,7 @@ const KanBan: React.FC = () => {
             case "EDIT": {
                 let newBoardData = Array.from(boardData);
                 newBoardData = newBoardData.map(board => ({
+                    id: board.id,
                     name: board.name,
                     items: board.items.map(item => item.id === payload.id ? item = payload : item)
                 }))
@@ -46,6 +55,7 @@ const KanBan: React.FC = () => {
             case "DELETE": {
                 let newBoardData = Array.from(boardData);
                 newBoardData = newBoardData.map(board => ({
+                    id: board.id,
                     name: board.name,
                     items: board.items.filter(item => item.id !== payload.id)
                 }))
@@ -60,6 +70,12 @@ const KanBan: React.FC = () => {
     const handleOnLookDrag = (data: IDrag) => {
         setBoardItem(JSON.parse(JSON.stringify(data)));
     }
+
+
+    useEffect(() => {
+        setBoardData(convertKanBan(boardData, dataDrag))
+    }, [])
+
     return (
         <>
             <CreateDrag onDrag={handleOnDrag}/>
@@ -69,7 +85,8 @@ const KanBan: React.FC = () => {
                     {
                         boardData.map((data: any, bIndex: number) => (
                             <div key={data.name} className="col">
-                                <Droppable droppableId={bIndex.toString()}>
+                                {data.id}
+                                <Droppable droppableId={data.id.toString()}>
                                     {
                                         (provided: any, snapshot: any) => (
 

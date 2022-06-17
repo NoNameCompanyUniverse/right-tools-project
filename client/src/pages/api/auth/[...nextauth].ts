@@ -6,7 +6,10 @@ export default NextAuth({
     providers: [
         CredentialsProvider({
             name: 'credentials',
-            credentials: {username: {label: 'username', type: 'text'}, password: {label: 'password', type: 'password'},},
+            credentials: {
+                username: {label: 'username', type: 'text'},
+                password: {label: 'password', type: 'password'},
+            },
             async authorize(credentials, req) {
                 try {
                     const res = await fetch(`${process.env.fetchURL}auth/token/`, {
@@ -15,7 +18,11 @@ export default NextAuth({
                         headers: {"Content-Type": "application/json"}
                     })
                     const user = await res.json()
-                    if (res.ok && user) {return user} else {return null;}
+                    if (res.ok && user) {
+                        return user
+                    } else {
+                        return null;
+                    }
                 } catch (e) {
                     // @ts-ignore
                     const errorMessage = e.response.data.message;
@@ -29,8 +36,12 @@ export default NextAuth({
     pages: {signIn: "/auth", error: "/auth", signOut: "/",},
     session: {strategy: 'jwt', maxAge: 60 * 60,},
     callbacks: {
-        jwt: async ({token, user}) => {if (user) {token.access = user?.access;}
-            return Promise.resolve(token);},
+        jwt: async ({token, user}) => {
+            if (user) {
+                token.access = user?.access;
+            }
+            return Promise.resolve(token);
+        },
         session: async ({session, token}) => {
             session.jwt = token.jwt;
             // @ts-ignore

@@ -1,12 +1,17 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useEffect} from 'react';
 import LayoutPanel from "../../layout/LayoutPanel";
 import UsersContainer from '../../containers/Users'
+import {ToastContainer} from "react-toastify";
 
 
 const Users = () => {
+    useEffect(() => {
+        console.log('render')
+    }, [])
     return (
         <>
             <UsersContainer/>
+            <ToastContainer theme={'colored'} position={'bottom-right'}/>
         </>
     );
 };

@@ -1,16 +1,17 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {IModal} from "../../../types/IModal";
-import {IUser} from "../../../types/old/IUser";
+import {IUser} from "../../../types/IUser";
 import FormFile from "../../../components/Form/FormFile";
 import {motion} from "framer-motion";
 import {genId} from "../../../helpers/functions";
 import {XIcon} from "@heroicons/react/outline";
 import FormInput from "../../../components/Form/FormInput/FormInput";
+import FormTextarea from "../../../components/Form/FormTextarea";
 
 interface IControlProfile {
     data: IUser | null,
-    onProfile: (data: IUser) => void,
+    onProfile: (data: IUser, photo:any) => void,
     modal: IModal,
     setModal: (id:string) => void
 }
@@ -21,42 +22,25 @@ const ControlProfile: React.FC<IControlProfile> = (
     const {id, isOpen} = modal;
 
     const [state, setState] = useState<IUser | null>(null);
-    const [tag, setTag] = useState('')
+    const [photo, setPhoto] = useState<any | null>(null)
 
     const handleOnModal = (id: string) => setModal(id);
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        state && onProfile(state as IUser);
+        state && onProfile(state as IUser, photo);
         setModal(id);
     }
 
-    const handleAddTag = () => {
-        setState((state: any) => ({
-            ...state,
-            tags: [...state.tags, {value: tag, id: genId()}]
-        }))
-        setTag('')
-    }
-
-    const handleDeleteTag = (id: number) => {
-        setState((state: any) => ({
-            ...state,
-            tags: state.tags.filter((tag: { id: number, value: string }) => tag.id !== id)
-        }))
-    }
-
     const handleOnFile = (data: any, name: string) => {
-
+        setPhoto(data.file)
     }
-
     const handleSetValue = (value: string, name: string) => {
         setState((state:any) => ({
             ...state,
             [name]: value
         }))
     }
-
     useEffect(() => {
         if(modal.isOpen) {
             setState(data);
@@ -73,22 +57,23 @@ const ControlProfile: React.FC<IControlProfile> = (
                             <div className="col-12">
                                 <FormFile
                                     onFile={handleOnFile}
-                                    value={state.banner}
+                                    //value={state.banner}
+                                    value={'/profile/user-banner.jpg'}
                                     name={'banner'}/>
                             </div>
                             <div className={['col-12', 'mx-4', 'mb-3'].join(" ")} style={{"marginTop": "-3rem"}}>
                                 <FormFile
                                     rounded={true}
-                                    value={state.avatar}
-                                    name={'AVATAR'}
+                                    value={state.photo ? state.photo : '/profile/default-profile.png'}
+                                    name={'photo'}
                                     onFile={handleOnFile}/>
                             </div>
                             <div className="col-6 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Фамилия</div>
                                 <FormInput
-                                    name={'lastname'}
+                                    name={'last_name'}
                                     type={'text'}
-                                    value={state.lastname}
+                                    value={state.last_name}
                                     setValue={handleSetValue}
                                     placeholder={'Введите фамилия'}
                                 />
@@ -96,29 +81,29 @@ const ControlProfile: React.FC<IControlProfile> = (
                             <div className="col-6 mb-3">
                                 <div className="f-7 mb-2 fw-bold">Имя</div>
                                 <FormInput
-                                    name={'firstname'}
+                                    name={'first_name'}
                                     type={'text'}
-                                    value={state.firstname}
+                                    value={state.first_name}
                                     setValue={handleSetValue}
                                     placeholder={'Введите фамилия'}
                                 />
                             </div>
-                            <div className="col-12 mb-3">
-                                <div className="f-7 mb-2 fw-bold">Статус</div>
-                                <FormInput
-                                    name={'status'}
-                                    type={'text'}
-                                    value={state.status}
-                                    setValue={handleSetValue}
-                                    placeholder={'Введите имя'}
-                                />
-                            </div>
+                            {/*<div className="col-12 mb-3">*/}
+                            {/*    <div className="f-7 mb-2 fw-bold">Статус</div>*/}
+                            {/*    <FormInput*/}
+                            {/*        name={'status'}*/}
+                            {/*        type={'text'}*/}
+                            {/*        value={state.status}*/}
+                            {/*        setValue={handleSetValue}*/}
+                            {/*        placeholder={'Введите статус'}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
                             <div className="col-6 mb-4">
                                 <div className="f-7 mb-2 fw-bold">Телефон</div>
                                 <FormInput
-                                    name={'tel'}
+                                    name={'phone'}
                                     type={'tel'}
-                                    value={state.tel}
+                                    value={state.phone}
                                     setValue={handleSetValue}
                                     placeholder={'Введите фамилия'}
                                 />
@@ -133,41 +118,15 @@ const ControlProfile: React.FC<IControlProfile> = (
                                     setValue={handleSetValue}
                                 />
                             </div>
-                            <div className="col-12">
-                                <div className="f-7 mb-2 fw-bold">Ваши способности</div>
-                                <div className="d-flex" style={{'overflow': 'auto auto'}}>
-                                    {
-                                        state.tags.map((tag: { id: number, value: string }) => (
-                                            <motion.div
-                                                whileHover={{x: 2}}
-                                                key={tag.id}
-                                                className='tag'>
-                                                <div className={'d-flex align-items-center'}>
-                                                    <span>{tag.value}</span>
-                                                    <button onClick={() => handleDeleteTag(tag.id)} type={'button'} className={'ms-1 btn'}>
-                                                        <XIcon/>
-                                                    </button>
-                                                </div>
-                                            </motion.div>
-                                        ))
-                                    }
-                                </div>
-                                <div className="d-flex mt-2 align-items-stretch">
-                                    <input
-                                        type="text"
-                                        name={'email'}
-                                        onChange={event => setTag(event.target.value)}
-                                        value={tag}
-                                        placeholder={'Введите навык'}
-                                        className='form-control'/>
-                                    <button
-                                        disabled={tag.length <= 0}
-                                        onClick={() => handleAddTag()}
-                                        type={'button'}
-                                        className="btn ms-2 btn-green">
-                                        Добавить
-                                    </button>
-                                </div>
+                            <div className="col-12 mb-3">
+                                <div className="f-7 mb-2 fw-bold">Описание</div>
+                                <FormTextarea
+                                    placeholder={'Введите описание'}
+                                    value={state.description}
+                                    rows={5}
+                                    name={'description'}
+                                    maxLength={150}
+                                    setValue={handleSetValue}/>
                             </div>
                             <div className="col-12 mt-5">
                                 <div className="d-flex justify-content-end">

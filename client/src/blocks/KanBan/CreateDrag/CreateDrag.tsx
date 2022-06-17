@@ -19,7 +19,8 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
     const [state, setState] = useState<INewDrag>({
         title: '',
         priority: '0',
-        description: ''
+        description: '',
+        board: 0,
     });
 
 
@@ -44,7 +45,8 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
             id: genId(),
             title: state.title,
             description: state.description,
-            priority: +state.priority
+            priority: +state.priority,
+            board: state.board
         }
         onDrag({type: "CREATE", payload: newDrag});
         handleOnModal(modal.id);
@@ -53,7 +55,7 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
 
     useEffect(() => {
         if (!modal.isOpen) {
-            setState({title: '', description: '', priority: '0'});
+            setState({title: '', description: '', priority: '0', board: 0});
         }
 
     }, [modal]);

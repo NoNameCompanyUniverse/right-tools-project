@@ -8,7 +8,6 @@ import type {AppProps} from 'next/app'
 import {useRouter} from 'next/router';
 import {useState, useEffect} from "react";
 import Preloader from "../components/Preloader";
-import {ToastContainer} from "react-toastify";
 import {SessionProvider, useSession} from "next-auth/react";
 import {setupStore} from "../redux";
 import {Provider as ReduxProvider} from "react-redux";
@@ -63,7 +62,6 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
                     </AnimatePresence>
                 </ReduxProvider>
             </SessionProvider>
-            <ToastContainer theme={'colored'} position={'bottom-right'}/>
         </>
     )
 }
@@ -73,6 +71,7 @@ function Auth({children}) {
     const router = useRouter()
     const {data: session, status} = useSession();
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         if (status === 'loading') return
         if (status === 'unauthenticated') router.push('/auth')
