@@ -168,6 +168,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'rt_app.User'
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(55e+6)
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -216,7 +218,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     os.getenv('CORS_ALLOWED_ORIGINS'),
 ]
-
 
 DJANGO_SIMPLE_LOGS = {
     "LOGURU": {
