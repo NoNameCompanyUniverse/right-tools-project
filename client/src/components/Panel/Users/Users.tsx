@@ -1,16 +1,17 @@
 import React from 'react';
-import { IUserMin } from '../../../types/IUser';
+import {IUserMin} from '../../../types/IUser';
 import style from './index.module.scss';
 import Link from 'next/link'
+import SkeletonMinUser from "../../Skeleton/SkeletonMinUser";
 
 
 type IUsers = {
     users: Array<IUserMin>
 }
 
-const Users:React.FC<IUsers> = ({users}) => {
+const Users: React.FC<IUsers> = ({users}) => {
 
-    const User:React.FC<{props: IUserMin}> = ({props}) => {
+    const User: React.FC<{ props: IUserMin }> = ({props}) => {
 
         const {id, subdivision, full_name, photo} = props;
 
@@ -44,13 +45,18 @@ const Users:React.FC<IUsers> = ({users}) => {
                 Ваши коллеги
             </div>
             {
-
-                users.map((user, index) => (
-                    <div key={index} className={`mb-3`}>
-                        <User props={user}/>
-                    </div>
-                ))
-
+                users.length <= 0
+                    ? [...new Array(4)].map((_, index) => (
+                        <div key={index} className={`mb-3`}>
+                            <SkeletonMinUser/>
+                        </div>
+                    )) : (
+                        users.map((user, index) => (
+                            <div key={index} className={`mb-3`}>
+                                <User props={user}/>
+                            </div>
+                        ))
+                    )
             }
             <div className={'mt-3'}>
                 <Link href={'/users'}>

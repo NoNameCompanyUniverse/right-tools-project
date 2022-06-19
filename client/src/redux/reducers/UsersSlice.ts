@@ -31,8 +31,9 @@ export const usersSlice = createSlice({
             state.users = action.payload.results;
             state.count = action.payload.count;
         },
-        [getUsers.rejected.type]: () => {
-            toast.error('Ошибка загрузки пользователей')
+        [getUsers.rejected.type]: (state) => {
+            toast.error('Ошибка загрузки пользователей');
+            state.users = []
         },
 
         [getUsersAll.pending.type]: (state) => {
@@ -44,7 +45,8 @@ export const usersSlice = createSlice({
         },
         [getUsersAll.rejected.type]: (state) => {
             //state.isFetching = 'REJECTED'
-            toast.error('Ошибка загрузки пользователей')
+            toast.error('Ошибка загрузки пользователей');
+            state.users = []
         },
 
         [getUser.pending.type]: () => {
@@ -63,8 +65,9 @@ export const usersSlice = createSlice({
         [getMe.fulfilled.type]: (state, action: PayloadAction<IUser>) => {
             state.auth = action.payload;
         },
-        [getMe.rejected.type]: () => {
-            toast.error('Ошибка пользователя')
+        [getMe.rejected.type]: (state) => {
+            toast.error('Ошибка пользователя');
+            state.user = null;
         },
 
         [putUser.pending.type]: (state) => {

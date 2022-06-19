@@ -19,6 +19,7 @@ import {useSession} from "next-auth/react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {getMe, getUser, getUsers, putUser} from "../../redux/actions/UsersAction";
 import {IUser} from "../../types/IUser";
+import SkeletonProfile from "../../components/Skeleton/SkeletonProfile";
 
 const Profile = () => {
 
@@ -167,10 +168,8 @@ const Profile = () => {
                     <div className="col-auto">
                         <div className={`mb-3`}>
                             {
-                                auth && (
-                                    <User
-                                        data={auth}
-                                    >
+                                auth ? (
+                                    <User data={auth}>
                                         <button
                                             type={`button`}
                                             onClick={() => handleOnModal(modal[0].id)}
@@ -178,7 +177,7 @@ const Profile = () => {
                                             Изменить
                                         </button>
                                     </User>
-                                )
+                                ) : <SkeletonProfile/>
                             }
                         </div>
                         <div className={`mb-3`}>
