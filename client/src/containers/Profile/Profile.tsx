@@ -1,8 +1,5 @@
 import React, {FormEvent, useEffect, useState} from 'react';
-import {IUser as IOldUserType} from "../../types/old/IUser";
-import user_data from "../../../data-profile.json";
-import {IProject} from "../../types/old/IProject";
-import projects_data from "../../../data-projects.json";
+import {IProject} from "../../types/IProject";
 import {IModal} from "../../types/IModal";
 import {toast} from "react-toastify";
 import ControlProfile from "../../blocks/Profile/ControlProfile";
@@ -10,26 +7,29 @@ import {motion} from "framer-motion";
 import {PageTransition} from "../../motion";
 import Title from "../../components/Panel/Title";
 import StatisticsCard from "../../components/Panel/StatisticsCard";
-import ProjectCard from "../../components/Cards/ProjectCard";
-import Link from "next/link";
 import User from "../../components/Panel/User";
 import Users from "../../components/Panel/Users";
 import Modal from '../../components/Modal';
 import {useSession} from "next-auth/react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {getMe, getUser, getUsers, putUser} from "../../redux/actions/UsersAction";
+import {getUsers} from "../../redux/actions/UsersAction";
 import {IUser} from "../../types/IUser";
 import SkeletonProfile from "../../components/Skeleton/SkeletonProfile";
+import SkeletonProject from "../../components/Skeleton/ SkeletonProject";
+import {getProfileInfo, putMe} from "../../redux/actions/ProfileAction";
+import {getProjectsProfile} from "../../redux/actions/ProjectsAction";
+import ProjectCard from "../../components/Cards/ProjectCard/ProjectCard";
+import Link from 'next/link'
 
 const Profile = () => {
 
     const {data: session} = useSession()
 
-    const {users, count, auth, isFetching} = useAppSelector(state => state.usersSlice);
+    const {users, isFetching} = useAppSelector(state => state.usersSlice);
+    const {auth, info} = useAppSelector(state => state.profileSlice);
+    const {projects, loading} = useAppSelector(state => state.projectSlice);
     const dispatch = useAppDispatch();
 
-
-    const [projectsData, setProjectsData] = useState<Array<IProject>>(projects_data);
 
     const [modal, setModal] = useState<IModal []>([
         {id: '#controlUser', isOpen: false},
@@ -38,7 +38,7 @@ const Profile = () => {
 
     const [id, setId] = useState(0)
 
-    const handleSetProfile = (_data: IUser, photo:any, banner:any) => {
+    const handleSetProfile = (_data: IUser, photo: any, banner: any) => {
         //@ts-ignore
         const token: string = session?.accessToken;
         const data = {
@@ -52,13 +52,9 @@ const Profile = () => {
             subdivision: _data.subdivision.id
         }
         console.log(photo)
-        dispatch(putUser({token, data, id: _data.id, photo, banner}))
+        dispatch(putMe({token, data, id: _data.id, photo, banner}))
     };
 
-    const handleDeleteProject = (id: number) => {
-        setId(id);
-        handleOnModal(modal[1].id);
-    }
 
     const handleOnModal = (id: string) => {
         let clone = modal.concat();
@@ -70,27 +66,19 @@ const Profile = () => {
 
     const handleOnDelete = (e: FormEvent) => {
         e.preventDefault();
-        setProjectsData(projectsData.filter(i => i.id !== id));
+        //setProjectsData(projectsData.filter(i => i.id !== id));
         toast.error('Проект удален');
         setId(0);
         handleOnModal(modal[1].id);
     }
 
-
     useEffect(() => {
         //@ts-ignore
         const token: string = session?.accessToken;
         dispatch(getUsers({token, limit: 4}));
+        dispatch(getProfileInfo(token));
+        dispatch(getProjectsProfile({token, limit: 3}));
     }, [dispatch]);
-
-    useEffect(() => {
-        //@ts-ignore
-        const token: string = session?.accessToken;
-        if (isFetching === 'FULFILLED') {
-            dispatch(getMe(token));
-        }
-    }, [isFetching, dispatch])
-
 
     return (
         <>
@@ -116,7 +104,7 @@ const Profile = () => {
                             <div className="col-sm-4">
                                 <StatisticsCard
                                     title={`Количество сотрудников`}
-                                    count={count}
+                                    count={info.users}
                                     description={`Количество сотрудников в вашей корпоративной среде`}
                                     background={'#868974'}
                                 />
@@ -124,7 +112,7 @@ const Profile = () => {
                             <div className="col-sm-4">
                                 <StatisticsCard
                                     title={`Количество проектов вашим участием`}
-                                    count={17}
+                                    count={info.projects_with_me}
                                     description={`Количество проектов в которых вы принимаете участие`}
                                     background={`#F0B878`}
                                 />
@@ -132,7 +120,7 @@ const Profile = () => {
                             <div className="col-sm-4">
                                 <StatisticsCard
                                     title={`Количество ваших проектов`}
-                                    count={25}
+                                    count={info.projects_admin}
                                     description={`Количество ваших личных проектов`}
                                     background={`#8E9993`}
                                 />
@@ -143,25 +131,30 @@ const Profile = () => {
                         </div>
                         <div className="row my-5 gx-4">
                             {
-                                projectsData.map((project, index: number) => (
+                                loading === 'PENDING' ? [...new Array(3)].map((_, index) => (
                                     <div key={index} className="col-xxl-4 col-lg-6 mb-4">
-                                        <ProjectCard
-                                            data={project}>
-                                            <ul>
-                                                <li>
-                                                    <Link href={`/project/${project.id}`}>
-                                                        <a>
-                                                            Подробнее
-                                                        </a>
-                                                    </Link>
-                                                </li>
-                                                <li onClick={() => handleDeleteProject(project.id)}>
-                                                    Удалить
-                                                </li>
-                                            </ul>
-                                        </ProjectCard>
+                                        <SkeletonProject/>
                                     </div>
-                                ))
+                                )) : loading === 'FULFILLED' ? Array.isArray(projects) && projects.length > 0 ? projects
+                                        .slice(0, 3).map((i: IProject, index) => (
+                                            <div key={index} className="col-xxl-4 col-lg-6 mb-4">
+                                                <ProjectCard data={i} root={auth ? auth.id : 0}>
+                                                    <ul>
+                                                        <li>
+                                                            <Link href={`/project/${i.id}`}>
+                                                                <a>
+                                                                    Подробнее
+                                                                </a>
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            Удалить
+                                                        </li>
+                                                    </ul>
+                                                </ProjectCard>
+                                            </div>
+                                        )) : <>Нет проектов</>
+                                    : <>Ошибка загрузки</>
                             }
                         </div>
                     </div>

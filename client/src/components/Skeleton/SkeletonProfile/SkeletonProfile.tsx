@@ -1,6 +1,6 @@
 import React from 'react';
 import ContentLoader from "react-content-loader"
-import style from './index.module.scss';
+import style from '../index.module.scss';
 
 const SkeletonProfile = () => {
     return (

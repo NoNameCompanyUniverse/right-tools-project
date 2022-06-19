@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import API from "../../helpers/api";
-import {IAuth} from "../../types/IAuth";
+
 
 export const getUsers = createAsyncThunk(
     'users/get',
@@ -37,17 +37,6 @@ export const getUser = createAsyncThunk(
     }
 )
 
-export const getMe = createAsyncThunk(
-    'me/get',
-    async (token:string, {rejectWithValue}) => {
-        try {
-            return await API.getMe(token);
-        } catch (e) {
-            // @ts-ignore
-            return rejectWithValue(e.message)
-        }
-    }
-)
 
 export const putUser = createAsyncThunk(
     'user/put',
@@ -59,13 +48,16 @@ export const putUser = createAsyncThunk(
             if (banner) {
                 await API.patchUserBanner(token, id, banner)
             }
-            return  await API.putUser(token, id, data);
+            await API.putUser(token, id, data);
+            return  await API.getMe(token)
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)
         }
     }
 )
+
+
 
 export const postUser = createAsyncThunk(
     'user/post',

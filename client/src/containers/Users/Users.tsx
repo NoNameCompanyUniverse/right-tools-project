@@ -9,6 +9,7 @@ import {useSession} from "next-auth/react";
 import {getUsersAll, postUser} from "../../redux/actions/UsersAction";
 import {IUserMin} from "../../types/IUser";
 import CreateUser from "../../blocks/Users/CreateUser";
+import SkeletonUser from "../../components/Skeleton/SkeletonUser";
 
 const Users = () => {
 
@@ -36,7 +37,7 @@ const Users = () => {
     }, [dispatch]);
 
 
-    const handleOnSubmit = (data:any) => {
+    const handleOnSubmit = (data: any) => {
         //@ts-ignore
         const token: string = session?.accessToken;
         dispatch(postUser({token, data}));
@@ -49,8 +50,6 @@ const Users = () => {
             dispatch(getUsersAll(token))
         }
     }, [isFetching])
-
-
 
 
     return (
@@ -73,24 +72,30 @@ const Users = () => {
                         </div>
                         <div className={`row`}>
                             {
-                                users.filter(user => user.full_name.toLowerCase().includes(query))
-                                    .map((user, index) => (
-                                    <motion.div
-                                        variants={fadeUp}
-                                        initial={`initial`}
-                                        animate={`animate`}
-                                        custom={index}
-                                        key={user.id}
-                                        className={`col-xl-3 mb-3`}>
-                                        <UserCard data={user}>
-                                            <ul>
-                                                <li onClick={() => handleOnUser(user)}>
-                                                    Подробнее
-                                                </li>
-                                            </ul>
-                                        </UserCard>
-                                    </motion.div>
-                                ))
+                                Array.isArray(users) && users.length <= 0
+                                    ? [...new Array(6)].map((_, index) => (
+                                        <div key={index} className={`col-xl-3 mb-3`}>
+                                            <SkeletonUser/>
+                                        </div>
+                                    ))
+                                    : users.filter(user => user.full_name.toLowerCase().includes(query))
+                                        .map((user, index) => (
+                                            <motion.div
+                                                variants={fadeUp}
+                                                initial={`initial`}
+                                                animate={`animate`}
+                                                custom={index}
+                                                key={user.id}
+                                                className={`col-xl-3 mb-3`}>
+                                                <UserCard data={user}>
+                                                    <ul>
+                                                        <li onClick={() => handleOnUser(user)}>
+                                                            Подробнее
+                                                        </li>
+                                                    </ul>
+                                                </UserCard>
+                                            </motion.div>
+                                        ))
                             }
                         </div>
                     </div>

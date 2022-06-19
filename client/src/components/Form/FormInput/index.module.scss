@@ -1,3 +1,7 @@
+.container {
+  position: relative;
+}
+
 .control {
   display: block;
   width: 100%;
@@ -8,8 +12,48 @@
   outline: 0;
   border-radius: var(--radius-value);
   font-weight: 500;
+  height: 55px;
   resize: none;
+
   &::placeholder {
     color: var(--gray);
   }
+
+  &[type='date'] {
+    padding: 1.6rem 1.2rem .8rem 1rem;
+
+    & + .label {
+      font-size: .75rem;
+      transform: scale(.9);
+      padding: .7rem 1rem;
+
+    }
+  }
+
+  &:focus,
+  &:valid {
+    padding: 1.6rem 1.2rem .8rem 1rem;
+
+    & + .label {
+      font-size: .75rem;
+      transform: scale(.9);
+      padding: .7rem 1rem;
+
+    }
+  }
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  padding: 1rem;
+  left: 0;
+  height: 100%;
+  transform: scale(1);
+  pointer-events: none;
+  border: 1px solid transparent;
+  transform-origin: 0 0;
+  transition: opacity .1s ease-in-out, transform .1s ease-in-out;
+  color: var(--gray);
+  font-size: .9rem;
 }

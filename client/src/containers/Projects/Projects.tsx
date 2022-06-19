@@ -1,32 +1,39 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import Title from "../../components/Panel/Title";
-import {FolderAddIcon} from "@heroicons/react/outline";
 import Search from "../../components/Search";
 import {motion} from "framer-motion";
-import {fadeUp, PageTransition} from "../../motion";
+import {PageTransition} from "../../motion";
 import ProjectCard from "../../components/Cards/ProjectCard";
-import {IProject} from "../../types/old/IProject";
-import projects_data from "../../../data-projects.json";
+import {IProject} from "../../types/IProject";
 import Link from 'next/link'
 import {IModal} from "../../types/IModal";
 import {toast} from "react-toastify";
 import Modal from "../../components/Modal";
 import CreateProject from "../../blocks/Project/CreateProject";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import SkeletonProject from "../../components/Skeleton/ SkeletonProject";
+import {getProjectsProfileAll} from "../../redux/actions/ProjectsAction";
+import {useSession} from "next-auth/react";
 
 const Projects = () => {
+
+    const {data: session} = useSession()
+
     const [query, setQuery] = useState("")
     const [id, setId] = useState(0)
+    const {auth, info} = useAppSelector(state => state.profileSlice);
+    const {projects, loading} = useAppSelector(state => state.projectSlice);
+    const dispatch = useAppDispatch();
     const [modal, setModal] = useState<IModal []>([
         {id: '#users', isOpen: false},
         {id: '#popup', isOpen: false},
     ]);
 
-    const [projectsData, setProjectsData] = useState<Array<IProject>>(projects_data);
+
 
     const handleOnSearch = (value: string) => {
         setQuery(value)
     }
-
 
 
     const handleDeleteProject = (id: number) => {
@@ -35,18 +42,24 @@ const Projects = () => {
     }
     const handleOnModal = (id: string) => {
         let clone = modal.concat();
-        clone = clone.map((e:IModal) => (
+        clone = clone.map((e: IModal) => (
             e.id === id ? {id: e.id, isOpen: !e.isOpen} : e
         ))
         setModal(clone)
     }
-    const handleOnDelete = (e:FormEvent) => {
+    const handleOnDelete = (e: FormEvent) => {
         e.preventDefault();
-        setProjectsData(projectsData.filter(i => i.id !== id));
+        //setProjectsData(projectsData.filter(i => i.id !== id));
         toast.error('Проект удален');
         setId(0);
         handleOnModal(modal[1].id);
     }
+
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(getProjectsProfileAll(token));
+    }, [dispatch]);
 
 
     return (
@@ -89,33 +102,31 @@ const Projects = () => {
                         </div>
                         <div className="row">
                             {
-                                projectsData.filter(project => project.name.toLowerCase().includes(query)).map(
-                                    (project, index) => (
-
-                                        <motion.div
-                                            variants={fadeUp}
-                                            initial={`initial`}
-                                            animate={`animate`}
-                                            custom={index}
-                                            key={project.id}
-                                            className="col-xxl-4 col-lg-6 mb-4">
-                                            <ProjectCard
-                                                data={project}
-                                            >
+                                loading === 'PENDING' ? [...new Array(3)].map((_, index) => (
+                                    <div key={index} className="col-xxl-4 col-lg-6 mb-4">
+                                        <SkeletonProject/>
+                                    </div>
+                                )) : loading === 'FULFILLED' ? Array.isArray(projects) && projects.length > 0 ? projects.map((i: IProject, index) => (
+                                        <div key={index} className="col-xxl-4 col-lg-6 mb-4">
+                                            <ProjectCard data={i} root={auth ? auth.id : 0}>
                                                 <ul>
                                                     <li>
-                                                        <Link href={`/project/${project.id}`}>
-                                                            Подробнее
+                                                        <Link href={`/project/${i.id}`}>
+                                                            <a>
+                                                                Подробнее
+                                                            </a>
                                                         </Link>
                                                     </li>
-                                                    <li onClick={() => handleDeleteProject(project.id)}>
+                                                    <li>
                                                         Удалить
                                                     </li>
                                                 </ul>
                                             </ProjectCard>
-                                        </motion.div>
-                                ))
+                                        </div>
+                                    )) : <>Нет проектов</>
+                                    : <>Ошибка загрузки</>
                             }
+
 
                         </div>
                     </div>

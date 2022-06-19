@@ -2,7 +2,7 @@ import {IKanBan} from "../../types/old/IKanBan";
 import {IDrag} from "../../types/old/IDrag";
 
 export const genId = () => {
-    return Math.ceil(new Date().getTime() / Math.random() / 1000000000);
+    return Math.ceil(new Date().getTime() / Math.random() / 10000);
 }
 
 

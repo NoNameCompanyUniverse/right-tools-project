@@ -1,10 +1,11 @@
 import React, {FormEvent, useEffect, useState} from 'react';
-import users_data from '../../../../data-users.json'
-import {IUser} from "../../../types/old/IUser";
+import {IUserMin} from "../../../types/IUser";
 import {IModal} from "../../../types/IModal";
 import Modal from '../../../components/Modal';
 import style from "../../../styles/project/index.module.scss";
 import {genId} from "../../../helpers/functions";
+import {useSession} from "next-auth/react";
+import {useAppSelector} from "../../../redux/hooks";
 
 interface IAddUser {
     modal: IModal,
@@ -15,22 +16,29 @@ interface IAddUser {
 
 const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => {
 
-    const [state, setState] = useState<IUser[]>(users_data);
+    //const [state, setState] = useState<IUser[]>(users_data);
 
     const {id, isOpen} = modal
 
-    const [users, setUsers] = useState<Array<number>>(participant);
+
+    const {data: session} = useSession()
+    const {users, isFetching} = useAppSelector(state => state.usersSlice);
+    const {auth} = useAppSelector(state => state.profileSlice);
+
+
+
+    const [participantData, setParticipantData] = useState<Array<number>>(participant)
 
     const handleOnModal = (id: string) => onModal(id);
 
     const handleOnUser = (id: number, type: 'ADD' | 'DELETE') => {
         switch (type) {
             case "ADD": {
-                setUsers(state => [...state, id])
+                setParticipantData(state => [...state, id])
                 break;
             }
             case "DELETE": {
-                setUsers(users.filter(u => u !== id));
+                setParticipantData(participantData.filter(u => u !== id));
                 break;
             }
             default : {
@@ -41,42 +49,45 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => 
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        onUsers(users);
+        onUsers(participantData);
         onModal(id);
     }
 
     useEffect(() => {
-        //setUsers(participant)
+        setParticipantData(participant)
     }, []);
 
     useEffect(() => {
-        !isOpen ? setUsers([]) : setUsers(participant);
+        !isOpen ? setParticipantData([]) : setParticipantData(participant);
     }, [isOpen])
 
 
-    const User: React.FC<{ props: IUser }> = ({props}) => {
-
-        const {id, status, firstname, lastname, avatar} = props;
 
 
-        const isActive = users.includes(id);
+
+    const User: React.FC<{ props: IUserMin }> = ({props}) => {
+
+        const {id, subdivision, full_name, photo} = props;
+
+
+        const isActive = participantData.includes(id);
 
         return (
             <>
                 <div className={`d-flex align-items-center mb-3`}>
                     <div className={style.avatar}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={avatar} alt=""/>
+                        <img src={photo ? photo : '/profile/default-profile.png'} alt=""/>
                     </div>
                     <div className={`ms-3`}>
                         <div className={style.name}>
                             <span className={`text-black`}>
-                                {[lastname, firstname].join(" ")}
+                                {full_name}
                             </span>
                         </div>
                         <div className={style.status}>
                             <span className="text-gray">
-                                {status}
+                                {subdivision.name}
                             </span>
                         </div>
                     </div>
@@ -99,13 +110,20 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => 
     return (
         <Modal modal={modal} onClose={handleOnModal} title={'Пользователи'}>
             <form onSubmit={handleOnSubmit}>
-                {
-                    users_data.map((user: IUser) => (
-                        <React.Fragment key={genId()}>
-                            <User props={user}/>
-                        </React.Fragment>
-                    ))
-                }
+                <div style={{"maxHeight": "550px", "overflow": "auto"}} className={'px-1'}>
+                    {
+                        users.map((user: IUserMin, index) => (
+                            <React.Fragment key={index}>
+                                {
+                                    auth ? user.id !== auth.id
+                                            ? <User props={user}/>
+                                            : ''
+                                        : <User props={user}/>
+                                }
+                            </React.Fragment>
+                        ))
+                    }
+                </div>
                 <div className="mt-4">
                     <div className="d-flex justify-content-end">
                         <button type={'submit'} className="btn btn-green">Отправить</button>

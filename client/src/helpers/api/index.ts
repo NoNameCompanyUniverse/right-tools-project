@@ -19,6 +19,13 @@ class Api {
         })
     }
 
+    getProfileInfo(token: string) {
+        return this.api.get(`${this.USERS_URL}me/profile/info/`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
 
     getUsersAll(token: string) {
         return this.api.get(this.USERS_URL, {
@@ -29,7 +36,7 @@ class Api {
     }
 
 
-    getUsers({token, limit = 5} : {token: string, limit?: number}) {
+    getUsers({token, limit = 5}: { token: string, limit?: number }) {
         return this.api.get(`${this.USERS_URL}?limit=${limit}`, {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {
@@ -53,20 +60,24 @@ class Api {
         })
     }
 
-    patchUserPhoto(token: string, id: number, photo:any) {
+    patchUserPhoto(token: string, id: number, photo: any) {
         let formData = new FormData();
         formData.append('photo', photo);
         this.api.patch(`${this.USERS_URL}${id}/photo/`, formData, {
             headers: {Authorization: `Bearer ${token}`}
-        }).then(res => {return res.data});
+        }).then(res => {
+            return res.data
+        });
     }
 
-    patchUserBanner(token: string, id: number, banner:any) {
+    patchUserBanner(token: string, id: number, banner: any) {
         let formData = new FormData();
         formData.append('photo', banner);
         this.api.patch(`${this.USERS_URL}${id}/banner/`, formData, {
             headers: {Authorization: `Bearer ${token}`}
-        }).then(res => {return res.data});
+        }).then(res => {
+            return res.data
+        });
     }
 
     postUser(token: string, data: any) {
@@ -93,7 +104,7 @@ class Api {
         })
     }
 
-    getProjects({token, limit = 5} : {token: string, limit?: number}) {
+    getProjects({token, limit = 5}: { token: string, limit?: number }) {
         return this.api.get(`${this.PROJECTS_URL}?limit=${limit}`, {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {
@@ -107,6 +118,16 @@ class Api {
         }).then(res => {
             return res.data
         })
+    }
+
+    patchProjectPicture(token:string, id:number, picture: any) {
+        let formData = new FormData();
+        formData.append('picture', picture);
+        this.api.patch(`${this.PROJECTS_URL}${id}/picture/`, formData, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {
+            return res.data
+        });
     }
 
     getProject(token: string, id: number) {
@@ -133,8 +154,24 @@ class Api {
         })
     }
 
+    getProfileProject(token:string, limit: number) {
+        return this.api.get(`${this.USERS_URL}me/profile/projects/?limit=${limit}/`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    getProfileProjectAll(token:string) {
+        return this.api.get(`${this.USERS_URL}me/profile/projects/`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
 
-    getSubdivisions(token:string) {
+
+
+    getSubdivisions(token: string) {
         return this.api.get(this.SUBDIVISIONS_URL, {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {

@@ -6,7 +6,8 @@ interface IFormInput {
     value: string,
     setValue: (value: string, name: string) => void,
     name?: string,
-    type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'date'
+    type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'date',
+    required?: boolean
 }
 
 const FormInput:React.FC<IFormInput> = (
@@ -16,21 +17,23 @@ const FormInput:React.FC<IFormInput> = (
         value,
         name= '',
         type = 'text',
+        required = true
     }) => {
 
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value, name)
 
 
     return (
-        <>
+        <div className={style.container}>
             <input
                 onChange={handleOnChange}
-                placeholder={placeholder}
                 type={type}
                 name={name}
                 value={value}
-                className={style.control}/>
-        </>
+                className={style.control}
+                required={required}/>
+            <span className={style.label}>{placeholder}</span>
+        </div>
     );
 };
 

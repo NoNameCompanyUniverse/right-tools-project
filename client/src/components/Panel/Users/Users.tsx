@@ -45,7 +45,7 @@ const Users: React.FC<IUsers> = ({users}) => {
                 Ваши коллеги
             </div>
             {
-                users.length <= 0
+                Array.isArray(users) && users.length <= 0
                     ? [...new Array(4)].map((_, index) => (
                         <div key={index} className={`mb-3`}>
                             <SkeletonMinUser/>

@@ -5,7 +5,7 @@ import {useAppSelector} from "../../../redux/hooks";
 
 const NavBar = () => {
 
-    const {auth} = useAppSelector(state => state.usersSlice)
+    const {auth} = useAppSelector(state => state.profileSlice)
 
 
     return (

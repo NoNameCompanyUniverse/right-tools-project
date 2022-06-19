@@ -3,26 +3,27 @@ import style from './index.module.scss';
 import Link from 'next/link'
 import DropDown from "../../DropDown";
 import {IUser} from "../../../types/old/IUser";
-import {IProject} from "../../../types/old/IProject";
+import {IProject} from "../../../types/IProject";
 
 
 interface IProjectCard  {
     data: IProject,
-    children?: ReactNode | ReactNode []
+    children?: ReactNode | ReactNode [],
+    root: number
 }
 
-const ProjectCard: React.FC<IProjectCard> = ({data, children}) => {
+const ProjectCard: React.FC<IProjectCard> = ({data, children, root}) => {
 
-    const {name, status, description, team, id} = data;
+    const {name, admin, participants, id} = data;
 
 
 
-    const User: React.FC<{ id: number, avatar: string }> = ({id, avatar}) => {
+    const User: React.FC<{ id: number, photo: string }> = ({id, photo}) => {
         return (
             <>
                 <div className={style.avatar}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={avatar} alt=""/>
+                    <img src={photo ? photo : '/profile/default-profile.png'} alt=""/>
                 </div>
             </>
         )
@@ -32,14 +33,14 @@ const ProjectCard: React.FC<IProjectCard> = ({data, children}) => {
     return (
         <div className={style.block}>
             <div className={style.team}>
-                {team.length > 3 && (<div className={style.count}>
-                    {`+${team.length - 3}`}
+                {participants.length > 3 && (<div className={style.count}>
+                    {`+${participants.length - 3}`}
                 </div>)}
-                {team.map((item: { avatar: string, id: number }, index: number) => {
+                {participants.map((item: { photo: string, id: number }, index: number) => {
                     if (index < 3) {
                         return (
                             <>
-                                <User key={index} id={item.id} avatar={item.avatar}/>
+                                <User key={index} {...item}/>
                             </>
                         )
                     }
@@ -63,13 +64,12 @@ const ProjectCard: React.FC<IProjectCard> = ({data, children}) => {
                     </a>
                 </Link>
             </div>
-            <div
-                className={`${style.status} ${status.id === 1 ? style.admin : status.id === 2 ? style.developer : ''}`}>
-                {status.value}
+            <div className={[style.status, admin === root ? style.admin : style.developer].join(" ")}>
+                {admin === root ? 'Администратор' : 'Разработчик'}
             </div>
-            <div className={style.description}>
-                {description}
-            </div>
+            {/*<div className={style.description}>*/}
+            {/*    {description}*/}
+            {/*</div>*/}
         </div>
     );
 };

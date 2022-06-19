@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import style from '../../../styles/project/index.module.scss';
 import {FolderAddIcon, PlusSmIcon} from "@heroicons/react/outline";
 import {motion} from "framer-motion";
@@ -7,8 +7,13 @@ import {IModal} from "../../../types/IModal";
 import FormInput from "../../../components/Form/FormInput/FormInput";
 import FormFile from "../../../components/Form/FormFile";
 import AddUser from "../AddUser";
-import users_data from '../../../../data-users.json';
+import {IUserMin} from "../../../types/IUser";
 import {XIcon} from "@heroicons/react/outline";
+import {useSession} from "next-auth/react";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {getUsersAll} from "../../../redux/actions/UsersAction";
+import FormTextarea from "../../../components/Form/FormTextarea/FormTextarea";
+import {postProject} from "../../../redux/actions/ProjectsAction";
 
 const CreateProject = () => {
 
@@ -17,10 +22,14 @@ const CreateProject = () => {
         {id: '2', isOpen: false},
     ]);
 
+    const {data: session} = useSession()
+    const {users, isFetching} = useAppSelector(state => state.usersSlice);
+    const dispatch = useAppDispatch();
+    const [picture, setPicture] = useState<any | null>(null)
+
     const [state, setState] = useState({
         name: '',
         description: '',
-        picture: '',
         participant: []
     })
 
@@ -35,32 +44,46 @@ const CreateProject = () => {
     const handleSetValue = (value: string, name: string) => setState(state => ({...state, [name]: value}));
 
     const handleOnFile = (data: any, name: string) => {
-
+        setPicture(data.file)
     }
 
-    const handleAddUser = (data:Array<number>) => {
-        setState((state:any) => ({
+    const handleAddUser = (data: Array<number>) => {
+        setState((state: any) => ({
             ...state,
             participant: data
         }))
     }
 
     const handleDeleteUser = (id: number) => {
-        setState((state:any) => ({
+        setState((state: any) => ({
             ...state,
             participant: state.participant.filter((p: number) => p !== id)
         }))
+    }
+
+    const handleOnSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(postProject({token, data: state, picture}))
+        handleOnModal(modal[0].id);
     }
 
     useEffect(() => {
         !modal[0].isOpen ? setState({
             name: '',
             description: '',
-            picture: '',
             participant: []
         }) : '';
 
     }, [modal])
+
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(getUsersAll(token));
+    }, [dispatch]);
+
 
     return (
         <>
@@ -74,10 +97,10 @@ const CreateProject = () => {
                 </i>
             </motion.div>
             <Modal modal={modal[0]} onClose={handleOnModal} title={'Создать проект'}>
-                <form>
+                <form onSubmit={handleOnSubmit}>
                     <div className={'row'}>
                         <div className="col-12">
-                            <FormFile value={state.picture} name={'picture'} onFile={handleOnFile}/>
+                            <FormFile value={''} name={'picture'} onFile={handleOnFile}/>
                         </div>
                         <div className="col-12 mt-3">
                             <FormInput
@@ -91,11 +114,11 @@ const CreateProject = () => {
                         <div className="col-12 mt-4">
                             <div className={style.team}>
                                 {state.participant.length > 3 && (<div className={style.count}>
-                                    {`+${users_data.length - 3}`}
+                                    {`+${state.participant.length - 3}`}
                                 </div>)}
                                 {
-                                    users_data.filter(u => state.participant.some(p => u.id === p))
-                                        .map((item: { avatar: string, id: number }, index) => {
+                                    users.filter((u: IUserMin) => state.participant.some(p => u.id === p))
+                                        .map((item: IUserMin, index) => {
                                             if (index < 3) {
                                                 return (
                                                     <>
@@ -108,7 +131,9 @@ const CreateProject = () => {
                                                             </button>
 
                                                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                            <img src={item.avatar} alt=""/>
+                                                            <img
+                                                                src={item.photo ? item.photo : '/profile/default-profile.png'}
+                                                                alt=""/>
                                                         </div>
                                                     </>
                                                 )
@@ -120,13 +145,12 @@ const CreateProject = () => {
                             </div>
                         </div>
                         <div className="col-12 mt-4">
-                            <textarea
-                                rows={5}
-                                placeholder={`Введите описание`}
-                                className="form-control"
-                                onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                name="description"
+                            <FormTextarea
                                 value={state.description}
+                                setValue={handleSetValue}
+                                rows={5}
+                                name={"description"}
+                                placeholder={`Введите описание`}
                             />
                         </div>
                         <div className="col-12 mt-4">

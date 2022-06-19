@@ -11,8 +11,8 @@ import Preloader from "../components/Preloader";
 import {SessionProvider, useSession} from "next-auth/react";
 import {setupStore} from "../redux";
 import {Provider as ReduxProvider} from "react-redux";
-import {useAppDispatch} from "../redux/hooks";
-import {getMe} from "../redux/actions/UsersAction";
+import {useAppDispatch, useAppSelector} from "../redux/hooks";
+import {getMe} from "../redux/actions/ProfileAction";
 
 const store = setupStore();
 
@@ -71,6 +71,7 @@ function Auth({children}) {
     const router = useRouter()
     const {data: session, status} = useSession();
     const dispatch = useAppDispatch();
+    const {auth} = useAppSelector(state => state.profileSlice)
 
     useEffect(() => {
         if (status === 'loading') return
@@ -79,7 +80,7 @@ function Auth({children}) {
     if (status === 'authenticated') {
         //@ts-ignore
         const token: string = session?.accessToken;
-        dispatch(getMe(token))
+        !auth && dispatch(getMe(token));
         return children
     }
     return <Preloader/>
