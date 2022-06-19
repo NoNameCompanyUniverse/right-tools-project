@@ -1,5 +1,6 @@
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 from rt_app.models import Document
 

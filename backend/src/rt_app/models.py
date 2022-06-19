@@ -3,20 +3,19 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.http import Http404
 
+from image_compressor import comressor, storages
 
 from .common.services import *
 from .users.services import *
-from .projects.services import *
+from .projects.picture.services import *
 from .projects.documents.services import *
-
-from .storages import OverwriteStorage
 
 
 class User(AbstractUser):
     photo = models.ImageField(
         upload_to=get_path_to_photo,
         null=True,
-        storage=OverwriteStorage,
+        storage=storages.OverwriteStorage,
         validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
     )
     description = models.TextField(null=True)
@@ -26,9 +25,16 @@ class User(AbstractUser):
     banner = models.ImageField(
         upload_to=get_path_to_banner,
         null=True,
-        storage=OverwriteStorage,
+        storage=storages.OverwriteStorage,
         validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
     )
+
+    def save(self, *args, **kwargs):
+        print(self.photo.path)
+        instance = super().save(*args, **kwargs)
+        print(self.photo.path)
+        comressor.compress_img(self.photo.path)
+        return instance
 
 
 class Subdivision(models.Model):
@@ -53,7 +59,7 @@ class Project(models.Model):
     picture = models.ImageField(
         upload_to=get_path_to_picture,
         null=True,
-        storage=OverwriteStorage,
+        storage=storages.OverwriteStorage,
         validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
     )
     name = models.CharField(max_length=150, null=False)
@@ -82,7 +88,7 @@ class Document(models.Model):
     file = models.FileField(
         upload_to=get_path_to_document,
         null=True,
-        storage=OverwriteStorage,
+        storage=storages.OverwriteStorage,
         validators=[
             FileExtensionValidator(
                 allowed_extensions=['jpg', 'png', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
@@ -90,3 +96,7 @@ class Document(models.Model):
         ]
     )
     project = models.ForeignKey(Project, on_delete=models.PROTECT, null=False)
+
+    def delete(self, using=None, keep_parents=False):
+        self.file.delete()
+        super().delete(using, keep_parents)

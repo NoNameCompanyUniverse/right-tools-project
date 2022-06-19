@@ -108,8 +108,11 @@ class UserCreateUpdateSerializer(ModelSerializer):
             'email',
             'description',
             'date_birth',
-            'subdivision'
+            'subdivision',
+            'photo',
+            'banner',
         )
+        read_only_fields = ('__all__',)
 
 
 class PasswordSerializer(Serializer):

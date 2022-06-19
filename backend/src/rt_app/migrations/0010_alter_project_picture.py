@@ -3,8 +3,8 @@
 import django.core.validators
 from django.db import migrations, models
 import rt_app.common.services
-import rt_app.projects.services
-import rt_app.storages
+import rt_app.projects.picture.services
+import image_compressor.storages
 
 
 class Migration(migrations.Migration):
@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='project',
             name='picture',
-            field=models.ImageField(null=True, storage=rt_app.storages.OverwriteStorage, upload_to=rt_app.projects.services.get_path_to_picture, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg']), rt_app.common.services.validate_size_image]),
+            field=models.ImageField(null=True, storage=image_compressor.storages.OverwriteStorage, upload_to=rt_app.projects.picture.services.get_path_to_picture, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg']), rt_app.common.services.validate_size_image]),
         ),
     ]

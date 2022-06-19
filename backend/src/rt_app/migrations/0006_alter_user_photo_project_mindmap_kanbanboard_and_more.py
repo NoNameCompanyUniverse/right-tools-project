@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 import pathlib
-import rt_app.storages
+import image_compressor.storages
 
 
 class Migration(migrations.Migration):
@@ -17,13 +17,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='photo',
-            field=models.ImageField(null=True, storage=rt_app.storages.OverwriteStorage, upload_to=pathlib.PureWindowsPath('D:/DIPLOM/right-tools-project/backend/src/media/images')),
+            field=models.ImageField(null=True, storage=image_compressor.storages.OverwriteStorage, upload_to=pathlib.PureWindowsPath('D:/DIPLOM/right-tools-project/backend/src/media/images')),
         ),
         migrations.CreateModel(
             name='Project',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('picture', models.ImageField(null=True, storage=rt_app.storages.OverwriteStorage, upload_to=pathlib.PureWindowsPath('D:/DIPLOM/right-tools-project/backend/src/media/images'))),
+                ('picture', models.ImageField(null=True, storage=image_compressor.storages.OverwriteStorage, upload_to=pathlib.PureWindowsPath('D:/DIPLOM/right-tools-project/backend/src/media/images'))),
                 ('name', models.CharField(max_length=150)),
                 ('description', models.TextField(null=True)),
                 ('participant', models.ManyToManyField(to=settings.AUTH_USER_MODEL)),
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
             name='Document',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(storage=rt_app.storages.OverwriteStorage, upload_to=pathlib.PureWindowsPath('D:/DIPLOM/right-tools-project/backend/src/media/documents'))),
+                ('file', models.FileField(storage=image_compressor.storages.OverwriteStorage, upload_to=pathlib.PureWindowsPath('D:/DIPLOM/right-tools-project/backend/src/media/documents'))),
                 ('project', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='rt_app.project')),
             ],
         ),

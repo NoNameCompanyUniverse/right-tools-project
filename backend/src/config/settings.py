@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rt_app.apps.RtAppConfig',
+    'image_compressor.apps.ImageCompressorConfig',
     'rest_framework',
     'corsheaders',
     'drf_yasg',

@@ -2,7 +2,7 @@
 
 import django.core.validators
 from django.db import migrations, models
-import rt_app.storages
+import image_compressor.storages
 import rt_app.users.services
 import rt_app.common.services
 
@@ -17,11 +17,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='banner',
-            field=models.ImageField(null=True, storage=rt_app.storages.OverwriteStorage, upload_to=rt_app.users.services.get_path_to_banner, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg']), rt_app.common.services.validate_size_image]),
+            field=models.ImageField(null=True, storage=image_compressor.storages.OverwriteStorage, upload_to=rt_app.users.services.get_path_to_banner, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg']), rt_app.common.services.validate_size_image]),
         ),
         migrations.AlterField(
             model_name='user',
             name='photo',
-            field=models.ImageField(null=True, storage=rt_app.storages.OverwriteStorage, upload_to=rt_app.users.services.get_path_to_photo, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg']), rt_app.common.services.validate_size_image]),
+            field=models.ImageField(null=True, storage=image_compressor.storages.OverwriteStorage, upload_to=rt_app.users.services.get_path_to_photo, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg']), rt_app.common.services.validate_size_image]),
         ),
     ]
