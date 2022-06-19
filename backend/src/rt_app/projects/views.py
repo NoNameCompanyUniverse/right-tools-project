@@ -1,10 +1,7 @@
 from django.http import Http404
 from django.utils.decorators import method_decorator
-from rest_framework.parsers import MultiPartParser, FormParser
 
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_200_OK
+from rest_framework import viewsets, views, parsers, status
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
@@ -14,22 +11,34 @@ from .serializers import *
 from .permissions import *
 
 
+class BaseProjectDetailView(views.APIView):
+    def get_object(self):
+        try:
+            return Project.objects.get(pk=self.kwargs.get('pk'))
+        except Project.DoesNotExist:
+            raise Http404
+
+
 @method_decorator(name="list", decorator=swagger_auto_schema(
     tags=['Проекты'], operation_summary="Вывести список проектов",
 ))
 @method_decorator(name="create", decorator=swagger_auto_schema(
-    tags=['Проекты'], operation_summary="Создать проект"
+    tags=['Проекты'], operation_summary="Создать проект",
+    request_body=RequestCreateProjectSerializer,
+    responses={201: ResponseCreateProjectSerializer()},
 ))
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(
     tags=['Проекты'], operation_summary="Вывести информацию о проекте"
 ))
 @method_decorator(name="update", decorator=swagger_auto_schema(
-    tags=['Проекты'], operation_summary="Обновить информацию о проекте"
+    tags=['Проекты'], operation_summary="Обновить информацию о проекте",
+    request_body=RequestUpdateProjectSerializer,
+    responses={201: ResponseUpdateProjectSerializer()},
 ))
 @method_decorator(name="destroy", decorator=swagger_auto_schema(
     tags=['Проекты'], operation_summary="Удалить проект"
 ))
-class ProjectView(ModelViewSet):
+class ProjectView(viewsets.ModelViewSet):
     serializer_class = ProjectListSerializer
     queryset = Project.objects.all()
 
@@ -38,8 +47,10 @@ class ProjectView(ModelViewSet):
             return ProjectListSerializer
         elif self.action == 'retrieve':
             return ProjectDetailSerializer
-        elif self.action in ['create', 'update']:
-            return ProjectCreateUpdateSerializer
+        elif self.action == 'create':
+            return ProjectCreateSerializer
+        elif self.action == 'update':
+            return ProjectUpdateSerializer
 
     def destroy(self, request, *args, **kwargs):
         instance: Project = self.get_object()
@@ -48,25 +59,4 @@ class ProjectView(ModelViewSet):
         instance.mindmap_set.all().delete()
         instance.participant.clear()
         instance.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
-
-
-class PictureView(APIView):
-    permission_classes = [IsOwner, ]
-
-    parser_classes = (MultiPartParser, FormParser)
-
-    def get_object(self, pk):
-        try:
-            return Project.objects.get(pk=pk)
-        except Project.DoesNotExist:
-            raise Http404
-
-    @swagger_auto_schema(tags=['Проекты'], operation_summary="Изменить картинку")
-    def patch(self, request, pk):
-        project = self.get_object(pk)
-        self.check_object_permissions(request, project)
-        serializer: PictureSerializer = PictureSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"code": HTTP_200_OK}, status=HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)

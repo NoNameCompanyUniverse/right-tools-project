@@ -1,4 +1,6 @@
+from drf_yasg.utils import swagger_serializer_method
 from rest_framework import fields, serializers
+
 from rt_app.models import Project, User
 from rt_app.common.serializers import ServiceSerializer
 
@@ -9,12 +11,23 @@ class UsersListSerializer(ServiceSerializer, serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'online', 'last_login', 'photo')
+        read_only_fields = ('id', 'username', 'online', 'last_login', 'photo')
+        write_only_fields = ('id',)
 
 
 class ProjectListSerializer(serializers.ModelSerializer):
+    participants = serializers.SerializerMethodField(
+        read_only=True, method_name='get_participants', label="Участники проекта"
+    )
+
+    @swagger_serializer_method(serializer_or_field=UsersListSerializer(many=True))
+    def get_participants(self, project: Project) -> list:
+        participants = project.participant.all()[:3]
+        return UsersListSerializer(participants, many=True).data
+
     class Meta:
         model = Project
-        fields = ('id', 'picture', 'name', 'date_create')
+        fields = ('id', 'picture', 'name', 'participants')
 
 
 class ProjectDetailSerializer(serializers.ModelSerializer):
@@ -25,9 +38,10 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
         exclude = ('participant',)
 
 
-class ProjectCreateUpdateSerializer(serializers.ModelSerializer):
+class ProjectCreateSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=150, required=True)
     description = serializers.CharField(allow_null=False, required=False)
+    admin = UsersListSerializer(read_only=True)
 
     def create(self, validated_data):
         admin = self.context.get('request').user
@@ -35,13 +49,45 @@ class ProjectCreateUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'name', 'description')
+        fields = ('id', 'name', 'description', 'picture', 'admin')
 
 
-class PictureSerializer(serializers.ModelSerializer):
-    picture = serializers.ImageField(allow_null=True, max_length=100, required=False)
+class ProjectUpdateSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=150, required=True)
+    description = serializers.CharField(allow_null=False, required=False)
+    admin = UsersListSerializer(read_only=True)
 
     class Meta:
         model = Project
-        fields = ('picture',)
+        fields = ('id', 'name', 'description', 'picture', 'admin')
+
+
+class RequestCreateProjectSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=150, required=True)
+    description = serializers.CharField(allow_null=False, required=False)
+    participants = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=True,
+    )
+
+
+class ResponseCreateProjectSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField(max_length=150, required=True)
+    description = serializers.CharField(allow_null=False, required=False)
+    picture = serializers.ImageField(required=False)
+    admin = UsersListSerializer(read_only=True)
+
+
+class RequestUpdateProjectSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=150, required=True)
+    description = serializers.CharField(allow_null=False, required=False)
+
+
+class ResponseUpdateProjectSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField(max_length=150, required=True)
+    description = serializers.CharField(allow_null=False, required=False)
+    picture = serializers.ImageField(required=False)
+    admin = UsersListSerializer(read_only=True)
 
