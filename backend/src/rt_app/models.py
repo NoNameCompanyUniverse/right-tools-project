@@ -7,6 +7,7 @@ from django.http import Http404
 from .common.services import *
 from .users.services import *
 from .projects.services import *
+from .projects.documents.services import *
 
 from .storages import OverwriteStorage
 
@@ -78,5 +79,14 @@ class KanbanBoard(models.Model):
 
 
 class Document(models.Model):
-    file = models.FileField(upload_to=BASE_DIR / 'media/documents', null=False, storage=OverwriteStorage)
+    file = models.FileField(
+        upload_to=get_path_to_document,
+        null=True,
+        storage=OverwriteStorage,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=['jpg', 'png', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
+            )
+        ]
+    )
     project = models.ForeignKey(Project, on_delete=models.PROTECT, null=False)
