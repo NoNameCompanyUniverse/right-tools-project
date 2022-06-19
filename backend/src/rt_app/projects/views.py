@@ -12,7 +12,7 @@ from .permissions import *
 
 
 class BaseProjectDetailView(views.APIView):
-    def get_object(self):
+    def get_object(self) -> Project:
         try:
             return Project.objects.get(pk=self.kwargs.get('pk'))
         except Project.DoesNotExist:
@@ -40,7 +40,7 @@ class BaseProjectDetailView(views.APIView):
 ))
 class ProjectView(viewsets.ModelViewSet):
     serializer_class = ProjectListSerializer
-    queryset = Project.objects.all()
+    queryset = Project.objects.all().prefetch_related('participant')
 
     def get_serializer_class(self):
         if self.action == 'list':

@@ -19,7 +19,7 @@ class DocumentView(BaseProjectDetailView, generics.ListAPIView, generics.CreateA
             return DocumentSerializer
 
     def get_queryset(self):
-        return self.get_object().document_set.all()
+        return self.get_object().document_set.select_related('project').all()
 
     @swagger_auto_schema(
         tags=['Документы проекта'], operation_summary="Вывести список документов проекта",

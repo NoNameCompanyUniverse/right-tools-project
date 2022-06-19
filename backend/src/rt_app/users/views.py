@@ -51,7 +51,7 @@ class CurrentUserView(viewsets.ModelViewSet):
 class UserView(viewsets.ModelViewSet):
     permission_classes = [IsAdmin, IsOwner]
 
-    queryset = User.objects.all().order_by('pk')
+    queryset = User.objects.all().select_related('subdivision').order_by('pk')
 
     def get_serializer_class(self):
         if self.action == 'list':

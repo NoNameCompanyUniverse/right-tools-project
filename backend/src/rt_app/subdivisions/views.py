@@ -33,7 +33,7 @@ class SubdivisionView(ModelViewSet):
 
     def get_queryset(self):
         if self.action == 'list':
-            return Subdivision.objects.filter(parent=None)
+            return Subdivision.objects.filter(parent=None).select_related('parent')
         return Subdivision.objects.all()
 
     def create(self, request, *args, **kwargs):
