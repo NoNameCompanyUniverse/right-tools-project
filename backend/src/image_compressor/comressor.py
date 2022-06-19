@@ -40,10 +40,10 @@ def compress_img(image_name, new_size_ratio=0.9, quality=90, width=None, height=
     # make new filename appending _compressed to the original file name
     if to_jpg:
         # change the extension to JPEG
-        new_filename = f"{filename}_compressed.jpg"
+        new_filename = f"{filename}.jpg"
     else:
         # retain the same extension of the original image
-        new_filename = f"{filename}_compressed{ext}"
+        new_filename = f"{filename}{ext}"
     try:
         # save the image with the corresponding quality and optimize set to True
         img.save(new_filename, quality=quality, optimize=True)

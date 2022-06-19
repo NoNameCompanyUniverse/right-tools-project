@@ -30,10 +30,11 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        instance = super().save(*args, **kwargs)
-        comressor.compress_img(self.photo.path)
-        comressor.compress_img(self.banner.path)
-        return instance
+        super().save(*args, **kwargs)
+        if self.photo:
+            comressor.compress_img(self.photo.path)
+        if self.banner:
+            comressor.compress_img(self.banner.path)
 
 
 class Subdivision(models.Model):
@@ -68,9 +69,9 @@ class Project(models.Model):
     date_create = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        instance = super().save(*args, **kwargs)
-        comressor.compress_img(self.picture.path)
-        return instance
+        super().save(*args, **kwargs)
+        if self.picture:
+            comressor.compress_img(self.picture.path)
 
 
 class MindMap(models.Model):
