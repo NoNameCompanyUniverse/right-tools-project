@@ -30,10 +30,9 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        print(self.photo.path)
         instance = super().save(*args, **kwargs)
-        print(self.photo.path)
         comressor.compress_img(self.photo.path)
+        comressor.compress_img(self.banner.path)
         return instance
 
 
@@ -67,6 +66,11 @@ class Project(models.Model):
     admin = models.ForeignKey(User, on_delete=models.PROTECT, null=False, related_name='admin')
     participant = models.ManyToManyField(User)
     date_create = models.DateField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        instance = super().save(*args, **kwargs)
+        comressor.compress_img(self.picture.path)
+        return instance
 
 
 class MindMap(models.Model):
