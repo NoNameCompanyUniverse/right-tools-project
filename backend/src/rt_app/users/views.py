@@ -6,9 +6,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import viewsets, views, parsers
 
 from .permissions import *
 from .serializers import *
@@ -25,21 +23,21 @@ class BaseUser:
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(
     tags=['Текущий пользователь'], operation_summary="Текущий пользователь"
 ))
-class CurrentUserView(ModelViewSet):
+class CurrentUserView(viewsets.ModelViewSet):
     serializer_class = UserDetailSerializer
 
     def get_object(self):
         return self.request.user
 
     def get_queryset(self):
-        return self.request.user
+        return self.get_object()
 
 
 @method_decorator(name="list", decorator=swagger_auto_schema(
     tags=['Пользователи'], operation_summary="Список пользователей"
 ))
 @method_decorator(name="create", decorator=swagger_auto_schema(
-    tags=['Пользователи'], operation_summary="Создать пользователя"
+    tags=['Пользователи'], operation_summary="Создать пользователя",
 ))
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(
     tags=['Пользователи'], operation_summary="Вывести информацию о пользователе"
@@ -48,9 +46,9 @@ class CurrentUserView(ModelViewSet):
     tags=['Пользователи'], operation_summary="Обновить информацию о пользователе"
 ))
 @method_decorator(name="destroy", decorator=swagger_auto_schema(
-    tags=['Пользователи'], operation_summary="Удалить пользователя"
+    tags=['Пользователи'], operation_summary="Удалить пользователя",
 ))
-class UserView(ModelViewSet):
+class UserView(viewsets.ModelViewSet):
     permission_classes = [IsAdmin, IsOwner]
 
     queryset = User.objects.all().order_by('pk')
@@ -76,7 +74,7 @@ class UserView(ModelViewSet):
         serializer.save(password=self.request.data['password'])
 
 
-class StaffView(BaseUser, APIView):
+class StaffView(BaseUser, views.APIView):
     permission_classes = [IsStaffOwner, IsSuperUser]
 
     @swagger_auto_schema(tags=['Пользователи'], operation_summary="Изменить роль пользователя в системе")
@@ -89,7 +87,7 @@ class StaffView(BaseUser, APIView):
         return Response(status=HTTP_200_OK)
 
 
-class PasswordView(BaseUser, APIView):
+class PasswordView(BaseUser, views.APIView):
     permission_classes = [IsOwner, ]
 
     @swagger_auto_schema(query_serializer=PasswordSerializer(), tags=['Пользователи'],
@@ -103,12 +101,12 @@ class PasswordView(BaseUser, APIView):
         return Response({"code": HTTP_200_OK}, status=HTTP_200_OK)
 
 
-class PhotoView(BaseUser, APIView):
+class PhotoView(BaseUser, views.APIView):
     permission_classes = [IsOwner, ]
 
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser, parsers.FileUploadParser)
 
-    @swagger_auto_schema(tags=['Пользователи'], operation_summary="Изменить фото")
+    @swagger_auto_schema(tags=['Пользователи'], operation_summary="Изменить фото", request_body=PhotoSerializer)
     def patch(self, request, pk):
         user = self.get_object(pk)
         self.check_object_permissions(request, user)
@@ -118,12 +116,11 @@ class PhotoView(BaseUser, APIView):
         return Response({"code": HTTP_200_OK}, status=HTTP_200_OK)
 
 
-class BannerView(BaseUser, APIView):
+class BannerView(BaseUser, views.APIView):
     permission_classes = [IsOwner, ]
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser, parsers.FileUploadParser]
 
-    parser_classes = (MultiPartParser, FormParser)
-
-    @swagger_auto_schema(tags=['Пользователи'], operation_summary="Изменить баннер")
+    @swagger_auto_schema(tags=['Пользователи'], operation_summary="Изменить баннер", request_body=BannerSerializer)
     def patch(self, request, pk):
         user = self.get_object(pk)
         self.check_object_permissions(request, user)
