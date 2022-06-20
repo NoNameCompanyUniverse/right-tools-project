@@ -70,3 +70,16 @@ export const postUser = createAsyncThunk(
         }
     }
 )
+
+export const deleteUser = createAsyncThunk(
+    'user/delete',
+    async ({token, id}: {token:string, id: number}, {rejectWithValue}) => {
+        try {
+            const res = await API.deleteUser(token, id);
+            return await API.getUsersAll(token);
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)

@@ -11,7 +11,7 @@ type IUserCard = {
 
 const UserCard: React.FC<IUserCard> = ({data, children}) => {
 
-    const {id, subdivision, full_name, photo} = data;
+    const {id, subdivision, full_name, photo, online} = data;
 
     return (
         <div className={style.block}>
@@ -22,7 +22,7 @@ const UserCard: React.FC<IUserCard> = ({data, children}) => {
                         height: '5.15rem',
                         transformOrigin: 'left top'
                     }}
-                className={style.avatar}>
+                className={[style.avatar, online ? style.online : ''].join(" ")}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={photo ? photo : '/profile/default-profile.png'} alt=""/>
             </motion.div>
