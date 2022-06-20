@@ -65,10 +65,6 @@ class ProjectUpdateSerializer(serializers.ModelSerializer):
 class RequestCreateProjectSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150, required=True)
     description = serializers.CharField(allow_null=False, required=False)
-    participants = serializers.ListField(
-        child=serializers.IntegerField(),
-        required=True,
-    )
 
 
 class ResponseCreateProjectSerializer(serializers.Serializer):
