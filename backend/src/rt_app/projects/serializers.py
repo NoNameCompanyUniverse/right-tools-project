@@ -40,7 +40,7 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
 
 class ProjectCreateSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=150, required=True)
-    description = serializers.CharField(allow_null=False, required=False)
+    description = serializers.CharField(allow_null=True, required=False, allow_blank=True)
     admin = UsersListSerializer(read_only=True)
 
     def create(self, validated_data):
