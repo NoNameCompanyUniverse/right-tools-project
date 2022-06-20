@@ -120,7 +120,16 @@ class Api {
         })
     }
 
-    patchProjectPicture(token:string, id:number, picture: any) {
+    postParticipants(token: string, data:any, id: number) {
+        return this.api.post(`${this.PROJECTS_URL}${id}/participants/`, data, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {
+            return res.data
+        })
+    }
+
+
+    patchProjectPicture(token: string, id: number, picture: any) {
         let formData = new FormData();
         formData.append('picture', picture);
         this.api.patch(`${this.PROJECTS_URL}${id}/picture/`, formData, {
@@ -154,21 +163,21 @@ class Api {
         })
     }
 
-    getProfileProject(token:string, limit: number) {
+    getProfileProject(token: string, limit: number) {
         return this.api.get(`${this.USERS_URL}me/profile/projects/?limit=${limit}/`, {
             headers: {Authorization: `Bearer ${token}`,}
         }).then(res => {
             return res.data;
         })
     }
-    getProfileProjectAll(token:string) {
+
+    getProfileProjectAll(token: string) {
         return this.api.get(`${this.USERS_URL}me/profile/projects/`, {
             headers: {Authorization: `Bearer ${token}`,}
         }).then(res => {
             return res.data;
         })
     }
-
 
 
     getSubdivisions(token: string) {

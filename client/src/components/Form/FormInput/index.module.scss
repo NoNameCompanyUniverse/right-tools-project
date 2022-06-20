@@ -30,6 +30,16 @@
     }
   }
 
+  &.focus {
+    padding: 1.6rem 1.2rem .8rem 1rem;
+    & + .label {
+      font-size: .75rem;
+      transform: scale(.9);
+      padding: .7rem 1rem;
+
+    }
+  }
+
   &:focus,
   &:valid {
     padding: 1.6rem 1.2rem .8rem 1rem;
@@ -57,3 +67,4 @@
   color: var(--gray);
   font-size: .9rem;
 }
+

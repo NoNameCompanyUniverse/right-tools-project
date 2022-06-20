@@ -22,6 +22,7 @@ export const putMe = createAsyncThunk(
                banner
            }: { token: string, data: any, id: number, photo: any, banner: any }, {rejectWithValue}) => {
         try {
+
             if (photo) {
                 await API.patchUserPhoto(token, id, photo)
             }

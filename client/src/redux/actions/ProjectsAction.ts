@@ -53,11 +53,28 @@ export const postProject = createAsyncThunk(
     'project/post',
     async ({token, picture, data}: {token:string, picture:any, data:any}, {rejectWithValue}) => {
         try {
-            const res = await API.postProject(token, data);
+            const res = await API.postProject(token, {name: data.name, description: data.description});
             if (picture) {
                 await API.patchProjectPicture(token, res.id, picture)
             }
+            const participants = {
+                participants: data.participant
+            }
+            await API.postParticipants(token,  participants, res.id)
             return API.getProfileProjectAll(token)
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const deleteProject = createAsyncThunk(
+    'project/delete',
+    async ({token, id}:{token:string, id: number}, {rejectWithValue}) => {
+        try {
+            const res = await API.deleteProject(token, id);
+            return await API.getProfileProjectAll(token)
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)

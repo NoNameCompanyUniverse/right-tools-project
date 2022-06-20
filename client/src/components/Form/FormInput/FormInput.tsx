@@ -30,7 +30,7 @@ const FormInput:React.FC<IFormInput> = (
                 type={type}
                 name={name}
                 value={value}
-                className={style.control}
+                className={[style.control, value.length > 0 ? style.focus : ''].join(" ")}
                 required={required}/>
             <span className={style.label}>{placeholder}</span>
         </div>

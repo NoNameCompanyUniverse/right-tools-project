@@ -17,6 +17,7 @@ const Users = () => {
     const [query, setQuery] = useState("")
 
     const {users, isFetching} = useAppSelector(state => state.usersSlice);
+    const {auth} = useAppSelector(state => state.profileSlice);
     const dispatch = useAppDispatch();
 
     const handleOnSearch = (value: string) => {
@@ -63,10 +64,14 @@ const Users = () => {
                         <div>
                             <Title value={'Ваши сотрудники'}/>
                         </div>
-                        <div className="mt-5">
-                            <CreateUser
-                                onSubmit={handleOnSubmit}/>
-                        </div>
+                        {
+                            auth?.is_staff && (
+                                <div className="mt-5">
+                                    <CreateUser
+                                        onSubmit={handleOnSubmit}/>
+                                </div>
+                            )
+                        }
                         <div className={`col-xl-8 my-5`}>
                             <Search placeholder={'Поиск ...'} onSubmit={handleOnSearch}/>
                         </div>

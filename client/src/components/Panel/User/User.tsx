@@ -105,4 +105,4 @@ const User: React.FC<UserInfo> = ({data, children}) => {
     );
 };
 
-export default User;
+export default React.memo(User);

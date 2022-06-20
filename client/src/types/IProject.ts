@@ -12,5 +12,6 @@ export interface IProject {
     picture: string,
     name: string,
     participants: IParticipant[],
-    admin: number
+    admin: number,
+    description: string
 }

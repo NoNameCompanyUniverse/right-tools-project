@@ -12,7 +12,7 @@ import Modal from "../../components/Modal";
 import CreateProject from "../../blocks/Project/CreateProject";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import SkeletonProject from "../../components/Skeleton/ SkeletonProject";
-import {getProjectsProfileAll} from "../../redux/actions/ProjectsAction";
+import {deleteProject, getProjectsProfileAll} from "../../redux/actions/ProjectsAction";
 import {useSession} from "next-auth/react";
 
 const Projects = () => {
@@ -49,8 +49,9 @@ const Projects = () => {
     }
     const handleOnDelete = (e: FormEvent) => {
         e.preventDefault();
-        //setProjectsData(projectsData.filter(i => i.id !== id));
-        toast.error('Проект удален');
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(deleteProject({token, id}))
         setId(0);
         handleOnModal(modal[1].id);
     }
@@ -117,7 +118,7 @@ const Projects = () => {
                                                             </a>
                                                         </Link>
                                                     </li>
-                                                    <li>
+                                                    <li onClick={() => handleDeleteProject(i.id)}>
                                                         Удалить
                                                     </li>
                                                 </ul>

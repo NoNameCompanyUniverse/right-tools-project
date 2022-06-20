@@ -1,24 +1,15 @@
 import type {NextPage} from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import style from '../styles/home/Home.module.scss'
 import Link from "next/link";
-import React, {useEffect} from "react";
+import React from "react";
 import {motion} from 'framer-motion'
-import {fadeIn, fadeUp, fadeUpRotateRight, leftIn, PageTransition, rightIn} from "../motion";
-import axios from "axios";
-import {useSession} from "next-auth/react";
+import {fadeIn, fadeUp, fadeUpRotateRight, leftIn, PageTransition} from "../motion";
 import NavBar from "../blocks/Home/NavBar";
 
 
 const Home: NextPage = () => {
 
-
-    // const {data: session} = useSession();
-    //
-    // useEffect(() => {
-    //     //console.log(session)
-    // }, [])
 
     return (
         <>
@@ -40,7 +31,7 @@ const Home: NextPage = () => {
                                         variants={fadeIn}
                                         initial={'initial'}
                                         animate={`animate`}
-                                        custom={5}>Управляйте разработкой вашего <br/>проектом вместе с <br/>Right
+                                        custom={5}>Управляйте разработкой вашего <br/>проекта вместе с <br/>Right
                                     </motion.span>
                                     <motion.span
                                         variants={fadeIn}

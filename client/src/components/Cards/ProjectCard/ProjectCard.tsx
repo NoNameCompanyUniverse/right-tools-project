@@ -2,7 +2,6 @@ import React, {ReactNode} from 'react';
 import style from './index.module.scss';
 import Link from 'next/link'
 import DropDown from "../../DropDown";
-import {IUser} from "../../../types/old/IUser";
 import {IProject} from "../../../types/IProject";
 
 
@@ -14,7 +13,7 @@ interface IProjectCard  {
 
 const ProjectCard: React.FC<IProjectCard> = ({data, children, root}) => {
 
-    const {name, admin, participants, id} = data;
+    const {name, admin, participants, id, description} = data;
 
 
 
@@ -65,11 +64,11 @@ const ProjectCard: React.FC<IProjectCard> = ({data, children, root}) => {
                 </Link>
             </div>
             <div className={[style.status, admin === root ? style.admin : style.developer].join(" ")}>
-                {admin === root ? 'Администратор' : 'Разработчик'}
+                {admin === root ? 'Администратор' : 'Участник'}
             </div>
-            {/*<div className={style.description}>*/}
-            {/*    {description}*/}
-            {/*</div>*/}
+            <div className={style.description}>
+                {description}
+            </div>
         </div>
     );
 };

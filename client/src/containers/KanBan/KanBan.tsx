@@ -85,7 +85,6 @@ const KanBan: React.FC = () => {
                     {
                         boardData.map((data: any, bIndex: number) => (
                             <div key={data.name} className="col">
-                                {data.id}
                                 <Droppable droppableId={data.id.toString()}>
                                     {
                                         (provided: any, snapshot: any) => (

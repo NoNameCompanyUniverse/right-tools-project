@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IProject} from "../../types/IProject";
-import {getProjectsProfile, getProjectsProfileAll, postProject} from "../actions/ProjectsAction";
+import {deleteProject, getProjectsProfile, getProjectsProfileAll, postProject} from "../actions/ProjectsAction";
 
 interface IProjectsState {
     projects: IProject[],
@@ -49,6 +49,19 @@ export const projectsSlice = createSlice({
         [postProject.rejected.type]: (state) => {
             state.loading = 'REJECTED';
         },
+
+        [deleteProject.pending.type]: (state) => {
+            state.loading = 'PENDING';
+        },
+        [deleteProject.fulfilled.type]: (state, action: PayloadAction<IProject[]>) => {
+            state.projects = action.payload;
+            state.loading = 'FULFILLED';
+        },
+        [deleteProject.rejected.type]: (state) => {
+            state.loading = 'REJECTED';
+        },
+
+
     }
 })
 

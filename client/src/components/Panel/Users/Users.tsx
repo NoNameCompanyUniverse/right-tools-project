@@ -67,4 +67,4 @@ const Users: React.FC<IUsers> = ({users}) => {
     );
 };
 
-export default Users;
+export default React.memo(Users);
