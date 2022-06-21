@@ -17,7 +17,7 @@ import {IUser} from "../../types/IUser";
 import SkeletonProfile from "../../components/Skeleton/SkeletonProfile";
 import SkeletonProject from "../../components/Skeleton/ SkeletonProject";
 import {getProfileInfo, putMe} from "../../redux/actions/ProfileAction";
-import {getProjectsProfile} from "../../redux/actions/ProjectsAction";
+import {deleteProject, getProjectsProfile} from "../../redux/actions/ProjectsAction";
 import ProjectCard from "../../components/Cards/ProjectCard/ProjectCard";
 import Link from 'next/link'
 
@@ -49,12 +49,16 @@ const Profile = () => {
             email: _data.email,
             description: _data.description,
             date_birth: _data.date_birth,
-            subdivision: _data.subdivision.id
+            subdivision: _data.subdivision ? _data.subdivision.id : 1
         }
         console.log(photo)
         dispatch(putMe({token, data, id: _data.id, photo, banner}))
     };
 
+    const handleDelete = (id: number) => {
+        setId(id);
+        handleOnModal(modal[1].id);
+    }
 
     const handleOnModal = (id: string) => {
         let clone = modal.concat();
@@ -66,8 +70,9 @@ const Profile = () => {
 
     const handleOnDelete = (e: FormEvent) => {
         e.preventDefault();
-        //setProjectsData(projectsData.filter(i => i.id !== id));
-        toast.error('Проект удален');
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(deleteProject({token, id}))
         setId(0);
         handleOnModal(modal[1].id);
     }
@@ -147,7 +152,7 @@ const Profile = () => {
                                                                 </a>
                                                             </Link>
                                                         </li>
-                                                        <li>
+                                                        <li onClick={() => handleDelete(i.id)}>
                                                             Удалить
                                                         </li>
                                                     </ul>

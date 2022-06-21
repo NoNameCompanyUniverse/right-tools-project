@@ -141,7 +141,6 @@ const MindMap = () => {
 
 
 
-
     return (
         <>
             <ReactFlow

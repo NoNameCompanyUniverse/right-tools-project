@@ -17,27 +17,23 @@ import Modal from "../../../components/Modal";
 import AddBoard from "../AddBoard";
 import {IMindMap} from "../../../types/old/IMindMap";
 import {IKanBan} from "../../../types/old/IKanBan";
-import {IFile} from "../../../types/old/IFile";
-import {IUser} from "../../../types/old/IUser";
+import {IFile} from "../../../types/IFile";
 import {genId} from "../../../helpers/functions";
+import {IProjectFull} from "../../../types/IProject";
+import {IUserMin} from "../../../types/IUser";
+import {useSession} from "next-auth/react";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 
 
-interface IPanelInfo  {
-    data: {
-        id: number,
-        name: string,
-        description: string,
-        team: Array<{ id: number, avatar: string }>,
-        mindmap: Array<{ id: number, name: string }>,
-        kanban: Array<{ id: number, name: string }>,
-        file: Array<{ id: number, name: string }>,
-    },
-    addData: (data: IMindMap | IKanBan | IFile | IUser, type: 'KANBAN' | 'MINDMAP' | 'FILE' | 'TEAM' | string) => void,
-}
 
-const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
+const PanelInfo: React.FC = () => {
 
-    const {id, kanban, name, file, mindmap, description, team} = data;
+
+    const {data: session} = useSession()
+    const dispatch = useAppDispatch();
+    const {project} = useAppSelector(state => state.projectSlice);
+
+
 
     const [type, setType] = useState<"KANBAN" | "MINDMAP">("KANBAN")
 
@@ -59,22 +55,21 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
         setModal(clone)
     }
 
-    const handleOnProject = (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUser}) => {
-        const {type, payload} = action;
-        addData(payload, type)
-    }
+    // const handleOnProject = (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUserMin}) => {
+    //     const {type, payload} = action;
+    //     //addData(payload, type)
+    // }
 
     const handleOnFile = (e:any) => {
         const file = e.currentTarget.files[0];
         console.log(file)
-        const newFile: IFile = {
-            id: genId(),
-            link: '',
-            name: file.name,
-            size: Math.ceil(file.size / 1024),
-            type: file.type.split('image/').join("")
-        }
-        addData(newFile, 'FILE')
+        // const newFile: IFile = {
+        //     id: genId(),
+        //     name: file.name,
+        //     size: file.size,
+        //     type: file.type.split('image/').join("")
+        // }
+        //addData(newFile, 'FILE')
     }
 
     const Title: React.FC<{ value: string }> = ({value}) => {
@@ -95,18 +90,18 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                     <div>
                         <div className={`mb-4`}>
                             <div className={style.title}>
-                                {name}
+                                {project.info?.name}
                             </div>
                         </div>
                         <div className={`mb-4`}>
                             <div className={style.description}>
-                                {description}
+                                {project.info?.description}
                             </div>
                         </div>
                         <div className={`mb-4`}>
                             <div className={style.banner}>
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={'/profile/user-banner.jpg'} alt=""/>
+                                <img src={project.info?.picture ? project.info.picture : '/profile/user-banner.jpg'} alt=""/>
                             </div>
                         </div>
                         <div className="mb-2">
@@ -121,16 +116,16 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                         </div>
                         <div className={`mb-5`}>
                             <div className={style.team}>
-                                {team.length > 3 && (<div className={style.count}>
-                                    {`+${team.length - 3}`}
+                                {project.participants.length > 3 && (<div className={style.count}>
+                                    {`+${project.participants.length - 3}`}
                                 </div>)}
-                                {team.map((item: { avatar: string, id: number }, index: number) => {
+                                {project.participants.map((item:IUserMin, index: number) => {
                                     if (index < 3) {
                                         return (
                                             <>
                                                 <div className={style.avatar}>
                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                    <img src={item.avatar} alt=""/>
+                                                    <img src={item.photo ? item.photo : '/profile/default-profile.png'} alt=""/>
                                                 </div>
                                             </>
                                         )
@@ -142,7 +137,7 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                             </div>
                         </div>
                         <div className={`mb-4`}>
-                            <Title value={`Mind Maps проекта(${mindmap.length})`}/>
+                            <Title value={`Mind Maps проекта(${project.mindmaps.length})`}/>
                         </div>
                         <div className={`mb-5`}>
                             <>
@@ -164,7 +159,7 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                                         </motion.div>
                                     </SwiperSlide>
                                     {
-                                        mindmap.map((item: { id: number, name: string }, index: number) => (
+                                        project.mindmaps.map((item: { id: number, name: string }, index: number) => (
                                             <SwiperSlide key={index}>
                                                 <motion.div
                                                     whileHover={{scale: .95}}
@@ -182,7 +177,7 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                             </>
                         </div>
                         <div className={`mb-4`}>
-                            <Title value={`KanBan boards(${kanban.length})`}/>
+                            <Title value={`KanBan boards(${project.kanban.length})`}/>
                         </div>
                         <div className={`mb-5`}>
                             <>
@@ -204,7 +199,7 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                                         </motion.div>
                                     </SwiperSlide>
                                     {
-                                        kanban.map((item: { id: number, name: string }, index: number) => (
+                                        project.kanban.map((item: { id: number, name: string }, index: number) => (
                                             <SwiperSlide key={index}>
                                                 <div key={index} className={style.item}>
                                                     <Link href={`/`}>
@@ -220,7 +215,7 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                             </>
                         </div>
                         <div className={`mb-4`}>
-                            <Title value={`Вложение проекта(${file.length})`}/>
+                            <Title value={`Вложение проекта(${project.files.length})`}/>
                         </div>
                         <div className={`mb-5`}>
                             <>
@@ -245,7 +240,7 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                                         </motion.div>
                                     </SwiperSlide>
                                     {
-                                        file.map((item: { id: number, name: string }, index: number) => (
+                                        project.files.map((item: { id: number, name: string }, index: number) => (
                                             <SwiperSlide key={index}>
                                                 <motion.div
                                                     whileHover={{scale: .95}}
@@ -269,22 +264,22 @@ const PanelInfo: React.FC<IPanelInfo> = ({data, addData}) => {
                 <div className="row">
                     <div className="col-12">
                         <div className="fs-6 mb-2 fw-bold">Название</div>
-                        <div className="fs-4">{name}</div>
+                        <div className="fs-4">{project.info?.name}</div>
                     </div>
                     <div className="col-12 mt-2">
                         <div className={style.banner} style={{"height": '15rem'}}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={'/profile/user-banner.jpg'} alt=""/>
+                            <img src={project.info?.picture ? project.info.picture : '/profile/user-banner.jpg'} alt=""/>
                         </div>
                     </div>
                     <div className="col-12 mt-4">
                         <div className="fs-6 mb-2 fw-bold">Описание</div>
-                        <div className="fs-6">{description}</div>
+                        <div className="fs-6">{project.info?.description}</div>
                     </div>
                 </div>
             </Modal>
             <AddBoard
-                onProject={handleOnProject}
+                //onProject={handleOnProject}
                 modal={modal[1]}
                 setModal={handleOnModal}
                 type={type} />

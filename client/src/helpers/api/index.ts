@@ -5,6 +5,7 @@ class Api {
     USERS_URL: string = `users/`;
     PROJECTS_URL: string = `projects/`;
     SUBDIVISIONS_URL: string = 'subdivisions/';
+    DOCUMENTS_URL: string = 'documents/'
 
 
     api = axios.create({
@@ -120,7 +121,8 @@ class Api {
         })
     }
 
-    postParticipants(token: string, data:any, id: number) {
+
+    postParticipants(token: string, data: any, id: number) {
         return this.api.post(`${this.PROJECTS_URL}${id}/participants/`, data, {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {
@@ -128,6 +130,14 @@ class Api {
         })
     }
 
+    deleteParticipants(token: string, id: number, data: any) {
+        return this.api.delete(`${this.PROJECTS_URL}${id}/participants/`, {
+            headers: {Authorization: `Bearer ${token}`},
+            data: data,
+        }).then(res => {
+            return res.data
+        })
+    }
 
     patchProjectPicture(token: string, id: number, picture: any) {
         let formData = new FormData();
@@ -141,6 +151,14 @@ class Api {
 
     getProject(token: string, id: number) {
         return this.api.get(`${this.PROJECTS_URL + id}/`, {
+            headers: {Authorization: `Bearer ${token}`}
+        }).then(res => {
+            return res.data
+        })
+    }
+
+    getProjectParticipants(token: string, id: number) {
+        return this.api.get(`${this.PROJECTS_URL + id}/participants/`, {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {
             return res.data
@@ -185,6 +203,33 @@ class Api {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {
             return res.data
+        })
+    }
+
+    getDocuments(token: string, id: number) {
+        return this.api.get(`${this.PROJECTS_URL + id}/${this.DOCUMENTS_URL}`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+
+    deleteDocument(token: string, id: number) {
+        return this.api.delete(`${this.DOCUMENTS_URL + id}`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+
+    postDocument(token: string, id: number, data:any) {
+        let formData = new FormData();
+        formData.append('photo', data);
+
+        return this.api.post(`${this.PROJECTS_URL + id}${this.DOCUMENTS_URL}`, formData,{
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
         })
     }
 

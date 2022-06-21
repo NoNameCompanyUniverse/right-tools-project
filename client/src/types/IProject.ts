@@ -1,3 +1,4 @@
+import {IUserMin} from "./IUser";
 
 interface IParticipant {
     id: number,
@@ -7,11 +8,18 @@ interface IParticipant {
     photo: string
 }
 
-export interface IProject {
+interface IProjectBuf {
     id: number,
     picture: string,
     name: string,
+    description: string
+}
+
+export interface IProject extends IProjectBuf {
     participants: IParticipant[],
     admin: number,
-    description: string
+}
+
+export interface IProjectFull extends IProjectBuf {
+    admin: IUserMin
 }

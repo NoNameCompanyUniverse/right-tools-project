@@ -38,11 +38,16 @@ const UserCard: React.FC<IUserCard> = ({data, children}) => {
                     {full_name}
                 </span>
             </div>
-            <div className={style.status}>
-                <span className={`text-gray`}>
-                    {subdivision.name}
-                </span>
-            </div>
+            {
+                subdivision && (
+                    <div className={style.status}>
+                        <span className={`text-gray`}>
+                            {subdivision.name}
+                        </span>
+                    </div>
+                )
+            }
+
             {/*<div className={`d-flex align-items-center flex-wrap`}>*/}
             {/*    {*/}
             {/*        tags.map((tag: { id: number, value: string }, index: number) => (*/}

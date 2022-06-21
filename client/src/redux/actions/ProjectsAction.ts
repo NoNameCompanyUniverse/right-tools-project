@@ -1,5 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import API from "../../helpers/api";
+import {IProjectFull} from "../../types/IProject";
+import {IUserMin} from "../../types/IUser";
+import {IFile} from "../../types/IFile";
 
 
 export const getProjects = createAsyncThunk(
@@ -27,7 +30,7 @@ export const getProjectsAll = createAsyncThunk(
 
 export const getProjectsProfile = createAsyncThunk(
     'projectsProfile/get',
-    async ({token, limit = 3} : {token:string, limit?: number}, {rejectWithValue}) => {
+    async ({token, limit = 3}: { token: string, limit?: number }, {rejectWithValue}) => {
         try {
             return API.getProfileProject(token, limit)
         } catch (e) {
@@ -39,7 +42,7 @@ export const getProjectsProfile = createAsyncThunk(
 
 export const getProjectsProfileAll = createAsyncThunk(
     'projectsProfileAll/get',
-    async (token:string, {rejectWithValue}) => {
+    async (token: string, {rejectWithValue}) => {
         try {
             return API.getProfileProjectAll(token)
         } catch (e) {
@@ -51,7 +54,7 @@ export const getProjectsProfileAll = createAsyncThunk(
 
 export const postProject = createAsyncThunk(
     'project/post',
-    async ({token, picture, data}: {token:string, picture:any, data:any}, {rejectWithValue}) => {
+    async ({token, picture, data}: { token: string, picture: any, data: any }, {rejectWithValue}) => {
         try {
             const res = await API.postProject(token, {name: data.name, description: data.description});
             if (picture) {
@@ -60,7 +63,7 @@ export const postProject = createAsyncThunk(
             const participants = {
                 participants: data.participant
             }
-            await API.postParticipants(token,  participants, res.id)
+            await API.postParticipants(token, participants, res.id)
             return API.getProfileProjectAll(token)
         } catch (e) {
             // @ts-ignore
@@ -71,7 +74,7 @@ export const postProject = createAsyncThunk(
 
 export const deleteProject = createAsyncThunk(
     'project/delete',
-    async ({token, id}:{token:string, id: number}, {rejectWithValue}) => {
+    async ({token, id}: { token: string, id: number }, {rejectWithValue}) => {
         try {
             const res = await API.deleteProject(token, id);
             return await API.getProfileProjectAll(token)
@@ -81,3 +84,39 @@ export const deleteProject = createAsyncThunk(
         }
     }
 )
+
+export const getProject = createAsyncThunk(
+    'project/get',
+    async ({token, id}: { token: string, id: number }, {rejectWithValue}) => {
+        try {
+            const info:IProjectFull = await API.getProject(token, id);
+            const participants: IUserMin[] = await API.getProjectParticipants(token, id);
+            const files: IFile[] = await API.getDocuments(token, id);
+            return {
+                info,
+                participants,
+                files,
+                mindmaps: [],
+                kanban: []
+            };
+
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const deleteProjectParticipant = createAsyncThunk(
+    'delete/participant',
+    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+        try {
+            await API.deleteParticipants(token, id, data);
+            return API.getProjectParticipants(token, id)
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+

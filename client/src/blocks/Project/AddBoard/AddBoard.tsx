@@ -11,7 +11,7 @@ import columns from '../../../../data-board-kanban.json'
 
 
 interface IAddBoard {
-    onProject: (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUser}) => void,
+    //onProject: (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUser}) => void,
     modal: IModal,
     setModal: (id: string) => void,
     type: "KANBAN" | "MINDMAP"
@@ -22,7 +22,7 @@ interface IAddBoard {
 const AddBoard:React.FC<IAddBoard> = (
     {
         modal,
-        onProject,
+        //onProject,
         setModal,
         type
     }) => {
@@ -46,7 +46,7 @@ const AddBoard:React.FC<IAddBoard> = (
                     nodes: [],
                     edges: [],
                 }
-                onProject({type, payload: newEl})
+                //onProject({type, payload: newEl})
                 break;
             }
             case 'KANBAN' : {
@@ -55,7 +55,7 @@ const AddBoard:React.FC<IAddBoard> = (
                     name: state.name,
                     board: []
                 }
-                onProject({type, payload: newEl})
+                //onProject({type, payload: newEl})
                 break;
             }
             default : {

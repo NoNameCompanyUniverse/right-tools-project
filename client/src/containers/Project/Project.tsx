@@ -1,33 +1,30 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 import {IModal} from "../../types/IModal";
-import {IProjectFull} from "../../types/old/IProject";
-import project_data from "../../../data-project.json";
 import {motion} from "framer-motion";
 import {PageTransition} from "../../motion";
 import Title from "../../components/Panel/Title";
 import UserCard from "../../components/Cards/UserCard";
 import Tabs from "../../components/Tabs";
-import Card from "../../components/Project/Card";
-import Link from "next/link";
 import FileCard from "../../components/Cards/FileCard";
 import PanelInfo from "../../blocks/Project/PanelInfo";
 import Modal from "../../components/Modal";
-import {toast} from "react-toastify";
-import {IMindMap} from "../../types/old/IMindMap";
-import {IUser} from "../../types/old/IUser";
-import {IKanBan} from "../../types/old/IKanBan";
-import {IFile} from "../../types/old/IFile";
+import {IFile} from "../../types/IFile";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {useSession} from "next-auth/react";
+import {deleteProjectParticipant, getProject} from "../../redux/actions/ProjectsAction";
+import {IUserMin} from "../../types/IUser";
 
 const Project = () => {
-    const router = useRouter();
 
+    const router = useRouter();
+    const {data: session} = useSession()
+    const dispatch = useAppDispatch();
+    const {project} = useAppSelector(state => state.projectSlice);
 
     const [modal, setModal] = useState<IModal>({id: '#popup', isOpen: false});
 
     const handleOnModal = (id: string) => setModal({...modal, isOpen: !modal.isOpen});
-
-    const [projectData, setProjectData] = useState<IProjectFull>();
 
     const [buf, setBuf] = useState<{
         type: string | 'TEAM' | 'MINDMAP' | 'KANBAN' | 'FILE',
@@ -37,31 +34,37 @@ const Project = () => {
         id: 0
     });
 
-    const handleDeleteProject = (id: number, type: string) => {
+    const handleSwitchDelete = (id: number, type: string) => {
         setBuf({type, id});
         handleOnModal(modal.id);
     }
 
     const handleOnDelete = (e: FormEvent) => {
         e.preventDefault();
-        const type = buf.type.toLowerCase();
-        setProjectData((state: any) => ({
-            ...state,
-            [type]: state[type].filter((i: { id: number; }) => i.id !== buf.id)
-        }))
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        const type = buf.type;
+        switch (type) {
+            case 'TEAM' : {
+                dispatch(deleteProjectParticipant({token, id: 47, data: {participants: [buf.id]}}))
+                break;
+            }
+            default : {
+                break;
+            }
+        }
         setBuf({type: '', id: 0});
-        toast.error('Удалено');
         handleOnModal(modal.id);
     }
 
-    const handleAddData = (data: IMindMap | IUser | IKanBan | IFile, type: string) => {
-        const path = type.toLowerCase();
-        setProjectData((state: any) => ({
-            ...state,
-            [path]: [...state[path], data]
-        }))
-        toast.success('Добавлено!')
-    }
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        if (!router.isReady) return;
+        // @ts-ignore
+        dispatch(getProject({token, id: router.query.id}))
+    }, [dispatch, router.isReady])
+
 
 
     return (
@@ -76,8 +79,12 @@ const Project = () => {
                         <div>
                             <Title value={`Администратор проекта`}/>
                         </div>
-                        <div className="col-xl-4 mt-3 mb-5">
-                            {/*<UserCard data={projectData.team[0]}/>*/}
+                        <div className="col-xl-3 mt-3 mb-5">
+                            {
+                                project.info && (
+                                    <UserCard data={project.info.admin}/>
+                                )
+                            }
                         </div>
                         <div>
                             <Tabs tabs={[
@@ -92,15 +99,17 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    // projectData.team.map((user, index) => (
-                                                    //     <div key={index} className={`col-xl-4 mb-3`}>
-                                                    //         {/*<UserCard data={user}>*/}
-                                                    //         {/*    <ul>*/}
-                                                    //         {/*        <li onClick={() => handleDeleteProject(user.id, 'TEAM')}>Удалить</li>*/}
-                                                    //         {/*    </ul>*/}
-                                                    //         {/*</UserCard>*/}
-                                                    //     </div>
-                                                    // ))
+                                                    project.participants.map((user: IUserMin, index) => (
+                                                        <div key={index} className={`col-xl-4 mb-3`}>
+                                                            <UserCard data={user}>
+                                                                <ul>
+                                                                    <li onClick={() => handleSwitchDelete(user.id, 'TEAM')}>
+                                                                        Удалить
+                                                                    </li>
+                                                                </ul>
+                                                            </UserCard>
+                                                        </div>
+                                                    ))
                                                 }
                                             </div>
                                         </div>
@@ -162,18 +171,18 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className="row gx-3">
                                                 {
-                                                    // projectData.file.map((file, index) => (
-                                                    //     <div key={index}
-                                                    //          className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
-                                                    //         <FileCard props={file}>
-                                                    //             <ul>
-                                                    //
-                                                    //                 <li onClick={() => handleDeleteProject(file.id, 'FILE')}>Удалить</li>
-                                                    //
-                                                    //             </ul>
-                                                    //         </FileCard>
-                                                    //     </div>
-                                                    // ))
+                                                    project.files.map((file: IFile, index) => (
+                                                        <div key={index}
+                                                             className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
+                                                            <FileCard props={file}>
+                                                                <ul>
+
+                                                                    <li onClick={() => handleSwitchDelete(file.id, 'FILE')}>Удалить</li>
+
+                                                                </ul>
+                                                            </FileCard>
+                                                        </div>
+                                                    ))
                                                 }
                                             </div>
                                         </div>
@@ -183,7 +192,7 @@ const Project = () => {
                         </div>
                     </div>
                     <div className="col-auto">
-                        {/*<PanelInfo addData={handleAddData} data={projectData}/>*/}
+                        <PanelInfo/>
                     </div>
                 </div>
             </motion.div>
