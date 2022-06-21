@@ -16,6 +16,8 @@ from pathlib import Path
 
 import dotenv
 
+import rt_app.middlewares
+
 dotenv.load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'rt_app.middlewares.SetLastLoginMiddleware',
     'django_simple_logs.middlewares.LoguruMiddleware',
 ]
 
