@@ -7,6 +7,9 @@ urlpatterns = [
     path('backgrounds/', include('rt_app.backgrounds.urls')),
     path('projects/', include('rt_app.projects.urls')),
     path('documents/', include('rt_app.documents.urls')),
+
+    path('mind-map/', include('rt_app.mind-map.urls')),
+
     path('auth/', include('rt_app.auth.urls')),
     path('ping/', PingView.as_view())
 ]
