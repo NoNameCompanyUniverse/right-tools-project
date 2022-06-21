@@ -46,7 +46,8 @@ const Project = () => {
         const type = buf.type;
         switch (type) {
             case 'TEAM' : {
-                dispatch(deleteProjectParticipant({token, id: 47, data: {participants: [buf.id]}}))
+                // @ts-ignore
+                dispatch(deleteProjectParticipant({token, id: router.query.id, data: {participants: [buf.id]}}))
                 break;
             }
             default : {
