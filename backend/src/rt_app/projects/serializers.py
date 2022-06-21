@@ -7,11 +7,12 @@ from rt_app.common.serializers import ServiceSerializer
 
 class UsersListSerializer(ServiceSerializer, serializers.ModelSerializer):
     online = serializers.SerializerMethodField('is_online', label="Онлайн ли пользователь")
+    full_name = serializers.SerializerMethodField('get_full_name')
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'online', 'last_login', 'photo')
-        read_only_fields = ('id', 'username', 'online', 'last_login', 'photo')
+        fields = ('id', 'full_name', 'username', 'online', 'last_login', 'photo')
+        read_only_fields = ('id', 'full_name', 'username', 'online', 'last_login', 'photo')
         write_only_fields = ('id',)
 
 
