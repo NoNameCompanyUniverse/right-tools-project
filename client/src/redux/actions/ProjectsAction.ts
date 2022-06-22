@@ -4,6 +4,7 @@ import {IProjectFull} from "../../types/IProject";
 import {IUserMin} from "../../types/IUser";
 import {IFile} from "../../types/IFile";
 import {toast} from "react-toastify";
+import {removeDocument, removeKanBan, removeMindMap, removeParticipant} from "../reducers/ProjectsSlice";
 
 
 export const getProjects = createAsyncThunk(
@@ -90,7 +91,7 @@ export const getProject = createAsyncThunk(
     'project/get',
     async ({token, id}: { token: string, id: number }, {rejectWithValue}) => {
         try {
-            const info:IProjectFull = await API.getProject(token, id);
+            const info: IProjectFull = await API.getProject(token, id);
             const participants: IUserMin[] = await API.getProjectParticipants(token, id);
             const files: IFile[] = await API.getDocuments(token, id);
             const mindmaps: Array<any> = await API.getMindMaps(token, id);
@@ -113,13 +114,56 @@ export const getProject = createAsyncThunk(
     }
 )
 
+export const putProject = createAsyncThunk(
+    'put/project',
+    async ({token, id, data, picture}: { token: string, id: number, data: any, picture:any }, {rejectWithValue}) => {
+        try {
+            const info = {
+                name: data.name,
+                description: data.description
+            }
+            if (picture) {
+                await API.patchProjectPicture(token, id, picture);
+                return await API.putProject(token, id, info)
+            } else {
+                return await API.putProject(token, id, info)
+            }
+        } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const postProjectParticipant = createAsyncThunk(
+    'post/participants',
+    async ({token, id, data}: { token: string, id: number, data: Array<number> }, {rejectWithValue, dispatch}) => {
+        try {
+            const participants = {
+                participants: data
+            }
+            return await API.postParticipants(token, participants, id)
+        } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
 export const deleteProjectParticipant = createAsyncThunk(
     'delete/participant',
-    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+    async ({token, id, data}: { token: string, id: number, data: any }, {rejectWithValue, dispatch}) => {
         try {
-            await API.deleteParticipants(token, id, data);
-            return API.getProjectParticipants(token, id)
+
+            const res = await API.deleteParticipants(token, id, data);
+            dispatch(removeParticipant(data.participants[0]))
         } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -128,12 +172,12 @@ export const deleteProjectParticipant = createAsyncThunk(
 
 export const postProjectDocument = createAsyncThunk(
     'post/document',
-    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+    async ({token, id, data}: { token: string, id: number, data: any }, {rejectWithValue}) => {
         try {
-            const res = await API.postDocument(token, id, data);
-            return await API.getDocuments(token, id)
-
+            return await API.postDocument(token, id, data);
         } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -142,12 +186,14 @@ export const postProjectDocument = createAsyncThunk(
 
 export const deleteProjectDocument = createAsyncThunk(
     'delete/document',
-    async ({token, id, idP}: {token: string, id: number, idP: number}, {rejectWithValue}) => {
+    async ({token, id}: { token: string, id: number }, {rejectWithValue, dispatch}) => {
         try {
             const res = await API.deleteDocument(token, id);
-            return await API.getDocuments(token, idP)
+            dispatch(removeDocument(id))
 
         } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -157,11 +203,13 @@ export const deleteProjectDocument = createAsyncThunk(
 
 export const deleteMindMap = createAsyncThunk(
     'delete/mindmap',
-    async ({token, id, idP} : {token: string, id: number, idP: number}, {rejectWithValue}) => {
+    async ({token, id}: { token: string, id: number }, {rejectWithValue, dispatch}) => {
         try {
-            const res = API.deleteMindMap(token, id);
-            return await API.getMindMaps(token, idP);
+            const res = await API.deleteMindMap(token, id);
+            dispatch(removeMindMap(id))
         } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -170,12 +218,12 @@ export const deleteMindMap = createAsyncThunk(
 
 export const postMindMap = createAsyncThunk(
     'post/mindmap',
-    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+    async ({token, id, data}: { token: string, id: number, data: any }, {rejectWithValue}) => {
         try {
-            const res = await API.postMindMap(token, id, data);
-            return await API.getMindMaps(token, id)
-
+            return await API.postMindMap(token, id, data);
         } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -184,11 +232,13 @@ export const postMindMap = createAsyncThunk(
 
 export const deleteKanBan = createAsyncThunk(
     'delete/kanban',
-    async ({token, id, idP} : {token: string, id: number, idP: number}, {rejectWithValue}) => {
+    async ({token, id}: { token: string, id: number }, {rejectWithValue, dispatch}) => {
         try {
-            const res = API.deleteKanBan(token, id);
-            return await API.getKanbans(token, idP);
+            const res = await API.deleteKanBan(token, id);
+            dispatch(removeKanBan(id))
         } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -197,12 +247,13 @@ export const deleteKanBan = createAsyncThunk(
 
 export const postKanBan = createAsyncThunk(
     'post/kanban',
-    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+    async ({token, id, data}: { token: string, id: number, data: any }, {rejectWithValue}) => {
         try {
-            const res = await API.postKanBan(token, id, data);
-            return await API.getKanbans(token, id)
+            return await API.postKanBan(token, id, data);
 
         } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }

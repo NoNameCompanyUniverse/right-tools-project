@@ -4,6 +4,7 @@
 .block {
   position: fixed;
 
+  z-index: 900;
   border-radius: var(--radius-value);
   border: 1px solid #EEEEEE;
   background: #fff;

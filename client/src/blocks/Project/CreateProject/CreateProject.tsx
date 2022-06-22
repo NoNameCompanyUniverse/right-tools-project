@@ -165,7 +165,12 @@ const CreateProject = () => {
                     </div>
                 </form>
             </Modal>
-            <AddUser onUsers={handleAddUser} modal={modal[1]} onModal={handleOnModal} participant={state.participant}/>
+            <AddUser
+                onUsers={handleAddUser}
+                modal={modal[1]}
+                onModal={handleOnModal}
+                participant={state.participant}
+            />
         </>
     );
 };

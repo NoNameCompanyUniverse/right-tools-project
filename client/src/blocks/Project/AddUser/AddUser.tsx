@@ -11,7 +11,8 @@ interface IAddUser {
     modal: IModal,
     onModal: (id: string) => void,
     participant: Array<number>,
-    onUsers: (data: Array<number>) => void
+    onUsers: (data: Array<number>) => void,
+
 }
 
 const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => {

@@ -32,7 +32,7 @@ const Project = () => {
     const {data: session} = useSession()
     const dispatch = useAppDispatch();
     const {project, loading} = useAppSelector(state => state.projectSlice);
-
+    const {auth} = useAppSelector(state => state.profileSlice);
     const [modal, setModal] = useState<IModal>({id: '#popup', isOpen: false});
 
     const handleOnModal = (id: string) => setModal({...modal, isOpen: !modal.isOpen});
@@ -65,17 +65,17 @@ const Project = () => {
             }
             case 'FILE':{
                 // @ts-ignore
-                dispatch(deleteProjectDocument({token, id: buf.id, idP}))
+                dispatch(deleteProjectDocument({token, id: buf.id}))
                 break;
             }
             case 'MINDMAP': {
                 // @ts-ignore
-                dispatch(deleteMindMap({token, id: buf.id, idP}));
+                dispatch(deleteMindMap({token, id: buf.id}));
                 break;
             }
             case 'KANBAN': {
                 // @ts-ignore
-                dispatch(deleteKanBan({token, id: buf.id, idP}));
+                dispatch(deleteKanBan({token, id: buf.id}));
                 break;
             }
             default : {
@@ -84,6 +84,16 @@ const Project = () => {
         }
         setBuf({type: '', id: 0});
         handleOnModal(modal.id);
+    }
+
+    function IsAdmin(Component:any) {
+        if (auth && project.info) {
+            if (auth.id === project.info.admin.id) {
+                return Component
+            } else {
+                return ''
+            }
+        }
     }
 
     useEffect(() => {
@@ -134,11 +144,13 @@ const Project = () => {
                                                     )) : Array.isArray(project.participants) && project.participants.length > 0 ? project.participants.map((i: IUserMin, index) => (
                                                         <div key={index} className={`col-xl-4 mb-3`}>
                                                             <UserCard data={i}>
-                                                                <ul>
-                                                                    <li onClick={() => handleSwitchDelete(i.id, 'TEAM')}>
-                                                                        Удалить
-                                                                    </li>
-                                                                </ul>
+                                                                {
+                                                                    IsAdmin(<ul>
+                                                                        <li onClick={() => handleSwitchDelete(i.id, 'TEAM')}>
+                                                                            Удалить
+                                                                        </li>
+                                                                    </ul>)
+                                                                }
                                                             </UserCard>
                                                         </div>
                                                     )) : <>Нет проектов</>
@@ -171,7 +183,9 @@ const Project = () => {
                                                                                 </a>
                                                                             </Link>
                                                                         </li>
-                                                                        <li onClick={() => handleSwitchDelete(map.id, 'MINDMAP')}>Удалить</li>
+                                                                        {
+                                                                            IsAdmin(<li onClick={() => handleSwitchDelete(map.id, 'MINDMAP')}>Удалить</li>)
+                                                                        }
                                                                     </ul>
                                                                 </Card>
                                                             </div>
@@ -210,7 +224,10 @@ const Project = () => {
                                                                                 </a>
                                                                             </Link>
                                                                         </li>
-                                                                        <li onClick={() => handleSwitchDelete(map.id, 'KANBAN')}>Удалить</li>
+                                                                        {
+                                                                            IsAdmin(<li onClick={() => handleSwitchDelete(map.id, 'KANBAN')}>Удалить</li>)
+                                                                        }
+
                                                                     </ul>
                                                                 </Card>
                                                             </div>
@@ -219,25 +236,6 @@ const Project = () => {
 
                                                 {
                                                     loading === 'REJECTED' && <>Error Data</>
-                                                }
-                                                {
-                                                    // projectData.kanban.map((kanban, index) => (
-                                                    //     <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                    //         <Card data={kanban}>
-                                                    //             <ul>
-                                                    //                 <li>
-                                                    //                     <Link
-                                                    //                         href={`${router.asPath}/kanban/${kanban.id}`}>
-                                                    //                         <a>
-                                                    //                             Открыть
-                                                    //                         </a>
-                                                    //                     </Link>
-                                                    //                 </li>
-                                                    //                 <li onClick={() => handleDeleteProject(kanban.id, 'KANBAN')}>Удалить</li>
-                                                    //             </ul>
-                                                    //         </Card>
-                                                    //     </div>
-                                                    // ))
                                                 }
                                             </div>
                                         </div>
@@ -258,9 +256,12 @@ const Project = () => {
                                                                  className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
                                                                 <FileCard props={file}>
                                                                     <ul>
-                                                                        <li onClick={() => handleSwitchDelete(file.id, 'FILE')}>
-                                                                            Удалить
-                                                                        </li>
+                                                                        {
+                                                                            IsAdmin(<li onClick={() => handleSwitchDelete(file.id, 'FILE')}>
+                                                                                Удалить
+                                                                            </li>)
+                                                                        }
+
                                                                         <li>
                                                                             <a href={file.file} download>Скачать</a>
                                                                         </li>

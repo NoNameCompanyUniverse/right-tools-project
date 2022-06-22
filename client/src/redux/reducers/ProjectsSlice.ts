@@ -8,7 +8,7 @@ import {
     getProject,
     getProjectsProfile,
     getProjectsProfileAll, postKanBan, postMindMap,
-    postProject, postProjectDocument
+    postProject, postProjectDocument, postProjectParticipant, putProject
 } from "../actions/ProjectsAction";
 import {IUserMin} from "../../types/IUser";
 import {IFile} from "../../types/IFile";
@@ -41,7 +41,20 @@ const initialState: IProjectsState = {
 export const projectsSlice = createSlice({
     name: 'projects',
     initialState,
-    reducers: {},
+    reducers: {
+        removeMindMap(state, action: PayloadAction<number>){
+            state.project.mindmaps = state.project.mindmaps.filter((i) => i.id !== action.payload);
+        },
+        removeKanBan(state, action: PayloadAction<number>){
+            state.project.kanban = state.project.kanban.filter((i) => i.id !== action.payload);
+        },
+        removeDocument(state, action:PayloadAction<number>) {
+            state.project.files = state.project.files.filter(i => i.id !== action.payload);
+        },
+        removeParticipant(state, action: PayloadAction<number>) {
+            state.project.participants = state.project.participants.filter(i => i.id !== action.payload);
+        }
+    },
     extraReducers: {
         [getProjectsProfile.pending.type]: (state) => {
             state.loading = 'PENDING'
@@ -108,8 +121,7 @@ export const projectsSlice = createSlice({
         [deleteProjectParticipant.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
-        [deleteProjectParticipant.fulfilled.type]: (state, action: PayloadAction<IUserMin[]>) => {
-            state.project.participants = action.payload;
+        [deleteProjectParticipant.fulfilled.type]: (state) => {
             //state.loading = 'FULFILLED';
             toast.error("Сотрудник удален")
         },
@@ -118,12 +130,24 @@ export const projectsSlice = createSlice({
         },
 
 
+        [putProject.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [putProject.fulfilled.type]: (state, action: PayloadAction<IProjectFull>) => {
+            state.project.info = action.payload;
+            //state.loading = 'FULFILLED';
+            toast.success("Проект обновлен")
+        },
+        [putProject.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
 
         [postProjectDocument.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
-        [postProjectDocument.fulfilled.type]: (state, action: PayloadAction<IFile[]>) => {
-            state.project.files = action.payload;
+        [postProjectDocument.fulfilled.type]: (state, action: PayloadAction<IFile>) => {
+            state.project.files.push(action.payload);
             //state.loading = 'FULFILLED';
             toast.success("Файл загружен")
         },
@@ -135,8 +159,7 @@ export const projectsSlice = createSlice({
         [deleteProjectDocument.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
-        [deleteProjectDocument.fulfilled.type]: (state, action: PayloadAction<IFile[]>) => {
-            state.project.files = action.payload;
+        [deleteProjectDocument.fulfilled.type]: (state) => {
             //state.loading = 'FULFILLED';
             toast.success("Файл удален")
         },
@@ -148,8 +171,8 @@ export const projectsSlice = createSlice({
         [postMindMap.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
-        [postMindMap.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
-            state.project.mindmaps = action.payload;
+        [postMindMap.fulfilled.type]: (state, action: PayloadAction<any>) => {
+            state.project.mindmaps.push(action.payload);
             //state.loading = 'FULFILLED';
             toast.success("Успешно создан")
         },
@@ -158,8 +181,7 @@ export const projectsSlice = createSlice({
             toast.error("Ошибка")
         },
 
-        [deleteMindMap.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
-            state.project.mindmaps = action.payload;
+        [deleteMindMap.fulfilled.type]: (state) => {
             //state.loading = 'FULFILLED';
             toast.success("Mind Map удален")
         },
@@ -171,8 +193,8 @@ export const projectsSlice = createSlice({
         [postKanBan.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
-        [postKanBan.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
-            state.project.kanban = action.payload;
+        [postKanBan.fulfilled.type]: (state, action: PayloadAction<any>) => {
+            state.project.kanban.push(action.payload);
             //state.loading = 'FULFILLED';
             toast.success("Успешно создан")
         },
@@ -181,8 +203,7 @@ export const projectsSlice = createSlice({
             toast.error("Ошибка")
         },
 
-        [deleteKanBan.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
-            state.project.kanban = action.payload;
+        [deleteKanBan.fulfilled.type]: (state) => {
             //state.loading = 'FULFILLED';
             toast.success("KanBan удален")
         },
@@ -192,7 +213,28 @@ export const projectsSlice = createSlice({
         },
 
 
+        [postProjectParticipant.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [postProjectParticipant.fulfilled.type]: (state, action: PayloadAction<IUserMin[]>) => {
+            state.project.participants = state.project.participants.concat(action.payload)
+            //state.loading = 'FULFILLED';
+            toast.success("Пользователи добавлены")
+        },
+        [postProjectParticipant.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
+
+
+
     }
 })
 
+export const {
+    removeMindMap,
+    removeKanBan,
+    removeDocument,
+    removeParticipant
+} = projectsSlice.actions;
 export default projectsSlice.reducer;
