@@ -27,14 +27,13 @@ import {postProjectDocument} from "../../../redux/actions/ProjectsAction";
 import {useRouter} from "next/router";
 
 
-
 const PanelInfo: React.FC = () => {
 
     const router = useRouter();
     const {data: session} = useSession()
     const dispatch = useAppDispatch();
     const {project} = useAppSelector(state => state.projectSlice);
-
+    const {auth} = useAppSelector(state => state.profileSlice);
 
 
     const [type, setType] = useState<"KANBAN" | "MINDMAP">("KANBAN")
@@ -51,7 +50,7 @@ const PanelInfo: React.FC = () => {
 
     const handleOnModal = (id: string) => {
         let clone = modal.concat();
-        clone = clone.map((e:IModal) => (
+        clone = clone.map((e: IModal) => (
             e.id === id ? {id: e.id, isOpen: !e.isOpen} : e
         ))
         setModal(clone)
@@ -63,15 +62,14 @@ const PanelInfo: React.FC = () => {
     // }
 
 
-
-    const handleOnFile = (e:any) => {
+    const handleOnFile = (e: any) => {
         const file = e.currentTarget.files[0];
         //@ts-ignore
         const token: string = session?.accessToken;
         if (!router.isReady) return;
 
         // @ts-ignore
-        dispatch(postProjectDocument({token, id:router.query.id, data: file}))
+        dispatch(postProjectDocument({token, id: router.query.id, data: file}))
         // const newFile: IFile = {
         //     id: genId(),
         //     name: file.name,
@@ -80,8 +78,6 @@ const PanelInfo: React.FC = () => {
         // }
         //addData(newFile, 'FILE')
     }
-
-
 
 
     const Title: React.FC<{ value: string }> = ({value}) => {
@@ -113,7 +109,8 @@ const PanelInfo: React.FC = () => {
                         <div className={`mb-4`}>
                             <div className={style.banner}>
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={project.info?.picture ? project.info.picture : '/profile/user-banner.jpg'} alt=""/>
+                                <img src={project.info?.picture ? project.info.picture : '/profile/user-banner.jpg'}
+                                     alt=""/>
                             </div>
                         </div>
                         <div className="mb-2">
@@ -131,13 +128,14 @@ const PanelInfo: React.FC = () => {
                                 {project.participants.length > 3 && (<div className={style.count}>
                                     {`+${project.participants.length - 3}`}
                                 </div>)}
-                                {project.participants.map((item:IUserMin, index: number) => {
+                                {project.participants.map((item: IUserMin, index: number) => {
                                     if (index < 3) {
                                         return (
                                             <>
                                                 <div className={style.avatar}>
                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                    <img src={item.photo ? item.photo : '/profile/default-profile.png'} alt=""/>
+                                                    <img src={item.photo ? item.photo : '/profile/default-profile.png'}
+                                                         alt=""/>
                                                 </div>
                                             </>
                                         )
@@ -146,6 +144,8 @@ const PanelInfo: React.FC = () => {
                                 <div className={style.addUser}>
                                     <PlusSmIcon/>
                                 </div>
+
+
                             </div>
                         </div>
                         <div className={`mb-4`}>
@@ -164,7 +164,11 @@ const PanelInfo: React.FC = () => {
                                         <motion.div
                                             onClick={() => handleCreateBoard(modal[1].id, "MINDMAP")}
                                             whileTap={{scale: 0.95}}
-                                            className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
+                                            className={[
+                                                style.item,
+                                                'd-flex',
+                                                'align-items-center',
+                                                'justify-content-center'].join(" ")}>
                                             <i className={'icon icon-lg'}>
                                                 <FolderAddIcon/>
                                             </i>
@@ -241,9 +245,14 @@ const PanelInfo: React.FC = () => {
                                     <SwiperSlide>
                                         <motion.div
                                             whileTap={{scale: 0.95}}
-                                            style={{"position" : "relative"}}
+                                            style={{"position": "relative"}}
                                             className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
-                                            <label style={{"width" : "100%", "height" : "100%", "position" : "absolute", "cursor" : "pointer"}}>
+                                            <label style={{
+                                                "width": "100%",
+                                                "height": "100%",
+                                                "position": "absolute",
+                                                "cursor": "pointer"
+                                            }}>
                                                 <input
                                                     accept={".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"}
                                                     onChange={handleOnFile}
@@ -285,7 +294,8 @@ const PanelInfo: React.FC = () => {
                     <div className="col-12 mt-2">
                         <div className={style.banner} style={{"height": '15rem'}}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={project.info?.picture ? project.info.picture : '/profile/user-banner.jpg'} alt=""/>
+                            <img src={project.info?.picture ? project.info.picture : '/profile/user-banner.jpg'}
+                                 alt=""/>
                         </div>
                     </div>
                     <div className="col-12 mt-4">
@@ -298,7 +308,7 @@ const PanelInfo: React.FC = () => {
                 //onProject={handleOnProject}
                 modal={modal[1]}
                 setModal={handleOnModal}
-                type={type} />
+                type={type}/>
         </>
     );
 };

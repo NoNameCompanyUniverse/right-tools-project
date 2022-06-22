@@ -4,7 +4,7 @@ import DropDown from "../../DropDown";
 import {motion} from "framer-motion";
 import Link from "next/link";
 
-type ICard = {
+interface ICard  {
     data: {
         id: number,
         name: string,
@@ -27,7 +27,10 @@ const Card: React.FC<ICard> = (
                 whileHover={{scale: 1.1, transformOrigin: 'left top'}}
                 className={style.banner}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <motion.img whileHover={{scale: 1.05}} src={'/profile/user-banner.jpg'} alt=""/>
+                <motion.img
+                    whileHover={{scale: 1.05}}
+                    src={'https://cs8.pikabu.ru/post_img/big/2017/08/10/4/150233899813980823.jpg'}
+                    alt=""/>
             </motion.div>
             <div className={style.title}>
                 <span className={`text-black`}>{name}</span>

@@ -2,6 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 import {IModal} from "../../types/IModal";
 import {motion} from "framer-motion";
+import Link from 'next/link';
 import {PageTransition} from "../../motion";
 import Title from "../../components/Panel/Title";
 import UserCard from "../../components/Cards/UserCard";
@@ -12,12 +13,18 @@ import Modal from "../../components/Modal";
 import {IFile} from "../../types/IFile";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {useSession} from "next-auth/react";
-import {deleteProjectParticipant, getProject} from "../../redux/actions/ProjectsAction";
+import {
+    deleteKanBan,
+    deleteMindMap,
+    deleteProjectDocument,
+    deleteProjectParticipant,
+    getProject
+} from "../../redux/actions/ProjectsAction";
 import {IUserMin} from "../../types/IUser";
-import {ToastContainer} from "react-toastify";
 import SkeletonUser from "../../components/Skeleton/SkeletonUser";
 import SkeletonFile from "../../components/Skeleton/SkeletonFile";
 import SkeletonCard from "../../components/Skeleton/SkeletonCard";
+import Card from "../../components/Project/Card/Card";
 
 const Project = () => {
 
@@ -48,10 +55,27 @@ const Project = () => {
         //@ts-ignore
         const token: string = session?.accessToken;
         const type = buf.type;
+        //@ts-ignore
+        const idP: number = router.query.id;
         switch (type) {
             case 'TEAM' : {
                 // @ts-ignore
-                dispatch(deleteProjectParticipant({token, id: router.query.id, data: {participants: [buf.id]}}))
+                dispatch(deleteProjectParticipant({token, id: idP, data: {participants: [buf.id]}}))
+                break;
+            }
+            case 'FILE':{
+                // @ts-ignore
+                dispatch(deleteProjectDocument({token, id: buf.id, idP}))
+                break;
+            }
+            case 'MINDMAP': {
+                // @ts-ignore
+                dispatch(deleteMindMap({token, id: buf.id, idP}));
+                break;
+            }
+            case 'KANBAN': {
+                // @ts-ignore
+                dispatch(deleteKanBan({token, id: buf.id, idP}));
                 break;
             }
             default : {
@@ -127,31 +151,37 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    [...new Array(3)].map((_, index) => (
-                                                        <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
-                                                            <SkeletonCard/>
-                                                        </div>
-                                                    ))
+                                                    loading === 'PENDING' && [...new Array(3)].map((_, index) => (
+                                                            <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
+                                                                <SkeletonCard/>
+                                                            </div>
+                                                        ))
                                                 }
                                                 {
-                                                    // projectData.mindmap.map((map, index) => (
-                                                    //     <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
-                                                    //         <Card data={map}>
-                                                    //             <ul>
-                                                    //                 <li>
-                                                    //                     <Link
-                                                    //                         href={`${router.asPath}/mindmap/${map.id}`}>
-                                                    //                         <a>
-                                                    //                             Открыть
-                                                    //                         </a>
-                                                    //                     </Link>
-                                                    //                 </li>
-                                                    //                 <li onClick={() => handleDeleteProject(map.id, 'MINDMAP')}>Удалить</li>
-                                                    //             </ul>
-                                                    //         </Card>
-                                                    //     </div>
-                                                    // ))
+                                                    loading === 'FULFILLED' && Array.isArray(project.mindmaps) && project.mindmaps.length > 0 ?
+                                                        project.mindmaps.map((map, index) => (
+                                                            <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                                <Card data={map}>
+                                                                    <ul>
+                                                                        <li>
+                                                                            <Link
+                                                                                href={`${router.asPath}/mindmap/${map.id}`}>
+                                                                                <a>
+                                                                                    Открыть
+                                                                                </a>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li onClick={() => handleSwitchDelete(map.id, 'MINDMAP')}>Удалить</li>
+                                                                    </ul>
+                                                                </Card>
+                                                            </div>
+                                                        )) : <>No Data</>
                                                 }
+
+                                                {
+                                                    loading === 'REJECTED' && <>Error Data</>
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
@@ -160,11 +190,35 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    [...new Array(3)].map((_, index) => (
+                                                    loading === 'PENDING' && [...new Array(3)].map((_, index) => (
                                                         <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
                                                             <SkeletonCard/>
                                                         </div>
                                                     ))
+                                                }
+                                                {
+                                                    loading === 'FULFILLED' && Array.isArray(project.kanban) && project.kanban.length > 0 ?
+                                                        project.kanban.map((map, index) => (
+                                                            <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                                <Card data={map}>
+                                                                    <ul>
+                                                                        <li>
+                                                                            <Link
+                                                                                href={`${router.asPath}/kanban/${map.id}`}>
+                                                                                <a>
+                                                                                    Открыть
+                                                                                </a>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li onClick={() => handleSwitchDelete(map.id, 'KANBAN')}>Удалить</li>
+                                                                    </ul>
+                                                                </Card>
+                                                            </div>
+                                                        )) : <>No Data</>
+                                                }
+
+                                                {
+                                                    loading === 'REJECTED' && <>Error Data</>
                                                 }
                                                 {
                                                     // projectData.kanban.map((kanban, index) => (
@@ -206,6 +260,9 @@ const Project = () => {
                                                                     <ul>
                                                                         <li onClick={() => handleSwitchDelete(file.id, 'FILE')}>
                                                                             Удалить
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href={file.file} download>Скачать</a>
                                                                         </li>
                                                                     </ul>
                                                                 </FileCard>

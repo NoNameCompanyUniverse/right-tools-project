@@ -1,11 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IProject, IProjectFull} from "../../types/IProject";
 import {
-    deleteProject,
+    deleteKanBan,
+    deleteMindMap,
+    deleteProject, deleteProjectDocument,
     deleteProjectParticipant,
     getProject,
     getProjectsProfile,
-    getProjectsProfileAll,
+    getProjectsProfileAll, postKanBan, postMindMap,
     postProject, postProjectDocument
 } from "../actions/ProjectsAction";
 import {IUserMin} from "../../types/IUser";
@@ -129,6 +131,66 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка файла")
         },
+
+        [deleteProjectDocument.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [deleteProjectDocument.fulfilled.type]: (state, action: PayloadAction<IFile[]>) => {
+            state.project.files = action.payload;
+            //state.loading = 'FULFILLED';
+            toast.success("Файл удален")
+        },
+        [deleteProjectDocument.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка файла")
+        },
+
+        [postMindMap.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [postMindMap.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
+            state.project.mindmaps = action.payload;
+            //state.loading = 'FULFILLED';
+            toast.success("Успешно создан")
+        },
+        [postMindMap.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
+
+        [deleteMindMap.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
+            state.project.mindmaps = action.payload;
+            //state.loading = 'FULFILLED';
+            toast.success("Mind Map удален")
+        },
+        [deleteMindMap.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
+
+        [postKanBan.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [postKanBan.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
+            state.project.kanban = action.payload;
+            //state.loading = 'FULFILLED';
+            toast.success("Успешно создан")
+        },
+        [postKanBan.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
+
+        [deleteKanBan.fulfilled.type]: (state, action: PayloadAction<Array<any>>) => {
+            state.project.kanban = action.payload;
+            //state.loading = 'FULFILLED';
+            toast.success("KanBan удален")
+        },
+        [deleteKanBan.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
+
 
     }
 })

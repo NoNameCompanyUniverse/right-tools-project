@@ -93,13 +93,14 @@ export const getProject = createAsyncThunk(
             const info:IProjectFull = await API.getProject(token, id);
             const participants: IUserMin[] = await API.getProjectParticipants(token, id);
             const files: IFile[] = await API.getDocuments(token, id);
-            const mindmaps: Array<any> = await API.getMindMaps(token, id)
+            const mindmaps: Array<any> = await API.getMindMaps(token, id);
+            const kanban: Array<any> = await API.getKanbans(token, id)
             return {
                 info,
                 participants,
                 files,
                 mindmaps,
-                kanban: []
+                kanban
             };
 
         } catch (e) {
@@ -139,13 +140,68 @@ export const postProjectDocument = createAsyncThunk(
     }
 )
 
+export const deleteProjectDocument = createAsyncThunk(
+    'delete/document',
+    async ({token, id, idP}: {token: string, id: number, idP: number}, {rejectWithValue}) => {
+        try {
+            const res = await API.deleteDocument(token, id);
+            return await API.getDocuments(token, idP)
+
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
 
 export const deleteMindMap = createAsyncThunk(
     'delete/mindmap',
-    async ({token, id} : {token: string, id: number}, {rejectWithValue}) => {
+    async ({token, id, idP} : {token: string, id: number, idP: number}, {rejectWithValue}) => {
         try {
             const res = API.deleteMindMap(token, id);
-            return await API.getMindMaps(token, id);
+            return await API.getMindMaps(token, idP);
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const postMindMap = createAsyncThunk(
+    'post/mindmap',
+    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+        try {
+            const res = await API.postMindMap(token, id, data);
+            return await API.getMindMaps(token, id)
+
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const deleteKanBan = createAsyncThunk(
+    'delete/kanban',
+    async ({token, id, idP} : {token: string, id: number, idP: number}, {rejectWithValue}) => {
+        try {
+            const res = API.deleteKanBan(token, id);
+            return await API.getKanbans(token, idP);
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+export const postKanBan = createAsyncThunk(
+    'post/kanban',
+    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+        try {
+            const res = await API.postKanBan(token, id, data);
+            return await API.getKanbans(token, id)
+
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)

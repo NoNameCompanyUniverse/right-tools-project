@@ -9,7 +9,7 @@ import DropDown from "../../DropDown";
 const FileCard: React.FC<{ props: IFile, children?: ReactNode | ReactNode[] }> = ({props, children}) => {
     const {id, size, file, name, format} = props;
     return (
-        <motion.div whileTap={{scale: 0.97}} className={style.container}>
+        <div className={style.container}>
             <div className={`row align-items-center justify-content-between`}>
                 <div className="col-auto">
                     <div className={`row gx-1 align-items-center flex-nowrap`}>
@@ -17,9 +17,9 @@ const FileCard: React.FC<{ props: IFile, children?: ReactNode | ReactNode[] }> =
                             <DocumentTextIcon/>
                         </div>
                         <div className={[`col`, style.info].join(" ")}>
-                            <div className={[style.title, "text-black"].join(" ")}>
+                            <a href={file} download className={[style.title, "text-black"].join(" ")}>
                                 {name}
-                            </div>
+                            </a>
                             <div className={style.typeSize}>
                                 <span className="text-gray">
                                     {format.toUpperCase()} / {Math.ceil(+size / 1024)} Kb
@@ -38,7 +38,7 @@ const FileCard: React.FC<{ props: IFile, children?: ReactNode | ReactNode[] }> =
                     )
                 }
             </div>
-        </motion.div>
+        </div>
     );
 };
 

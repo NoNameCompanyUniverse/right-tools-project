@@ -102,16 +102,6 @@ const ControlProfile: React.FC<IControlProfile> = (
                                     placeholder={'Введите фамилия'}
                                 />
                             </div>
-                            {/*<div className="col-12 mb-3">*/}
-                            {/*    <div className="f-7 mb-2 fw-bold">Статус</div>*/}
-                            {/*    <FormInput*/}
-                            {/*        name={'status'}*/}
-                            {/*        type={'text'}*/}
-                            {/*        value={state.status}*/}
-                            {/*        setValue={handleSetValue}*/}
-                            {/*        placeholder={'Введите статус'}*/}
-                            {/*    />*/}
-                            {/*</div>*/}
                             <div className="col-6 mb-4">
                                 <div className="f-7 mb-2 fw-bold">Телефон</div>
                                 <FormInput

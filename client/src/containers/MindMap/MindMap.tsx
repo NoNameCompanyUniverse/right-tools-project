@@ -56,9 +56,11 @@ const initialNodes: Node[] = [
 const nodeCard = {nodeCard: NodeCard};
 
 const initialEdges: Edge[] = [
-    {id: 'e1-2', source: '1', target: '3', animated: true},
+    {id: 'e1-2', source: '1', target: '3'},
 
 ];
+
+
 
 
 const MindMap = () => {
@@ -87,16 +89,25 @@ const MindMap = () => {
     const handleOnEdgeUpdate = (oldEdge: Edge<any>, newConnection: Connection) =>
         setEdges((els) => updateEdge(oldEdge, newConnection, els))
 
-    const handleOnConnect = useCallback(
-        (connection) => setEdges((eds) =>
-            addEdge({...connection, animated: true}, eds)),
-        [setEdges]
-    )
+    // const handleOnConnect = useCallback(
+    //     (connection) => setEdges((eds) =>
+    //         addEdge({...connection, animated: true}, eds)),
+    //     [setEdges]
+    //
+    // )
 
+    const handleOnConnect = (connection:any) => {
+        setEdges((eds) => addEdge({...connection, animated: true}, eds));
+    }
 
     const handleOnLookData = (_: ReactMouseEvent, data: Node) => {
         setNode(data)
     }
+
+
+    useEffect(() => {
+        console.log(edges)
+    }, [edges])
 
     const handleOnNode = (action: { type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: Node }) => {
         const {type, payload} = action;
