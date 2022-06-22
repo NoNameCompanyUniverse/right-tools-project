@@ -96,5 +96,16 @@ class Document(models.Model):
         super().delete(using, keep_parents)
 
 
-# class MindCard(models.Model):
-
+class MindCard(models.Model):
+    TYPE_CARD = (
+        ('S', 'source'),
+        ('D', 'default'),
+        ('T', 'target'),
+    )
+    mind_map = models.ForeignKey(MindMap, on_delete=models.PROTECT, null=False)
+    name = models.CharField(max_length=100, null=False)
+    description = models.TextField(null=True)
+    type_card = models.CharField(max_length=1, choices=TYPE_CARD)
+    x_coord = models.IntegerField(null=False)
+    y_coord = models.IntegerField(null=False)
+    parent = models.ForeignKey('self', on_delete=models.PROTECT, null=True, verbose_name='target')
