@@ -2,17 +2,19 @@ from drf_yasg.utils import swagger_serializer_method
 from rest_framework import fields, serializers
 
 from rt_app.models import Project, User
+from rt_app.subdivisions.serializers import SubdivisionShortInfoSerializer
 from rt_app.common.serializers import ServiceSerializer
 
 
 class UsersListSerializer(ServiceSerializer, serializers.ModelSerializer):
     online = serializers.SerializerMethodField('is_online', label="Онлайн ли пользователь")
     full_name = serializers.SerializerMethodField('get_full_name')
+    subdivision = SubdivisionShortInfoSerializer(read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'full_name', 'username', 'online', 'last_login', 'photo')
-        read_only_fields = ('id', 'full_name', 'username', 'online', 'last_login', 'photo')
+        fields = ('id', 'full_name', 'username', 'online', 'last_login', 'photo', 'subdivision')
+        read_only_fields = ('id', 'full_name', 'username', 'online', 'last_login', 'photo', 'subdivision')
         write_only_fields = ('id',)
 
 
