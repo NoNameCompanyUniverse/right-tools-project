@@ -93,18 +93,19 @@ export const getProject = createAsyncThunk(
             const info:IProjectFull = await API.getProject(token, id);
             const participants: IUserMin[] = await API.getProjectParticipants(token, id);
             const files: IFile[] = await API.getDocuments(token, id);
+            const mindmaps: Array<any> = await API.getMindMaps(token, id)
             return {
                 info,
                 participants,
                 files,
-                mindmaps: [],
+                mindmaps,
                 kanban: []
             };
 
         } catch (e) {
 
             // @ts-ignore
-            toast.error(e.message)
+            toast.error(e.message, {autoClose: false})
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -131,6 +132,20 @@ export const postProjectDocument = createAsyncThunk(
             const res = await API.postDocument(token, id, data);
             return await API.getDocuments(token, id)
 
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+
+export const deleteMindMap = createAsyncThunk(
+    'delete/mindmap',
+    async ({token, id} : {token: string, id: number}, {rejectWithValue}) => {
+        try {
+            const res = API.deleteMindMap(token, id);
+            return await API.getMindMaps(token, id);
         } catch (e) {
             // @ts-ignore
             return rejectWithValue(e.message)

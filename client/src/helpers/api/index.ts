@@ -5,7 +5,8 @@ class Api {
     USERS_URL: string = `users/`;
     PROJECTS_URL: string = `projects/`;
     SUBDIVISIONS_URL: string = 'subdivisions/';
-    DOCUMENTS_URL: string = 'documents/'
+    DOCUMENTS_URL: string = 'documents/';
+    MINDMAP_URL: string = 'mind-map/'
 
 
     api = axios.create({
@@ -232,6 +233,32 @@ class Api {
             return res.data;
         })
     }
+
+    getMindMaps(token:string, id: number) {
+        return this.api.get(`${this.PROJECTS_URL + id}/${this.MINDMAP_URL}`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    postMindMap(token:string, id: number, data:any) {
+        return this.api.post(`${this.PROJECTS_URL + id}/${this.MINDMAP_URL}`, data,{
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+
+
+    deleteMindMap(token:string, id: number){
+        return this.api.delete(this.MINDMAP_URL + id + '/', {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+
+
 
 }
 

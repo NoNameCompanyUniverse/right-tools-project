@@ -55,11 +55,16 @@ const User: React.FC<UserInfo> = ({data, children}) => {
                             @{username}
                         </span>
                     </div>
-                    <div className={`mt-3 ${style.status}`}>
-                        <span className="text-black">
-                            {subdivision.name}
-                        </span>
-                    </div>
+                    {
+                        subdivision && (
+                            <div className={`mt-3 ${style.status}`}>
+                                <span className="text-black">
+                                    {subdivision.name}
+                                 </span>
+                            </div>
+                        )
+                    }
+
                 </div>
                 <div className={`mt-3`}>
                     <div>
