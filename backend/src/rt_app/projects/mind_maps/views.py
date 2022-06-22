@@ -12,7 +12,7 @@ from ..views import BaseProjectDetailView
 ))
 @method_decorator(name="create", decorator=swagger_auto_schema(
     tags=['Mind-map'], operation_summary="Добавить mind-карту в проект",
-    responses={200: MindMapListCreateSerializer(many=True)}
+    responses={200: MindMapListCreateSerializer()}
 ))
 class MindMapView(BaseProjectDetailView, viewsets.ModelViewSet):
     def get_queryset(self):

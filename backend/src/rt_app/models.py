@@ -105,3 +105,7 @@ class Document(models.Model):
     def delete(self, using=None, keep_parents=False):
         self.file.delete()
         super().delete(using, keep_parents)
+
+
+# class MindCard(models.Model):
+
