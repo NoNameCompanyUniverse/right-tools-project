@@ -224,9 +224,9 @@ class Api {
 
     postDocument(token: string, id: number, data:any) {
         let formData = new FormData();
-        formData.append('photo', data);
+        formData.append('file', data);
 
-        return this.api.post(`${this.PROJECTS_URL + id}${this.DOCUMENTS_URL}`, formData,{
+        return this.api.post(`${this.PROJECTS_URL + id}/${this.DOCUMENTS_URL}`, formData,{
             headers: {Authorization: `Bearer ${token}`,}
         }).then(res => {
             return res.data;

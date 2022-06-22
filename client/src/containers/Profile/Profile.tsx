@@ -15,7 +15,7 @@ import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {getUsers} from "../../redux/actions/UsersAction";
 import {IUser} from "../../types/IUser";
 import SkeletonProfile from "../../components/Skeleton/SkeletonProfile";
-import SkeletonProject from "../../components/Skeleton/ SkeletonProject";
+import SkeletonProject from "../../components/Skeleton/SkeletonProject";
 import {getProfileInfo, putMe} from "../../redux/actions/ProfileAction";
 import {deleteProject, getProjectsProfile} from "../../redux/actions/ProjectsAction";
 import ProjectCard from "../../components/Cards/ProjectCard/ProjectCard";

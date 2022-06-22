@@ -3,6 +3,7 @@ import API from "../../helpers/api";
 import {IProjectFull} from "../../types/IProject";
 import {IUserMin} from "../../types/IUser";
 import {IFile} from "../../types/IFile";
+import {toast} from "react-toastify";
 
 
 export const getProjects = createAsyncThunk(
@@ -101,6 +102,9 @@ export const getProject = createAsyncThunk(
             };
 
         } catch (e) {
+
+            // @ts-ignore
+            toast.error(e.message)
             // @ts-ignore
             return rejectWithValue(e.message)
         }
@@ -120,3 +124,16 @@ export const deleteProjectParticipant = createAsyncThunk(
     }
 )
 
+export const postProjectDocument = createAsyncThunk(
+    'post/document',
+    async ({token, id, data}: {token: string, id: number, data:any}, {rejectWithValue}) => {
+        try {
+            const res = await API.postDocument(token, id, data);
+            return await API.getDocuments(token, id)
+
+        } catch (e) {
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)

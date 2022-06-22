@@ -26,7 +26,6 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => 
     const {auth} = useAppSelector(state => state.profileSlice);
 
 
-
     const [participantData, setParticipantData] = useState<Array<number>>(participant)
 
     const handleOnModal = (id: string) => onModal(id);
@@ -62,9 +61,6 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => 
     }, [isOpen])
 
 
-
-
-
     const User: React.FC<{ props: IUserMin }> = ({props}) => {
 
         const {id, subdivision, full_name, photo} = props;
@@ -85,11 +81,15 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => 
                                 {full_name}
                             </span>
                         </div>
-                        <div className={style.status}>
-                            <span className="text-gray">
-                                {subdivision.name}
-                            </span>
-                        </div>
+                        {
+                            subdivision && (
+                                <div className={style.status}>
+                                    <span className="text-gray">
+                                        {subdivision.name}
+                                    </span>
+                                </div>
+                            )
+                        }
                     </div>
                     <div className={'ms-auto'}>
                         <button

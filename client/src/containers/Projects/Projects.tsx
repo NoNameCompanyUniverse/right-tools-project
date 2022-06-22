@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
 import Modal from "../../components/Modal";
 import CreateProject from "../../blocks/Project/CreateProject";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import SkeletonProject from "../../components/Skeleton/ SkeletonProject";
+import SkeletonProject from "../../components/Skeleton/SkeletonProject";
 import {deleteProject, getProjectsProfileAll} from "../../redux/actions/ProjectsAction";
 import {useSession} from "next-auth/react";
 

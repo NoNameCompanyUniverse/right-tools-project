@@ -57,7 +57,7 @@ const nodeCard = {nodeCard: NodeCard};
 
 const initialEdges: Edge[] = [
     {id: 'e1-2', source: '1', target: '3', animated: true},
-    {id: 'e1-3', source: '3', target: '2', animated: true},
+
 ];
 
 
@@ -140,6 +140,18 @@ const MindMap = () => {
     }
 
 
+    const handleOnNodeDragStop = (event:ReactMouseEvent, node:Node) => {
+        console.log(node.position)
+    }
+
+
+    const handleOnEdgeDelete = (edges: Edge[]) => {
+        console.log(edges)
+    }
+
+
+
+
 
     return (
         <>
@@ -151,7 +163,9 @@ const MindMap = () => {
                 onEdgesChange={handleOnEdgesChange}
                 onConnect={handleOnConnect}
                 onEdgeUpdate={handleOnEdgeUpdate}
+                onNodeDragStop={handleOnNodeDragStop}
                 nodeTypes={nodeCard}
+                onEdgesDelete={handleOnEdgeDelete}
                 onNodeClick={handleOnLookData}
                 fitView>
                 <div style={{

@@ -19,7 +19,7 @@ const {label, description, type, id} = data;
                     <>
                         <Handle
                             type="source"
-                            onConnect={(params) => console.log('handle onConnect', params)}
+                            //onConnect={(params) => console.log('handle onConnect', params)}
                             position={Position.Right}/>
                     </>
                 ) : type === 'target' ? (
@@ -27,7 +27,7 @@ const {label, description, type, id} = data;
                         <Handle
                             type="target"
                             position={Position.Left}
-                            onConnect={(params) => console.log('handle onConnect', params)}
+                           // onConnect={(params) => console.log('handle onConnect', params)}
                         />
                     </>
                 ) : (
@@ -35,12 +35,12 @@ const {label, description, type, id} = data;
                         <Handle
                             type="source"
                             position={Position.Right}
-                            onConnect={(params) => console.log('handle onConnect', params)}
+                            //onConnect={(params) => console.log('handle onConnect', params)}
                         />
                         <Handle
                             type="target"
                             position={Position.Left}
-                            onConnect={(params) => console.log('handle onConnect', params)}
+                            //onConnect={(params) => console.log('handle onConnect', params)}
                         />
 
                     </>

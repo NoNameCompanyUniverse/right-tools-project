@@ -14,13 +14,17 @@ import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {useSession} from "next-auth/react";
 import {deleteProjectParticipant, getProject} from "../../redux/actions/ProjectsAction";
 import {IUserMin} from "../../types/IUser";
+import {ToastContainer} from "react-toastify";
+import SkeletonUser from "../../components/Skeleton/SkeletonUser";
+import SkeletonFile from "../../components/Skeleton/SkeletonFile";
+import SkeletonCard from "../../components/Skeleton/SkeletonCard";
 
 const Project = () => {
 
     const router = useRouter();
     const {data: session} = useSession()
     const dispatch = useAppDispatch();
-    const {project} = useAppSelector(state => state.projectSlice);
+    const {project, loading} = useAppSelector(state => state.projectSlice);
 
     const [modal, setModal] = useState<IModal>({id: '#popup', isOpen: false});
 
@@ -67,7 +71,6 @@ const Project = () => {
     }, [dispatch, router.isReady])
 
 
-
     return (
         <>
 
@@ -82,9 +85,9 @@ const Project = () => {
                         </div>
                         <div className="col-xl-3 mt-3 mb-5">
                             {
-                                project.info && (
-                                    <UserCard data={project.info.admin}/>
-                                )
+                                loading === 'PENDING' || loading === 'REJECTED'
+                                    ? <SkeletonUser/>
+                                    : project.info && <UserCard data={project.info.admin}/>
                             }
                         </div>
                         <div>
@@ -100,17 +103,21 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
-                                                    project.participants.map((user: IUserMin, index) => (
+                                                    loading === 'PENDING' || loading === 'REJECTED' ? [...new Array(3)].map((_, index) => (
                                                         <div key={index} className={`col-xl-4 mb-3`}>
-                                                            <UserCard data={user}>
+                                                            <SkeletonUser/>
+                                                        </div>
+                                                    )) : Array.isArray(project.participants) && project.participants.length > 0 ? project.participants.map((i: IUserMin, index) => (
+                                                        <div key={index} className={`col-xl-4 mb-3`}>
+                                                            <UserCard data={i}>
                                                                 <ul>
-                                                                    <li onClick={() => handleSwitchDelete(user.id, 'TEAM')}>
+                                                                    <li onClick={() => handleSwitchDelete(i.id, 'TEAM')}>
                                                                         Удалить
                                                                     </li>
                                                                 </ul>
                                                             </UserCard>
                                                         </div>
-                                                    ))
+                                                    )) : <>Нет проектов</>
                                                 }
                                             </div>
                                         </div>
@@ -119,6 +126,13 @@ const Project = () => {
                                         <Title value={`Mind Maps проекта`}/>
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
+                                                {
+                                                    [...new Array(3)].map((_, index) => (
+                                                        <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
+                                                            <SkeletonCard/>
+                                                        </div>
+                                                    ))
+                                                }
                                                 {
                                                     // projectData.mindmap.map((map, index) => (
                                                     //     <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
@@ -146,6 +160,13 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className={`row`}>
                                                 {
+                                                    [...new Array(3)].map((_, index) => (
+                                                        <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
+                                                            <SkeletonCard/>
+                                                        </div>
+                                                    ))
+                                                }
+                                                {
                                                     // projectData.kanban.map((kanban, index) => (
                                                     //     <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
                                                     //         <Card data={kanban}>
@@ -172,18 +193,24 @@ const Project = () => {
                                         <div className={`mt-4`}>
                                             <div className="row gx-3">
                                                 {
-                                                    project.files.map((file: IFile, index) => (
-                                                        <div key={index}
-                                                             className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
-                                                            <FileCard props={file}>
-                                                                <ul>
-
-                                                                    <li onClick={() => handleSwitchDelete(file.id, 'FILE')}>Удалить</li>
-
-                                                                </ul>
-                                                            </FileCard>
-                                                        </div>
-                                                    ))
+                                                    loading === 'PENDING' || loading === 'REJECTED'
+                                                        ? [...new Array(5)].map((_, index) => (
+                                                            <div key={index}
+                                                                 className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
+                                                                <SkeletonFile/>
+                                                            </div>))
+                                                        : project.files.map((file: IFile, index) => (
+                                                            <div key={index}
+                                                                 className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
+                                                                <FileCard props={file}>
+                                                                    <ul>
+                                                                        <li onClick={() => handleSwitchDelete(file.id, 'FILE')}>
+                                                                            Удалить
+                                                                        </li>
+                                                                    </ul>
+                                                                </FileCard>
+                                                            </div>
+                                                        ))
                                                 }
                                             </div>
                                         </div>

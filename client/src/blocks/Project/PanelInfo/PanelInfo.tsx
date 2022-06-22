@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './index.module.scss';
 import {PlusSmIcon, FolderAddIcon} from "@heroicons/react/outline";
 import Link from 'next/link';
@@ -23,12 +23,14 @@ import {IProjectFull} from "../../../types/IProject";
 import {IUserMin} from "../../../types/IUser";
 import {useSession} from "next-auth/react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {postProjectDocument} from "../../../redux/actions/ProjectsAction";
+import {useRouter} from "next/router";
 
 
 
 const PanelInfo: React.FC = () => {
 
-
+    const router = useRouter();
     const {data: session} = useSession()
     const dispatch = useAppDispatch();
     const {project} = useAppSelector(state => state.projectSlice);
@@ -60,9 +62,16 @@ const PanelInfo: React.FC = () => {
     //     //addData(payload, type)
     // }
 
+
+
     const handleOnFile = (e:any) => {
         const file = e.currentTarget.files[0];
-        console.log(file)
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        if (!router.isReady) return;
+
+        // @ts-ignore
+        dispatch(postProjectDocument({token, id:router.query.id, data: file}))
         // const newFile: IFile = {
         //     id: genId(),
         //     name: file.name,
@@ -71,6 +80,9 @@ const PanelInfo: React.FC = () => {
         // }
         //addData(newFile, 'FILE')
     }
+
+
+
 
     const Title: React.FC<{ value: string }> = ({value}) => {
         return (

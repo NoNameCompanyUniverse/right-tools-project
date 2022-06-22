@@ -6,7 +6,7 @@ import {
     getProject,
     getProjectsProfile,
     getProjectsProfileAll,
-    postProject
+    postProject, postProjectDocument
 } from "../actions/ProjectsAction";
 import {IUserMin} from "../../types/IUser";
 import {IFile} from "../../types/IFile";
@@ -113,6 +113,21 @@ export const projectsSlice = createSlice({
         },
         [deleteProjectParticipant.rejected.type]: (state) => {
             //state.loading = 'REJECTED';
+        },
+
+
+
+        [postProjectDocument.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [postProjectDocument.fulfilled.type]: (state, action: PayloadAction<IFile[]>) => {
+            state.project.files = action.payload;
+            //state.loading = 'FULFILLED';
+            toast.success("Файл загружен")
+        },
+        [postProjectDocument.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка файла")
         },
 
     }
