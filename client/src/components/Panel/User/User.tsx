@@ -81,7 +81,7 @@ const User: React.FC<UserInfo> = ({data, children}) => {
                     </div>
                     <div className={`mt-3`}>
                         <span className="text-gray">Описание</span>
-                        <div className={`text-black`}>
+                        <div className={`text-black`} style={{"whiteSpace" : "pre-line"}}>
                             {description}
                         </div>
                     </div>

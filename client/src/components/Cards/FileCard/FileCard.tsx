@@ -6,22 +6,19 @@ import {IFile} from "../../../types/IFile";
 import DropDown from "../../DropDown";
 
 
-
-const FileCard:React.FC<{props: IFile, children?: ReactNode | ReactNode[]}> = ({props, children}) => {
+const FileCard: React.FC<{ props: IFile, children?: ReactNode | ReactNode[] }> = ({props, children}) => {
     const {id, size, file, name, format} = props;
     return (
         <motion.div whileTap={{scale: 0.97}} className={style.container}>
             <div className={`row align-items-center justify-content-between`}>
                 <div className="col-auto">
-                    <div className={`d-flex align-items-center`}>
-                        <div className={`${style.icon} ${style[format.toLowerCase()]}`}>
+                    <div className={`row gx-1 align-items-center flex-nowrap`}>
+                        <div className={`${style.icon} ${style[format.toLowerCase()]} col-auto`}>
                             <DocumentTextIcon/>
                         </div>
-                        <div className={`ms-1`}>
-                            <div className={style.title}>
-                                <span className="text-black">
-                                    {name}
-                                </span>
+                        <div className={[`col`, style.info].join(" ")}>
+                            <div className={[style.title, "text-black"].join(" ")}>
+                                {name}
                             </div>
                             <div className={style.typeSize}>
                                 <span className="text-gray">

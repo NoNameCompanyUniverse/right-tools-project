@@ -244,7 +244,11 @@ const PanelInfo: React.FC = () => {
                                             style={{"position" : "relative"}}
                                             className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
                                             <label style={{"width" : "100%", "height" : "100%", "position" : "absolute", "cursor" : "pointer"}}>
-                                                <input onChange={handleOnFile} type="file" hidden={true}/>
+                                                <input
+                                                    accept={".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"}
+                                                    onChange={handleOnFile}
+                                                    type="file"
+                                                    hidden={true}/>
                                             </label>
                                             <i className={'icon icon-lg'}>
                                                 <FolderAddIcon/>

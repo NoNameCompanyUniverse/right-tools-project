@@ -6,7 +6,7 @@ export interface IUserBuf  {
     photo: string | null,
     username: string,
     email: string,
-    subdivision?: {
+    subdivision: {
         id: number,
         name: string
     }
