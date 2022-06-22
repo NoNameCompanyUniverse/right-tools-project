@@ -3,6 +3,7 @@ from rt_app.models import Document, Project
 
 
 class DocumentSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(allow_null=False, required=True)
     name = serializers.SerializerMethodField('get_name', label="Название")
     size = serializers.SerializerMethodField('get_size', label="Размер")
     format = serializers.SerializerMethodField('get_format', label="Формат")

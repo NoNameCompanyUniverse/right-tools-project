@@ -13,10 +13,7 @@ class DocumentView(BaseProjectDetailView, generics.ListAPIView, generics.CreateA
     parser_classes = (parsers.MultiPartParser, parsers.FormParser, parsers.FileUploadParser)
 
     def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return DocumentSerializer
-        elif self.request.method == 'POST':
-            return DocumentSerializer
+        return DocumentSerializer
 
     def get_queryset(self):
         return self.get_object().document_set.select_related('project').all()
