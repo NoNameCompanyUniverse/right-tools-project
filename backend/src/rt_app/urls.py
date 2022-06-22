@@ -7,7 +7,9 @@ urlpatterns = [
     path('projects/', include('rt_app.projects.urls')),
     path('documents/', include('rt_app.documents.urls')),
 
-    path('mind-maps/', include('rt_app.mind-maps.urls')),
+    path('mind-maps/', include('rt_app.mind_maps.urls')),
+    path('mind-cards/', include('rt_app.mind_cards.urls')),
+
     path('kanban-boards/', include('rt_app.kanban-boards.urls')),
 
     path('auth/', include('rt_app.auth.urls')),
