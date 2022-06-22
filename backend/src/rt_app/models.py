@@ -47,14 +47,6 @@ class Subdivision(models.Model):
         return f"{self.pk} {self.name}"
 
 
-class Background(models.Model):
-    photographer = models.CharField(max_length=150, null=False)
-    source = models.URLField(null=False)
-    picture_url = models.URLField(null=False)
-    compress_url = models.URLField(null=False)
-    category = models.CharField(max_length=150, null=False)
-
-
 class Project(models.Model):
     picture = models.ImageField(
         upload_to=get_path_to_picture,
@@ -77,15 +69,12 @@ class Project(models.Model):
 class MindMap(models.Model):
     name = models.CharField(max_length=150, null=False)
     description = models.TextField(null=True)
-    compress_background_url = models.URLField(null=False)
     project = models.ForeignKey(Project, on_delete=models.PROTECT, null=False)
 
 
 class KanbanBoard(models.Model):
     name = models.CharField(max_length=150, null=False)
     description = models.TextField(null=True)
-    original_background_url = models.URLField(null=False)
-    compress_background_url = models.URLField(null=False)
     project = models.ForeignKey(Project, on_delete=models.PROTECT, null=False)
 
 
