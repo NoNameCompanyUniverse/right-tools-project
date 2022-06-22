@@ -9,13 +9,13 @@ from .serializers import KanbanBoardDetailUpdateSerializer
 
 
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(
-    tags=['Mind-map'], operation_summary="Вывести информацию о mind-map",
+    tags=['Kanban-board'], operation_summary="Вывести информацию о mind-map",
 ))
 @method_decorator(name="update", decorator=swagger_auto_schema(
-    tags=['Mind-map'], operation_summary="Обновить информацию о mind-map",
+    tags=['Kanban-board'], operation_summary="Обновить информацию о mind-map",
 ))
 @method_decorator(name="destroy", decorator=swagger_auto_schema(
-    tags=['Mind-map'], operation_summary="Удалить mind-map"
+    tags=['Kanban-board'], operation_summary="Удалить mind-map"
 ))
 class KanbanBoardDetailUpdateDeleteView(viewsets.ModelViewSet):
     serializer_class = KanbanBoardDetailUpdateSerializer
