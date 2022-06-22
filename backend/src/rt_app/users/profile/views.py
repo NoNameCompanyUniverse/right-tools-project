@@ -40,4 +40,16 @@ class ProfileProjectsView(generics.ListAPIView):
             .distinct()\
             .order_by('pk')
 
+    @swagger_auto_schema(
+        tags=['Текущий пользователь'],
+        operation_summary="Информация проектах для данного пользователя",
+        responses={
+            200: ProjectListSerializer(many=True),
+            400: 'Bad request',
+            404: 'Not found',
+        }
+    )
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
 
