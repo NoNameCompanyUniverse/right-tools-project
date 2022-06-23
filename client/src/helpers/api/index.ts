@@ -227,7 +227,6 @@ class Api {
             return res.data;
         })
     }
-
     postMindMap(token:string, id: number, data:any) {
         return this.api.post(`${this.PROJECTS_URL + id}/${this.MINDMAP_URL}`, data,{
             headers: {Authorization: `Bearer ${token}`,}
@@ -270,8 +269,6 @@ class Api {
             return res.data;
         })
     }
-
-
     getMindMap(token:string, id:number) {
         return this.api.get(this.MINDMAP_URL + id + '/map/', {
             headers: {Authorization: `Bearer ${token}`,}

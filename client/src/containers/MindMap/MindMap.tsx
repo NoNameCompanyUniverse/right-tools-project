@@ -19,7 +19,7 @@ import {
     deleteMindCard,
     getMindMap,
     patchMindCardCoord,
-    postMindCard,
+    postMindCard, postMindEdges,
     putMindCard
 } from "../../redux/actions/MindMapAction";
 import {convertMindCard} from "../../helpers/functions";
@@ -64,10 +64,7 @@ const initialNodes: Node[] = [
 
 const nodeCard = {nodeCard: NodeCard};
 
-const initialEdges: Edge[] = [
-    {id: 'e1-2', source: '1', target: '3'},
 
-];
 
 
 const MindMap = () => {
@@ -93,7 +90,6 @@ const MindMap = () => {
         [setNodes]
     );
 
-
     const handleOnEdgesChange = useCallback(
         (changes: EdgeChange[]) => setEdges((eds) =>
             applyEdgeChanges(changes, eds)),
@@ -103,17 +99,13 @@ const MindMap = () => {
     const handleOnEdgeUpdate = (oldEdge: Edge<any>, newConnection: Connection) =>
         setEdges((els) => updateEdge(oldEdge, newConnection, els))
 
-    // const handleOnConnect = useCallback(
-    //     (connection) => setEdges((eds) =>
-    //         addEdge({...connection, animated: true}, eds)),
-    //     [setEdges]
-    //
-    // )
+    const handleOnConnect = useCallback(
+        (connection) => setEdges((eds) =>
+            addEdge({...connection}, eds)),
+        [setEdges]
 
-    const handleOnConnect = (connection: any) => {
-        // @ts-ignore
-        setEdges((eds) => addEdge({...connection, animated: true}, eds));
-    }
+    )
+
 
     const handleOnLookData = (_: ReactMouseEvent, data: Node) => {
         setNode(data)
@@ -121,6 +113,13 @@ const MindMap = () => {
 
 
     useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        const mindID = router.query.mindmap;
+        if (mindmap) {
+            // @ts-ignore
+            dispatch(postMindEdges({token, id: mindID, data: edges}))
+        }
         console.log(edges)
     }, [edges])
 
@@ -144,17 +143,14 @@ const MindMap = () => {
                 break;
             }
             case "EDIT": {
-                dispatch(putMindCard({token, id: +payload.data.id, data: convertMindCard(payload)}))
                 // @ts-ignore
                 nodes.map((node: Node) => node.id === payload.id ? node.data.type !== payload.data.type ? deleteEdges() : '' : '');
+                dispatch(putMindCard({token, id: +payload.data.id, data: convertMindCard(payload)}))
                 break;
             }
             case "DELETE": {
                 dispatch(deleteMindCard({token, id: +payload.data.id}))
-                // let newNodes: Node[] = JSON.parse(JSON.stringify(nodes));
-                // newNodes = newNodes.filter((node: Node) => node.id !== payload.id);
-                // setNodes(newNodes);
-                // deleteEdges()
+                deleteEdges()
                 break;
             }
             default : {
@@ -170,8 +166,8 @@ const MindMap = () => {
         const mindID = router.query.mindmap;
         const data = {
             card: +node.id,
-            x: node.position.x,
-            y: node.position.y
+            x: Math.ceil(node.position.x),
+            y: Math.ceil(node.position.y)
         }
         // @ts-ignore
         dispatch(patchMindCardCoord({token, id: mindID, data}))
@@ -195,50 +191,54 @@ const MindMap = () => {
 
     useEffect(() => {
         if (mindmap) {
-            setNodes(mindmap.nodes);
-            setEdges(mindmap.edges);
+            console.log(mindmap.edges)
+            setNodes(mindmap.nodes as Node[]);
+            setEdges(JSON.parse(JSON.stringify(mindmap.edges)));
         }
     }, [mindmap])
 
-    useEffect(() => {
-        console.log(edges)
-    }, [edges])
 
 
     return (
         <>
-            <ReactFlow
-                className={`flex-grow-1`}
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={handleOnNodeChange}
-                onEdgesChange={handleOnEdgesChange}
-                onConnect={handleOnConnect}
-                onEdgeUpdate={handleOnEdgeUpdate}
-                onNodeDragStop={handleOnNodeDragStop}
-                nodeTypes={nodeCard}
-                onEdgesDelete={handleOnEdgeDelete}
-                onNodeClick={handleOnLookData}
-                fitView>
-                <div style={{
-                    'position': 'absolute',
-                    'top': '10px',
-                    'zIndex': '5',
-                    'right': '10px'
-                }}>
-                    <CreateNode onNode={handleOnNode}/>
-                </div>
-                <MiniMap nodeColor={(n: Node<any>) => {
-                    if (n.data.type === 'target') return '#868974FF';
-                    if (n.data.type === 'source') return '#F0B878FF';
-                    if (n.data.type === 'default') return '#dcdcdc';
-                    return '#fff';
+            {
+                mindmap && (
+                    <>
+                        <ReactFlow
+                            className={`flex-grow-1`}
+                            nodes={nodes}
+                            edges={edges}
+                            onNodesChange={handleOnNodeChange}
+                            onEdgesChange={handleOnEdgesChange}
+                            onConnect={handleOnConnect}
+                            onEdgeUpdate={handleOnEdgeUpdate}
+                            onNodeDragStop={handleOnNodeDragStop}
+                            nodeTypes={nodeCard}
+                            onEdgesDelete={handleOnEdgeDelete}
+                            onNodeClick={handleOnLookData}
+                            fitView>
+                            <div style={{
+                                'position': 'absolute',
+                                'top': '10px',
+                                'zIndex': '5',
+                                'right': '10px'
+                            }}>
+                                <CreateNode onNode={handleOnNode}/>
+                            </div>
+                            <MiniMap nodeColor={(n: Node<any>) => {
+                                if (n.data.type === 'target') return '#868974FF';
+                                if (n.data.type === 'source') return '#F0B878FF';
+                                if (n.data.type === 'default') return '#dcdcdc';
+                                return '#fff';
 
-                }}/>
-                <Controls/>
-                <Background color={`#aaa`} gap={10}/>
-            </ReactFlow>
-            <ControlNode data={node} onNode={handleOnNode}/>
+                            }}/>
+                            <Controls/>
+                            <Background color={`#aaa`} gap={10}/>
+                        </ReactFlow>
+                        <ControlNode data={node} onNode={handleOnNode}/>
+                    </>
+                )
+            }
         </>
     );
 };
