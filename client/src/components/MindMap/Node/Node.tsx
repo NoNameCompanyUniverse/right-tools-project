@@ -14,11 +14,12 @@ const {name, description, type, id} = data;
 
 
     return (
-        <motion.div className={[style.container, style[type]].join(" ")} whileHover={{scale: 1.03}}>
+        <motion.div className={[style.container, style[type]].join(" ")}>
             {
                 type === 'source' ? (
                     <>
                         <Handle
+                            className={style.handle}
                             type="source"
                             //onConnect={(params) => console.log('handle onConnect', params)}
                             position={Position.Right}/>
@@ -26,6 +27,7 @@ const {name, description, type, id} = data;
                 ) : type === 'target' ? (
                     <>
                         <Handle
+                            className={style.handle}
                             type="target"
                             position={Position.Left}
                            // onConnect={(params) => console.log('handle onConnect', params)}
@@ -34,11 +36,13 @@ const {name, description, type, id} = data;
                 ) : (
                     <>
                         <Handle
+                            className={style.handle}
                             type="source"
                             position={Position.Right}
                             //onConnect={(params) => console.log('handle onConnect', params)}
                         />
                         <Handle
+                            className={style.handle}
                             type="target"
                             position={Position.Left}
                             //onConnect={(params) => console.log('handle onConnect', params)}

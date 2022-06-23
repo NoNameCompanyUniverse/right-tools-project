@@ -4,13 +4,16 @@ import {getMindMap, postMindCard, putMindCard} from "../actions/MindMapAction";
 import {toast} from "react-toastify";
 import {INewNode} from "../../types/INode";
 import {deConvertMindCard} from "../../helpers/functions";
+import {IEdge} from "../../types/IEdge";
 
 interface IMindMapState {
-    mindmap: IMindMap | null
+    mindmap: IMindMap | null,
+    isLoading: boolean
 }
 
 const initialState: IMindMapState = {
-    mindmap: null
+    mindmap: null,
+    isLoading: false
 }
 
 export const mindMapSlice = createSlice({
@@ -21,14 +24,21 @@ export const mindMapSlice = createSlice({
             if (state.mindmap) {
                 state.mindmap.nodes = state.mindmap.nodes.filter(i => i.id !== action.payload);
             }
+        },
+        pushEdges(state, action:PayloadAction<IEdge[]>) {
+            if (state.mindmap) {
+                state.mindmap.edges = action.payload;
+            }
         }
     },
     extraReducers: {
         [getMindMap.pending.type] : () => {},
         [getMindMap.fulfilled.type] : (state, action: PayloadAction<IMindMap>) => {
             state.mindmap = action.payload;
+            state.isLoading = true;
         },
-        [getMindMap.rejected.type] : () => {
+        [getMindMap.rejected.type] : (state) => {
+            state.isLoading = false;
             toast.error('Не удалось загрузить Mind Map')
         },
 
@@ -61,5 +71,5 @@ export const mindMapSlice = createSlice({
     }
 })
 
-export const {removeNode} = mindMapSlice.actions;
+export const {removeNode, pushEdges} = mindMapSlice.actions;
 export default mindMapSlice.reducer;

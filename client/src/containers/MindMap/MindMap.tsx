@@ -23,6 +23,7 @@ import {
     putMindCard
 } from "../../redux/actions/MindMapAction";
 import {convertMindCard} from "../../helpers/functions";
+import {pushEdges} from "../../redux/reducers/MindMapSlice";
 
 
 const initialNodes: Node[] = [
@@ -65,15 +66,13 @@ const initialNodes: Node[] = [
 const nodeCard = {nodeCard: NodeCard};
 
 
-
-
 const MindMap = () => {
 
     const dispatch = useAppDispatch();
     const {data: session} = useSession()
     const router = useRouter();
 
-    const {mindmap} = useAppSelector(state => state.mindmapSlice);
+    const {mindmap, isLoading} = useAppSelector(state => state.mindmapSlice);
 
     const [nodes, setNodes] = useState<Node[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
@@ -103,7 +102,6 @@ const MindMap = () => {
         (connection) => setEdges((eds) =>
             addEdge({...connection}, eds)),
         [setEdges]
-
     )
 
 
@@ -120,8 +118,15 @@ const MindMap = () => {
             // @ts-ignore
             dispatch(postMindEdges({token, id: mindID, data: edges}))
         }
-        console.log(edges)
     }, [edges])
+
+
+    useEffect(() => {
+        if (mindmap) {
+            console.log('dsd')
+            setNodes(JSON.parse(JSON.stringify(mindmap.nodes)));
+        }
+    }, [mindmap])
 
     const handleOnNode = (action: { type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: Node }) => {
         const {type, payload} = action;
@@ -132,7 +137,8 @@ const MindMap = () => {
         const deleteEdges = () => {
             let newEdges: Edge[] = JSON.parse(JSON.stringify(edges));
             newEdges = newEdges.filter((edge: Edge) => edge.target !== payload.id && edge.source !== payload.id);
-            setEdges(newEdges);
+            //dispatch(pushEdges(newEdges));
+            setEdges(newEdges)
         }
 
         switch (type) {
@@ -186,59 +192,54 @@ const MindMap = () => {
         if (!router.isReady) return;
         // @ts-ignore
         dispatch(getMindMap({token, id: router.query.mindmap}))
+        console.log(mindmap)
     }, [dispatch])
 
 
     useEffect(() => {
-        if (mindmap) {
+        if (isLoading && mindmap) {
             console.log(mindmap.edges)
-            setNodes(mindmap.nodes as Node[]);
+            setNodes(JSON.parse(JSON.stringify(mindmap.nodes)));
             setEdges(JSON.parse(JSON.stringify(mindmap.edges)));
         }
-    }, [mindmap])
-
+    }, [isLoading])
 
 
     return (
         <>
-            {
-                mindmap && (
-                    <>
-                        <ReactFlow
-                            className={`flex-grow-1`}
-                            nodes={nodes}
-                            edges={edges}
-                            onNodesChange={handleOnNodeChange}
-                            onEdgesChange={handleOnEdgesChange}
-                            onConnect={handleOnConnect}
-                            onEdgeUpdate={handleOnEdgeUpdate}
-                            onNodeDragStop={handleOnNodeDragStop}
-                            nodeTypes={nodeCard}
-                            onEdgesDelete={handleOnEdgeDelete}
-                            onNodeClick={handleOnLookData}
-                            fitView>
-                            <div style={{
-                                'position': 'absolute',
-                                'top': '10px',
-                                'zIndex': '5',
-                                'right': '10px'
-                            }}>
-                                <CreateNode onNode={handleOnNode}/>
-                            </div>
-                            <MiniMap nodeColor={(n: Node<any>) => {
-                                if (n.data.type === 'target') return '#868974FF';
-                                if (n.data.type === 'source') return '#F0B878FF';
-                                if (n.data.type === 'default') return '#dcdcdc';
-                                return '#fff';
+            <ReactFlow
+                className={`flex-grow-1`}
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={handleOnNodeChange}
+                onEdgesChange={handleOnEdgesChange}
+                onConnect={handleOnConnect}
+                onEdgeUpdate={handleOnEdgeUpdate}
+                onNodeDragStop={handleOnNodeDragStop}
+                nodeTypes={nodeCard}
+                onEdgesDelete={handleOnEdgeDelete}
+                onNodeClick={handleOnLookData}
+                fitView>
+                <div style={{
+                    'position': 'absolute',
+                    'top': '10px',
+                    'zIndex': '5',
+                    'right': '10px'
+                }}>
+                    <CreateNode onNode={handleOnNode}/>
+                </div>
+                <MiniMap nodeColor={(n: Node<any>) => {
+                    if (n.data.type === 'target') return '#868974FF';
+                    if (n.data.type === 'source') return '#F0B878FF';
+                    if (n.data.type === 'default') return '#dcdcdc';
+                    return '#fff';
 
-                            }}/>
-                            <Controls/>
-                            <Background color={`#aaa`} gap={10}/>
-                        </ReactFlow>
-                        <ControlNode data={node} onNode={handleOnNode}/>
-                    </>
-                )
-            }
+                }}/>
+                <Controls/>
+                <Background color={`#aaa`} gap={10}/>
+            </ReactFlow>
+            <ControlNode data={node} onNode={handleOnNode}/>
+
         </>
     );
 };
