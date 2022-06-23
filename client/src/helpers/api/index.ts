@@ -213,6 +213,21 @@ class Api {
             return res.data;
         })
     }
+    putKanBan(token:string, id:number, data:any) {
+        return this.api.put(this.KANBAN_URL + id + '/', data,{
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    putMindMap(token:string, id:number, data:any) {
+        return this.api.put(this.MINDMAP_URL + id + '/', data,{
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+
     postMindMap(token:string, id: number, data:any) {
         return this.api.post(`${this.PROJECTS_URL + id}/${this.MINDMAP_URL}`, data,{
             headers: {Authorization: `Bearer ${token}`,}

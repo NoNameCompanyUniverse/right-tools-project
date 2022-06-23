@@ -13,30 +13,32 @@ import FormInput from "../../../components/Form/FormInput/FormInput";
 import {useAppDispatch} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import {useSession} from "next-auth/react";
-import {postKanBan, postMindMap} from "../../../redux/actions/ProjectsAction";
+import {postKanBan, postMindMap, putKanBan, putMindMap} from "../../../redux/actions/ProjectsAction";
 
 
-interface IAddBoard {
+interface IControlBoard {
     //onProject: (action: {type: "KANBAN" | "MINDMAP", payload: IMindMap | IKanBan | IFile | IUser}) => void,
     modal: IModal,
     setModal: (id: string) => void,
-    type: "KANBAN" | "MINDMAP"
+    type: "KANBAN" | "MINDMAP",
+    status: 'CREATE' | 'UPDATE',
+    data?: { id: number, name: string, description: string } | null
 }
 
 
-
-const AddBoard:React.FC<IAddBoard> = (
+const ControlBoard: React.FC<IControlBoard> = (
     {
         modal,
+        status,
         //onProject,
         setModal,
+        data = null,
         type
     }) => {
 
     const {id, isOpen} = modal;
 
     const [state, setState] = useState({
-        banner: '',
         description: '',
         name: ''
     });
@@ -57,23 +59,21 @@ const AddBoard:React.FC<IAddBoard> = (
                 const newEl = {
                     name: state.name,
                     description: state.description,
-                    //compress_background_url: 'https://cs8.pikabu.ru/post_img/big/2017/08/10/4/150233899813980823.jpg'
                 }
-                // @ts-ignore
-                dispatch(postMindMap({token, id: idP, data: newEl}))
-                //onProject({type, payload: newEl})
+
+                status === 'CREATE' // @ts-ignore
+                    ? dispatch(postMindMap({token, id: idP, data: newEl}))
+                    : dispatch(putMindMap({token, id: data ? data.id : 0, data: state}))
                 break;
             }
             case 'KANBAN' : {
                 const newEl = {
                     name: state.name,
                     description: state.description,
-                    //compress_background_url: 'https://cs8.pikabu.ru/post_img/big/2017/08/10/4/150233899813980823.jpg'
                 }
-                // @ts-ignore
-                dispatch(postKanBan({token, id: idP, data: newEl}))
-
-                //onProject({type, payload: newEl})
+                status === 'CREATE' // @ts-ignore
+                    ? dispatch(postKanBan({token, id: idP, data: newEl}))
+                    : dispatch(putKanBan({token, id: data ? data.id : 0, data: state}))
                 break;
             }
             default : {
@@ -83,31 +83,27 @@ const AddBoard:React.FC<IAddBoard> = (
         setModal(id);
     }
 
-    const handleOnFile = (data: any, name: string) => {
-
-    }
-
     const handleSetValue = (value: string, name: string) => {
-        setState((state:any) => ({
+        setState((state: any) => ({
             ...state,
             [name]: value
         }))
     }
 
     useEffect(() => {
-        !isOpen ? setState({banner: '', name: '', description: ''}) : '';
-    }, [isOpen])
+        !isOpen
+            ? setState({name: '', description: ''})
+            : data
+                ? setState({name: data.name, description: data.description})
+                : '';
+    }, [isOpen]);
+
 
     return (
-        <Modal modal={modal} onClose={handleOnModal} title={['Cоздать', `${type === 'KANBAN' ? 'Канбан доску' : 'Mind map'}`].join(" ")}>
+        <Modal modal={modal} onClose={handleOnModal}
+               title={[status === 'CREATE' ? 'Cоздать' : 'Изменить', `${type === 'KANBAN' ? 'Канбан доску' : 'Mind map'}`].join(" ")}>
             <form onSubmit={handleOnSubmit}>
                 <div className="row">
-                    {/*<div className="col-12">*/}
-                    {/*    <FormFile*/}
-                    {/*        onFile={handleOnFile}*/}
-                    {/*        value={state.banner}*/}
-                    {/*        name={'BANNER'}/>*/}
-                    {/*</div>*/}
                     <div className="col-12 mt-3">
                         <FormInput
                             name={'name'}
@@ -127,7 +123,7 @@ const AddBoard:React.FC<IAddBoard> = (
                     <div className="col-12 mt-5">
                         <div className="d-flex justify-content-end">
                             <button type={'submit'} className={'btn btn-wood'}>
-                                Создать
+                                Отправить
                             </button>
                         </div>
                     </div>
@@ -137,4 +133,4 @@ const AddBoard:React.FC<IAddBoard> = (
     );
 };
 
-export default AddBoard;
+export default ControlBoard;

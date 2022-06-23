@@ -230,6 +230,34 @@ export const postMindMap = createAsyncThunk(
     }
 )
 
+export const putMindMap = createAsyncThunk(
+    'put/mindmap',
+    async ({token, id, data}:{token: string, id: number, data:any}, {rejectWithValue}) => {
+        try {
+            return await API.putMindMap(token, id, {name: data.name, description: data.description})
+        } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+export const putKanBan = createAsyncThunk(
+    'put/kanban',
+    async ({token, id, data}:{token: string, id: number, data:any}, {rejectWithValue}) => {
+        try {
+            return await API.putKanBan(token, id, {name: data.name, description: data.description})
+        } catch (e) {
+            // @ts-ignore
+            toast.error(e.message, {autoClose: false})
+            // @ts-ignore
+            return rejectWithValue(e.message)
+        }
+    }
+)
+
+
 export const deleteKanBan = createAsyncThunk(
     'delete/kanban',
     async ({token, id}: { token: string, id: number }, {rejectWithValue, dispatch}) => {

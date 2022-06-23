@@ -25,6 +25,7 @@ import SkeletonUser from "../../components/Skeleton/SkeletonUser";
 import SkeletonFile from "../../components/Skeleton/SkeletonFile";
 import SkeletonCard from "../../components/Skeleton/SkeletonCard";
 import Card from "../../components/Project/Card/Card";
+import ControlBoard from "../../blocks/Project/ControlBoard";
 
 const Project = () => {
 
@@ -33,9 +34,28 @@ const Project = () => {
     const dispatch = useAppDispatch();
     const {project, loading} = useAppSelector(state => state.projectSlice);
     const {auth} = useAppSelector(state => state.profileSlice);
-    const [modal, setModal] = useState<IModal>({id: '#popup', isOpen: false});
+    const [modal, setModal] = useState<IModal[]>([
+        {id: '#popup', isOpen: false},
+        {id: '#controlBoard', isOpen: false}
+    ]);
+    const [board, setBoard] = useState<{id: number, name: string, description: string} | null>(null)
 
-    const handleOnModal = (id: string) => setModal({...modal, isOpen: !modal.isOpen});
+    const [type, setType] = useState<"KANBAN" | "MINDMAP">("KANBAN")
+
+
+    const handleBoard = (id: string, type: "KANBAN" | "MINDMAP", data: {id: number, name: string, description: string}) => {
+        setType(type);
+        setBoard(data)
+        handleOnModal(id)
+    }
+
+    const handleOnModal = (id: string) => {
+        let clone = modal.concat();
+        clone = clone.map((e: IModal) => (
+            e.id === id ? {id: e.id, isOpen: !e.isOpen} : e
+        ))
+        setModal(clone)
+    }
 
     const [buf, setBuf] = useState<{
         type: string | 'TEAM' | 'MINDMAP' | 'KANBAN' | 'FILE',
@@ -47,7 +67,7 @@ const Project = () => {
 
     const handleSwitchDelete = (id: number, type: string) => {
         setBuf({type, id});
-        handleOnModal(modal.id);
+        handleOnModal(modal[0].id);
     }
 
     const handleOnDelete = (e: FormEvent) => {
@@ -83,7 +103,7 @@ const Project = () => {
             }
         }
         setBuf({type: '', id: 0});
-        handleOnModal(modal.id);
+        handleOnModal(modal[0].id);
     }
 
     function IsAdmin(Component:any) {
@@ -184,7 +204,10 @@ const Project = () => {
                                                                             </Link>
                                                                         </li>
                                                                         {
-                                                                            IsAdmin(<li onClick={() => handleSwitchDelete(map.id, 'MINDMAP')}>Удалить</li>)
+                                                                            IsAdmin(<>
+                                                                                <li onClick={() => handleSwitchDelete(map.id, 'MINDMAP')}>Удалить</li>
+                                                                                <li onClick={() => handleBoard(modal[1].id, 'MINDMAP', map)}>Изменить</li>
+                                                                            </>)
                                                                         }
                                                                     </ul>
                                                                 </Card>
@@ -225,7 +248,10 @@ const Project = () => {
                                                                             </Link>
                                                                         </li>
                                                                         {
-                                                                            IsAdmin(<li onClick={() => handleSwitchDelete(map.id, 'KANBAN')}>Удалить</li>)
+                                                                            IsAdmin(<>
+                                                                                <li onClick={() => handleSwitchDelete(map.id, 'KANBAN')}>Удалить</li>
+                                                                                <li onClick={() => handleBoard(modal[1].id, 'KANBAN', map)}>Изменить</li>
+                                                                            </>)
                                                                         }
 
                                                                     </ul>
@@ -282,7 +308,13 @@ const Project = () => {
                     </div>
                 </div>
             </motion.div>
-            <Modal modal={modal} onClose={handleOnModal} title={'Внимание'}>
+            <ControlBoard
+                data={board}
+                modal={modal[1]}
+                setModal={handleOnModal}
+                type={type}
+                status={'UPDATE'}/>
+            <Modal modal={modal[0]} onClose={handleOnModal} title={'Внимание'}>
                 <form onSubmit={handleOnDelete}>
                     <div className="row">
                         <div className="col-12">

@@ -14,7 +14,7 @@ import "swiper/css/pagination";
 import {Mousewheel, Pagination} from "swiper";
 import {IModal} from "../../../types/IModal";
 import Modal from "../../../components/Modal";
-import AddBoard from "../AddBoard";
+import ControlBoard from "../ControlBoard";
 import {IMindMap} from "../../../types/old/IMindMap";
 import {IKanBan} from "../../../types/old/IKanBan";
 import {IFile} from "../../../types/IFile";
@@ -352,12 +352,13 @@ const PanelInfo: React.FC = () => {
                     </div>
                 </div>
             </Modal>
-            <AddBoard
-                //onProject={handleOnProject}
+            <ControlBoard
+                status={'CREATE'}
                 modal={modal[1]}
                 setModal={handleOnModal}
                 type={type}/>
             <AddUser
+                isDelete={true}
                 modal={modal[2]}
                 onModal={handleOnModal}
                 participant={participant}

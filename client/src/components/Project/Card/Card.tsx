@@ -8,6 +8,8 @@ interface ICard  {
     data: {
         id: number,
         name: string,
+        description: string
+
     },
     children?: ReactNode | ReactNode []
 }
@@ -19,7 +21,7 @@ const Card: React.FC<ICard> = (
         children
     }) => {
 
-    const {id, name} = data;
+    const {id, name, description} = data;
 
     return (
         <div className={style.block}>
@@ -34,6 +36,9 @@ const Card: React.FC<ICard> = (
             </motion.div>
             <div className={style.title}>
                 <span className={`text-black`}>{name}</span>
+            </div>
+            <div className={style.description}>
+                {description}
             </div>
             <div className={style.control}>
                 {

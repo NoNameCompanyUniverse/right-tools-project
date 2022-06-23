@@ -8,7 +8,7 @@ import {
     getProject,
     getProjectsProfile,
     getProjectsProfileAll, postKanBan, postMindMap,
-    postProject, postProjectDocument, postProjectParticipant, putProject
+    postProject, postProjectDocument, postProjectParticipant, putKanBan, putMindMap, putProject
 } from "../actions/ProjectsAction";
 import {IUserMin} from "../../types/IUser";
 import {IFile} from "../../types/IFile";
@@ -225,6 +225,46 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка")
         },
+
+        [putMindMap.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [putMindMap.fulfilled.type]: (state, action: PayloadAction<{id: number, name:string, description: string}>) => {
+            state.project.mindmaps = state.project.mindmaps.map(i => {
+                if (i.id === action.payload.id) {
+                    i = action.payload;
+                    return i;
+                } else {
+                    return i;
+                }
+            })
+            //state.loading = 'FULFILLED';
+            toast.success("Изменен")
+        },
+        [putMindMap.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
+        [putKanBan.pending.type]: (state) => {
+            //state.loading = 'PENDING';
+        },
+        [putKanBan.fulfilled.type]: (state, action: PayloadAction<{id: number, name:string, description: string}>) => {
+            state.project.kanban = state.project.kanban.map(i => {
+                if (i.id === action.payload.id) {
+                    i = action.payload;
+                    return i;
+                } else {
+                    return i;
+                }
+            })
+            //state.loading = 'FULFILLED';
+            toast.success("Изменен")
+        },
+        [putKanBan.rejected.type]: (state) => {
+            //state.loading = 'REJECTED';
+            toast.error("Ошибка")
+        },
+
 
 
 

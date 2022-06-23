@@ -5,25 +5,29 @@ import Modal from '../../../components/Modal';
 import style from "../../../styles/project/index.module.scss";
 import {genId} from "../../../helpers/functions";
 import {useSession} from "next-auth/react";
-import {useAppSelector} from "../../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {deleteProjectParticipant} from "../../../redux/actions/ProjectsAction";
+import {useRouter} from "next/router";
 
 interface IAddUser {
     modal: IModal,
     onModal: (id: string) => void,
     participant: Array<number>,
     onUsers: (data: Array<number>) => void,
+    isDelete?: boolean
 
 }
 
-const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => {
+const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers, isDelete= false}) => {
 
     //const [state, setState] = useState<IUser[]>(users_data);
 
     const {id, isOpen} = modal
 
-
+    const router = useRouter();
     const {data: session} = useSession()
     const {users, isFetching} = useAppSelector(state => state.usersSlice);
+    const dispatch = useAppDispatch();
     const {auth} = useAppSelector(state => state.profileSlice);
 
 
@@ -32,13 +36,18 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers}) => 
     const handleOnModal = (id: string) => onModal(id);
 
     const handleOnUser = (id: number, type: 'ADD' | 'DELETE') => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
         switch (type) {
             case "ADD": {
                 setParticipantData(state => [...state, id])
                 break;
             }
             case "DELETE": {
-                setParticipantData(participantData.filter(u => u !== id));
+                const newArr:Array<number> = participantData.filter(u => u !== id)
+                // @ts-ignore
+                isDelete ? dispatch(deleteProjectParticipant({token, id: router.query.id, data: {participants: [id]}})) : '';
+                setParticipantData(newArr);
                 break;
             }
             default : {
