@@ -21,7 +21,7 @@ class MindMapView(BaseMindMapView, views.APIView):
         result = {"nodes": '', "edges": ''}
 
         mind_map: MindMap = self.get_object()
-        cards = mind_map.mindcard_set.select_related('mind_map').all()
+        cards = mind_map.mindcard_set.select_related('mind_map').all().order_by('pk')
 
         nodes = NodesListSerializer(cards, many=True).data
         edges = EdgesListSerializer(cards.exclude(parent=None), many=True).data
@@ -66,8 +66,6 @@ class ConnectionView(BaseMindMapView, views.APIView):
     def post(self, request, *args, **kwargs):
         serializer = EdgesSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
-
-        cards = self.get_object().mindcard_set.filter(~Q(parent=None))
         service = MindMapService()
-        service.connect_cards(cards, serializer.validated_data)
+        service.connect_cards(self.get_object(), serializer.validated_data)
         return Response(status=status.HTTP_200_OK)
