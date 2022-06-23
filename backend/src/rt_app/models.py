@@ -71,7 +71,6 @@ class Project(models.Model):
     date_create = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
         if self.picture and utils.compare_with_and_height_image(450, 200, self.picture):
             comressor.compress_img(
                 self.picture.path,
@@ -79,6 +78,7 @@ class Project(models.Model):
                 width=self.picture.width,
                 height=self.picture.height
             )
+        super(Project, self).save(*args, **kwargs)
 
 
 class MindMap(models.Model):
