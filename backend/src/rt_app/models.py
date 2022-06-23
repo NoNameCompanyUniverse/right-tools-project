@@ -3,7 +3,7 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.http import Http404
 
-from image_compressor import comressor, storages
+from image_compressor import comressor, storages, utils
 
 from .common.services import *
 from .users.services import *
@@ -30,11 +30,21 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.photo:
-            comressor.compress_img(self.photo.path)
-        if self.banner:
-            comressor.compress_img(self.banner.path)
+        if self.photo and utils.compare_with_and_height_image(100, 100, self.photo):
+            comressor.compress_img(
+                self.photo.path,
+                new_size_ratio=1.0,
+                width=self.photo.width,
+                height=self.photo.height
+            )
+        if self.banner and utils.compare_with_and_height_image(450, 200, self.banner):
+            comressor.compress_img(
+                self.banner.path,
+                new_size_ratio=1.0,
+                width=self.banner.width,
+                height=self.banner.height
+            )
+        super(User, self).save(*args, **kwargs)
 
 
 class Subdivision(models.Model):
@@ -62,8 +72,13 @@ class Project(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if self.picture:
-            comressor.compress_img(self.picture.path)
+        if self.picture and utils.compare_with_and_height_image(450, 200, self.picture):
+            comressor.compress_img(
+                self.picture.path,
+                new_size_ratio=1.0,
+                width=self.picture.width,
+                height=self.picture.height
+            )
 
 
 class MindMap(models.Model):
