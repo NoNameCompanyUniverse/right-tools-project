@@ -60,7 +60,7 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
     }, [data]);
 
     useEffect(() => {
-        let formValid: boolean = state !== null ? state.data.label !== '' : false;
+        let formValid: boolean = state !== null ? state.data.name !== '' : false;
         setValid(formValid)
     }, [state])
 
@@ -96,7 +96,7 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
                                                 exit={'exit'}
                                                 transition={{duration: 0.15}}
                                                 className={['fs-4'].join("")}>
-                                                {data.data.label}
+                                                {data.data.name}
                                             </motion.div>
                                         ) : (
                                             <motion.input
@@ -107,8 +107,8 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
                                                 transition={{duration: 0.15}}
                                                 type="text"
                                                 onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                                value={state.data.label}
-                                                name={'label'}
+                                                value={state.data.name}
+                                                name={'name'}
                                                 placeholder={`Введите название`}
                                                 className={['form-control'].join("")}/>
                                         )
@@ -173,9 +173,9 @@ const ControlNode: React.FC<IControlNode> = ({data, onNode}) => {
                                                 transition={{duration: 0.15}}
                                                 className={['fs-6'].join(" ")}>
                                                 {
-                                                    (data.data.description.length) <= 0
-                                                        ? "Описание отсутствует"
-                                                        : data.data.description
+                                                    data.data.description
+                                                        ? data.data.description
+                                                        : "Описание отсутствует"
                                                 }
                                             </motion.div>
                                         ) : (

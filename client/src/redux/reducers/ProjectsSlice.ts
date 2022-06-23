@@ -167,7 +167,6 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка файла")
         },
-
         [postMindMap.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
@@ -180,7 +179,6 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка")
         },
-
         [deleteMindMap.fulfilled.type]: (state) => {
             //state.loading = 'FULFILLED';
             toast.success("Mind Map удален")
@@ -189,7 +187,6 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка")
         },
-
         [postKanBan.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
@@ -202,7 +199,6 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка")
         },
-
         [deleteKanBan.fulfilled.type]: (state) => {
             //state.loading = 'FULFILLED';
             toast.success("KanBan удален")
@@ -211,8 +207,6 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка")
         },
-
-
         [postProjectParticipant.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
@@ -248,7 +242,8 @@ export const projectsSlice = createSlice({
         [putKanBan.pending.type]: (state) => {
             //state.loading = 'PENDING';
         },
-        [putKanBan.fulfilled.type]: (state, action: PayloadAction<{id: number, name:string, description: string}>) => {
+        [putKanBan.fulfilled.type]: (state, action: PayloadAction<
+            {id: number, name:string, description: string}>) => {
             state.project.kanban = state.project.kanban.map(i => {
                 if (i.id === action.payload.id) {
                     i = action.payload;
@@ -264,10 +259,6 @@ export const projectsSlice = createSlice({
             //state.loading = 'REJECTED';
             toast.error("Ошибка")
         },
-
-
-
-
     }
 })
 

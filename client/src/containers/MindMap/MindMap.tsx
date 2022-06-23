@@ -13,7 +13,16 @@ import NodeCard from '../../components/MindMap/Node'
 import CreateNode from "../../blocks/MindMap/CreateNode";
 import ControlNode from "../../blocks/MindMap/ControlNode";
 import {useRouter} from "next/router";
-
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {useSession} from "next-auth/react";
+import {
+    deleteMindCard,
+    getMindMap,
+    patchMindCardCoord,
+    postMindCard,
+    putMindCard
+} from "../../redux/actions/MindMapAction";
+import {convertMindCard} from "../../helpers/functions";
 
 
 const initialNodes: Node[] = [
@@ -61,12 +70,16 @@ const initialEdges: Edge[] = [
 ];
 
 
-
-
 const MindMap = () => {
 
-    const [nodes, setNodes] = useState<Node[]>(initialNodes);
-    const [edges, setEdges] = useState<Edge[]>(initialEdges);
+    const dispatch = useAppDispatch();
+    const {data: session} = useSession()
+    const router = useRouter();
+
+    const {mindmap} = useAppSelector(state => state.mindmapSlice);
+
+    const [nodes, setNodes] = useState<Node[]>([]);
+    const [edges, setEdges] = useState<Edge[]>([]);
 
     const [node, setNode] = useState<Node | null>(null)
 
@@ -79,6 +92,7 @@ const MindMap = () => {
             applyNodeChanges(changes, nds)),
         [setNodes]
     );
+
 
     const handleOnEdgesChange = useCallback(
         (changes: EdgeChange[]) => setEdges((eds) =>
@@ -96,7 +110,8 @@ const MindMap = () => {
     //
     // )
 
-    const handleOnConnect = (connection:any) => {
+    const handleOnConnect = (connection: any) => {
+        // @ts-ignore
         setEdges((eds) => addEdge({...connection, animated: true}, eds));
     }
 
@@ -111,37 +126,35 @@ const MindMap = () => {
 
     const handleOnNode = (action: { type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: Node }) => {
         const {type, payload} = action;
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        const mindID = router.query.mindmap;
 
         const deleteEdges = () => {
             let newEdges: Edge[] = JSON.parse(JSON.stringify(edges));
-            newEdges = newEdges.filter((edge: Edge) => edge.target !== payload.id && edge.source !== payload.id) ;
+            newEdges = newEdges.filter((edge: Edge) => edge.target !== payload.id && edge.source !== payload.id);
             setEdges(newEdges);
         }
 
         switch (type) {
             case "CREATE": {
-                setNodes((nds) => nds.concat(payload))
+                // @ts-ignore
+                dispatch(postMindCard({token, id: mindID, data: convertMindCard(payload)}))
+                //setNodes((nds) => nds.concat(payload))
                 break;
             }
             case "EDIT": {
-                let newNodes: Node[] = JSON.parse(JSON.stringify(nodes));
-                newNodes = newNodes.map((node:Node) => {
-                    if(node.id === payload.id) {
-                        node.data.type !== payload.data.type ? deleteEdges() : '';
-                        return payload;
-                    } else  {
-                        return node;
-                    }
-                })
-                //newNodes = newNodes.map((node:Node) => node.id === payload.id ? node = payload : node);
-                setNodes(newNodes);
+                dispatch(putMindCard({token, id: +payload.data.id, data: convertMindCard(payload)}))
+                // @ts-ignore
+                nodes.map((node: Node) => node.id === payload.id ? node.data.type !== payload.data.type ? deleteEdges() : '' : '');
                 break;
             }
             case "DELETE": {
-                let newNodes: Node[] = JSON.parse(JSON.stringify(nodes));
-                newNodes = newNodes.filter((node:Node) => node.id !== payload.id);
-                setNodes(newNodes);
-                deleteEdges()
+                dispatch(deleteMindCard({token, id: +payload.data.id}))
+                // let newNodes: Node[] = JSON.parse(JSON.stringify(nodes));
+                // newNodes = newNodes.filter((node: Node) => node.id !== payload.id);
+                // setNodes(newNodes);
+                // deleteEdges()
                 break;
             }
             default : {
@@ -151,8 +164,18 @@ const MindMap = () => {
     }
 
 
-    const handleOnNodeDragStop = (event:ReactMouseEvent, node:Node) => {
-        console.log(node.position)
+    const handleOnNodeDragStop = (event: ReactMouseEvent, node: Node) => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        const mindID = router.query.mindmap;
+        const data = {
+            card: +node.id,
+            x: node.position.x,
+            y: node.position.y
+        }
+        // @ts-ignore
+        dispatch(patchMindCardCoord({token, id: mindID, data}))
+        console.log(node)
     }
 
 
@@ -161,7 +184,25 @@ const MindMap = () => {
     }
 
 
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        if (!router.isReady) return;
+        // @ts-ignore
+        dispatch(getMindMap({token, id: router.query.mindmap}))
+    }, [dispatch])
 
+
+    useEffect(() => {
+        if (mindmap) {
+            setNodes(mindmap.nodes);
+            setEdges(mindmap.edges);
+        }
+    }, [mindmap])
+
+    useEffect(() => {
+        console.log(edges)
+    }, [edges])
 
 
     return (

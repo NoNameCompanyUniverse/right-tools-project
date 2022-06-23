@@ -2,7 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {Node} from "react-flow-renderer";
 import {genId} from "../../../helpers/functions";
-import {INode} from "../../../types/old/INode";
+import {INodeData} from "../../../types/INode";
 
 
 
@@ -16,9 +16,9 @@ const CreateNode:React.FC<ICreateNode> = ({onNode}) => {
 
     const [modal, setModal] = useState<{ id: string, isOpen: boolean }>({id: '1', isOpen: false});
 
-    const [state, setState] = useState<INode>({
+    const [state, setState] = useState<INodeData>({
         id: '',
-        label: '',
+        name: '',
         description: '',
         type: 'default'
     })
@@ -45,7 +45,7 @@ const CreateNode:React.FC<ICreateNode> = ({onNode}) => {
             type: 'nodeCard',
             data: {
                 id,
-                label: state.label,
+                name: state.name,
                 description: state.description,
                 type: state.type
             },
@@ -60,12 +60,12 @@ const CreateNode:React.FC<ICreateNode> = ({onNode}) => {
 
 
     useEffect(() => {
-        modal.isOpen ? setState({label: '', description: '', type: 'default', id: ''}) : '';
+        modal.isOpen ? setState({name: '', description: '', type: 'default', id: ''}) : '';
     }, [modal])
 
 
     useEffect(() => {
-        let formValid: boolean = state.label !== '' && state.description !== '';
+        let formValid: boolean = state.name !== '' && state.description !== '';
         setValid(formValid)
     }, [state])
 
@@ -89,8 +89,8 @@ const CreateNode:React.FC<ICreateNode> = ({onNode}) => {
                             <div className="col-12">
                                 <input
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    value={state.label}
-                                    name={`label`}
+                                    value={state.name}
+                                    name={`name`}
                                     type="text"
                                     placeholder={`Введите название`}
                                     className="form-control"/>
@@ -114,7 +114,7 @@ const CreateNode:React.FC<ICreateNode> = ({onNode}) => {
                                     className="form-control"
                                     onChange={event => handleSetValue(event.target.value, event.target.name)}
                                     name="description"
-                                    value={state.description}
+                                    value={state.description as string}
                                 />
                             </div>
                             <div className="col-12 mt-4">

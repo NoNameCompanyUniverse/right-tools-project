@@ -4,12 +4,13 @@ import {AdjustmentsIcon} from "@heroicons/react/solid";
 import {motion} from "framer-motion";
 
 import style from './index.module.scss';
-import {INode} from "../../../types/old/INode";
+import {INodeData} from "../../../types/INode";
 
 
-const Node: React.FC<{ data: INode}> = ({data}) => {
 
-const {label, description, type, id} = data;
+const Node: React.FC<{ data: INodeData}> = ({data}) => {
+
+const {name, description, type, id} = data;
 
 
     return (
@@ -46,9 +47,9 @@ const {label, description, type, id} = data;
                     </>
                 )
             }
-            <h3>{label}</h3>
+            <h3>{name}</h3>
             {
-                description.length > 0 && (
+                description && (
                     <p>{description}</p>
                 )
             }

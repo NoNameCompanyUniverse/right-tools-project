@@ -8,7 +8,7 @@ class Api {
     DOCUMENTS_URL: string = 'documents/';
     MINDMAP_URL: string = 'mind-maps/';
     KANBAN_URL: string = 'kanban-boards/';
-
+    MINCARD_URL: string = 'mind-cards/'
 
     api = axios.create({
         baseURL: this.BASE_URL,
@@ -269,6 +269,53 @@ class Api {
         }).then(res => {
             return res.data;
         })
+    }
+
+
+    getMindMap(token:string, id:number) {
+        return this.api.get(this.MINDMAP_URL + id + '/map/', {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    postMindMapCard(token:string, data:any, id:number) {
+        return this.api.post(this.MINDMAP_URL + id + '/' + this.MINCARD_URL, data, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    deleteMindMapCard(token:string, id: number) {
+        return this.api.delete(this.MINCARD_URL + id + '/', {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    putMindMapCard(token:string, data:any, id: number) {
+        return this.api.put(`${this.MINCARD_URL}${id}/`, data,{
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    patchMindCardCoord(token: string, id: number, data:any) {
+        return this.api.patch(`${this.MINDMAP_URL + id}/map/change_position/`, data, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    postMindEdges(token: string, id: number, data:any) {
+        return this.api.post(`${this.MINDMAP_URL + id}/map/connect_cards/`, data, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+    getKanBan() {
+
     }
 
 }

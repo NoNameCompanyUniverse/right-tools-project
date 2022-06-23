@@ -137,7 +137,7 @@ const Project = () => {
                         <div>
                             <Title value={`Администратор проекта`}/>
                         </div>
-                        <div className="col-xl-3 mt-3 mb-5">
+                        <div className="col-xl-4 col-lg-5 mt-3 mb-5">
                             {
                                 loading === 'PENDING' || loading === 'REJECTED'
                                     ? <SkeletonUser/>
