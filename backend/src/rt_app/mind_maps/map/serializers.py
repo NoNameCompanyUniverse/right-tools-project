@@ -62,15 +62,15 @@ class EdgesListSerializer(serializers.ModelSerializer):
 
     @swagger_serializer_method(serializer_or_field=serializers.CharField())
     def get_id(self, obj: MindCard):
-        return f'e{obj.pk}-{obj.parent}'
+        return f'e{obj.pk}-{obj.parent.pk}'
 
-    @swagger_serializer_method(serializer_or_field=serializers.IntegerField())
+    @swagger_serializer_method(serializer_or_field=serializers.CharField())
     def get_source(self, obj: MindCard):
-        return obj.pk
+        return str(obj.pk)
 
-    @swagger_serializer_method(serializer_or_field=serializers.IntegerField())
+    @swagger_serializer_method(serializer_or_field=serializers.CharField())
     def get_target(self, obj: MindCard):
-        return obj.parent
+        return str(obj.parent.pk)
 
     class Meta:
         model = MindCard
@@ -78,17 +78,21 @@ class EdgesListSerializer(serializers.ModelSerializer):
 
 
 class MindMapSerializer(serializers.ModelSerializer):
-    nodes = serializers.SerializerMethodField('get_nodes')
-    edges = serializers.SerializerMethodField('get_edges')
-
-    @swagger_serializer_method(serializer_or_field=NodesListSerializer)
-    def get_nodes(self, obj: MindMap):
-        return NodesListSerializer(obj.mindcard_set.all().select_related('mind_map'), many=True)
-
-    @swagger_serializer_method(serializer_or_field=EdgesListSerializer)
-    def get_edges(self, obj: MindMap):
-        return EdgesListSerializer(obj.mindcard_set.all().select_related('mind_map'), many=True)
+    nodes = NodesListSerializer(many=True)
+    edges = EdgesListSerializer(many=True)
 
     class Meta:
         model = MindMap
         fields = ('nodes', 'edges')
+
+
+class ChangePositionSerializer(serializers.Serializer):
+    card = serializers.IntegerField(allow_null=False, required=True)
+    x = serializers.IntegerField(allow_null=False, required=True)
+    y = serializers.IntegerField(allow_null=False, required=True)
+
+
+class EdgesSerializer(serializers.Serializer):
+    id = serializers.CharField()
+    source = serializers.IntegerField()
+    target = serializers.IntegerField()
