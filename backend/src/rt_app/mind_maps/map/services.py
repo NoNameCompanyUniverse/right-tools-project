@@ -22,6 +22,8 @@ class MindMapService:
         card.save()
 
     def connect_cards(self, mind_map: MindMap, edges: List[OrderedDict]):
+        cards = mind_map.mindcard_set.all()
+        cards.update(parent=None)
         for edge in edges:
             card = mind_map.mindcard_set.get(pk=edge['source'])
             # Проверка карты на Target(Таргет не имеет родителя)
