@@ -23,7 +23,12 @@ class PositionSerializer(serializers.ModelSerializer):
 
 
 class MindCardBodySerializer(serializers.ModelSerializer):
+    id = serializers.SerializerMethodField('get_id')
     type = serializers.SerializerMethodField('get_type')
+
+    @swagger_serializer_method(serializer_or_field=serializers.CharField())
+    def get_id(self, obj: MindCard):
+        return str(obj.pk)
 
     def get_type(self, obj: MindCard) -> str:
         return obj.get_type_card_display()
@@ -34,9 +39,14 @@ class MindCardBodySerializer(serializers.ModelSerializer):
 
 
 class NodesListSerializer(serializers.ModelSerializer):
+    id = serializers.SerializerMethodField('get_id')
     type = serializers.SerializerMethodField('get_type')
     data = serializers.SerializerMethodField('get_data')
     position = serializers.SerializerMethodField('get_position')
+
+    @swagger_serializer_method(serializer_or_field=serializers.CharField())
+    def get_id(self, obj: MindCard):
+        return str(obj.pk)
 
     @swagger_serializer_method(serializer_or_field=serializers.CharField())
     def get_type(self, obj: MindCard) -> str:
