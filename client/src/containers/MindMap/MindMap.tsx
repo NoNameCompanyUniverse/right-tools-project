@@ -23,7 +23,7 @@ import {
     putMindCard
 } from "../../redux/actions/MindMapAction";
 import {convertMindCard} from "../../helpers/functions";
-import {pushEdges} from "../../redux/reducers/MindMapSlice";
+import {pushEdges, reset} from "../../redux/reducers/MindMapSlice";
 
 
 const initialNodes: Node[] = [
@@ -104,21 +104,34 @@ const MindMap = () => {
         [setEdges]
     )
 
-
     const handleOnLookData = (_: ReactMouseEvent, data: Node) => {
         setNode(data)
     }
-
 
     useEffect(() => {
         //@ts-ignore
         const token: string = session?.accessToken;
         const mindID = router.query.mindmap;
-        if (mindmap) {
+        if (mindmap && isLoading === 'FULFILLED') {
             // @ts-ignore
             dispatch(postMindEdges({token, id: mindID, data: edges}))
         }
     }, [edges])
+
+
+    useEffect(() => {
+        const handleRouteChange = () => {
+            dispatch(reset())
+        }
+
+        router.events.on('routeChangeStart', handleRouteChange)
+
+        // If the component is unmounted, unsubscribe
+        // from the event with the `off` method:
+        return () => {
+            router.events.off('routeChangeStart', handleRouteChange)
+        }
+    }, [])
 
 
     useEffect(() => {
@@ -192,17 +205,18 @@ const MindMap = () => {
         if (!router.isReady) return;
         // @ts-ignore
         dispatch(getMindMap({token, id: router.query.mindmap}))
-        console.log(mindmap)
     }, [dispatch])
 
 
     useEffect(() => {
-        if (isLoading && mindmap) {
-            console.log(mindmap.edges)
+        if (isLoading === 'FULFILLED' && mindmap) {
             setNodes(JSON.parse(JSON.stringify(mindmap.nodes)));
             setEdges(JSON.parse(JSON.stringify(mindmap.edges)));
+            //dispatch(reset())
         }
     }, [isLoading])
+
+
 
 
     return (

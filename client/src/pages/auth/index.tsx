@@ -56,33 +56,33 @@ const Auth = () => {
                     {
                         !isRegistration ? (
                             <SignUp>
-                                <motion.div
-                                    variants={fadeIn}
-                                    custom={11}
-                                    initial={`initial`}
-                                    animate={`animate`}
-                                    className={style.registration}>
-                                    У вас есть аккаунт?
-                                    <span className={`ms-1`} onClick={() => setIsRegistration(true)}>
-                                            Войти
-                                        </span>
-                                </motion.div>
+                                {/*<motion.div*/}
+                                {/*    variants={fadeIn}*/}
+                                {/*    custom={11}*/}
+                                {/*    initial={`initial`}*/}
+                                {/*    animate={`animate`}*/}
+                                {/*    className={style.registration}>*/}
+                                {/*    У вас есть аккаунт?*/}
+                                {/*    <span className={`ms-1`} onClick={() => setIsRegistration(true)}>*/}
+                                {/*            Войти*/}
+                                {/*        </span>*/}
+                                {/*</motion.div>*/}
                             </SignUp>
                         ) : (
                             <SignIn onSubmit={handleOnLogin}>
-                                <motion.div
-                                    variants={fadeIn}
-                                    custom={11}
-                                    initial={`initial`}
-                                    animate={`animate`}
-                                    className={style.registration}>
-                                    Вы здесь впервые?
-                                    <span
-                                        className={`ms-1`}
-                                        onClick={() => setIsRegistration(false)}>
-                                    Регистрация
-                                </span>
-                                </motion.div>
+                                {/*<motion.div*/}
+                                {/*    variants={fadeIn}*/}
+                                {/*    custom={11}*/}
+                                {/*    initial={`initial`}*/}
+                                {/*    animate={`animate`}*/}
+                                {/*    className={style.registration}>*/}
+                                {/*    Вы здесь впервые?*/}
+                                {/*    <span*/}
+                                {/*        className={`ms-1`}*/}
+                                {/*        onClick={() => setIsRegistration(false)}>*/}
+                                {/*    Регистрация*/}
+                                {/*</span>*/}
+                                {/*</motion.div>*/}
                             </SignIn>
                         )
                     }

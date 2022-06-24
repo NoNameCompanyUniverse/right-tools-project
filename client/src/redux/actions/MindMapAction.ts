@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import API from "../../helpers/api";
 import {toast} from "react-toastify";
-import {removeNode} from "../reducers/MindMapSlice";
+import {pushEdges, removeNode} from "../reducers/MindMapSlice";
 
 export const getMindMap = createAsyncThunk(
     'get/mindmap',
@@ -76,9 +76,10 @@ export const patchMindCardCoord = createAsyncThunk(
 
 export const postMindEdges = createAsyncThunk(
     'post/edges',
-    async ({token, id, data} : {token: string, id: number, data:any}, {rejectWithValue}) => {
+    async ({token, id, data} : {token: string, id: number, data:any}, {rejectWithValue, dispatch}) => {
         try {
-            await API.postMindEdges(token, id, data)
+            await API.postMindEdges(token, id, data);
+            //dispatch(pushEdges(data))
         } catch (e) {
             // @ts-ignore
             toast.error(e.message, {autoClose: false})

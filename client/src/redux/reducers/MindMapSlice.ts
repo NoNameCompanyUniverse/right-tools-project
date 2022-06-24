@@ -8,12 +8,12 @@ import {IEdge} from "../../types/IEdge";
 
 interface IMindMapState {
     mindmap: IMindMap | null,
-    isLoading: boolean
+    isLoading: 'PENDING' | 'FULFILLED' | 'REJECTED' | ''
 }
 
 const initialState: IMindMapState = {
     mindmap: null,
-    isLoading: false
+    isLoading: ''
 }
 
 export const mindMapSlice = createSlice({
@@ -29,20 +29,27 @@ export const mindMapSlice = createSlice({
             if (state.mindmap) {
                 state.mindmap.edges = action.payload;
             }
+        },
+        reset(state) {
+            state.isLoading = '';
         }
     },
     extraReducers: {
-        [getMindMap.pending.type] : () => {},
+        [getMindMap.pending.type] : (state) => {
+            state.isLoading = 'PENDING'
+        },
         [getMindMap.fulfilled.type] : (state, action: PayloadAction<IMindMap>) => {
             state.mindmap = action.payload;
-            state.isLoading = true;
+            state.isLoading = 'FULFILLED';
         },
         [getMindMap.rejected.type] : (state) => {
-            state.isLoading = false;
+            state.isLoading = 'REJECTED';
             toast.error('Не удалось загрузить Mind Map')
         },
 
-        [postMindCard.pending.type] : () => {},
+        [postMindCard.pending.type] : (state) => {
+
+        },
         [postMindCard.fulfilled.type] : (state, action: PayloadAction<INewNode>) => {
 
             state.mindmap?.nodes.push(deConvertMindCard(action.payload));
@@ -71,5 +78,5 @@ export const mindMapSlice = createSlice({
     }
 })
 
-export const {removeNode, pushEdges} = mindMapSlice.actions;
+export const {removeNode, pushEdges, reset} = mindMapSlice.actions;
 export default mindMapSlice.reducer;
