@@ -9,23 +9,23 @@ from .serializers import *
 
 
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(
-    tags=['Mind-cards'], operation_summary="Получить информацию о mind-card",
+    tags=['Kanban-card'], operation_summary="Получить информацию о kanban-card",
 ))
 @method_decorator(name="update", decorator=swagger_auto_schema(
-    tags=['Mind-cards'], operation_summary="Обновить информацию о mind-card",
+    tags=['Kanban-card'], operation_summary="Обновить информацию о kanban-card",
 ))
 @method_decorator(name="destroy", decorator=swagger_auto_schema(
-    tags=['Mind-cards'], operation_summary="Удалить mind-card",
+    tags=['Kanban-card'], operation_summary="Удалить kanban-card",
 ))
-class MindCardView(viewsets.ModelViewSet):
+class KanbanCardView(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'retrieve':
-            return MindCardSerializer
+            return KanbanCardSerializer
         else:
-            return MindCardUpdateSerializer
+            return KanbanCardUpdateSerializer
 
     def get_object(self):
         try:
-            return MindCard.objects.get(pk=self.kwargs.get('pk'))
-        except MindCard.DoesNotExist:
+            return KanbanCard.objects.get(pk=self.kwargs.get('pk'))
+        except KanbanCard.DoesNotExist:
             raise Http404

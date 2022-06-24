@@ -128,6 +128,7 @@ class MindCard(models.Model):
 class KanbanColumn(models.Model):
     kanban_board = models.ForeignKey(KanbanBoard, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=100, null=False)
+    position = models.IntegerField(null=False)
 
 
 class KanbanCard(models.Model):

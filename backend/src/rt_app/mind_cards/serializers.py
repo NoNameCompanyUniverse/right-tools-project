@@ -6,7 +6,7 @@ from rt_app.models import MindCard
 class MindCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = MindCard
-        exclude = ('mind_map', 'parent')
+        exclude = ('mind_map',)
 
 
 class MindCardUpdateSerializer(serializers.ModelSerializer):
@@ -26,4 +26,4 @@ class MindCardUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MindCard
-        exclude = ('mind_map', 'parent')
+        exclude = ('mind_map',)

@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import *
 
 urlpatterns = [
     # path('<int:pk>/open/', MindmapDetailView.as_view()),
     path('<int:pk>/', KanbanBoardDetailUpdateDeleteView.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
+    path('<int:pk>/cards/', include('rt_app.kanban_boards.card.urls')),
 ]

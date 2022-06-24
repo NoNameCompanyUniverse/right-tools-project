@@ -24,4 +24,4 @@ class MindCardCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MindCard
-        exclude = ('mind_map', 'parent')
+        exclude = ('mind_map',)
