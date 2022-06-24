@@ -11,7 +11,7 @@ from .serializers import MindMapDetailUpdateSerializer
 class BaseMindMapView:
     def get_object(self):
         try:
-            return MindMap.objects.get(pk=self.kwargs.get('pk'))
+            return MindMap.objects.select_related('project').get(pk=self.kwargs.get('pk'))
         except MindMap.DoesNotExist:
             raise Http404
 

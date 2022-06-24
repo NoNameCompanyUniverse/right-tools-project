@@ -35,7 +35,7 @@ class MindMapView(BaseMindMapView, views.APIView):
 class ChangePositionView(BaseMindMapView, views.APIView):
     def get_card(self, pk):
         try:
-            return self.get_object().mindcard_set.get(pk=pk)
+            return self.get_object().mindcard_set.select_related('mind_map').get(pk=pk)
         except MindCard.DoesNotExist:
             raise Http404
 

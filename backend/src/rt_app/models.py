@@ -123,4 +123,21 @@ class MindCard(models.Model):
     type_card = models.CharField(max_length=1, choices=TYPE_CARD)
     x_coord = models.IntegerField(null=False)
     y_coord = models.IntegerField(null=False)
-    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='target')
+    # parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='target')
+
+
+class KanbanColumn(models.Model):
+    kanban_board = models.ForeignKey(KanbanBoard, on_delete=models.CASCADE, null=False)
+    name = models.CharField(max_length=100, null=False)
+
+
+class KanbanCard(models.Model):
+    PRIORITY = (
+        ('L', 'low'),
+        ('A', 'average'),
+        ('H', 'high'),
+    )
+    kanban_column = models.ForeignKey(KanbanColumn, on_delete=models.CASCADE, null=False)
+    name = models.CharField(max_length=100, null=False)
+    priority = models.CharField(max_length=1, choices=PRIORITY)
+    description = models.TextField(null=True)
