@@ -30,7 +30,7 @@ class BaseKanbanCardView:
 class KanbanCardView(BaseKanbanCardView, viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'retrieve':
-            return KanbanCardSerializer
+            return KanbanDetailCardSerializer
         else:
             return KanbanCardUpdateSerializer
 
