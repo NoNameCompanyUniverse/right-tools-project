@@ -67,18 +67,18 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
 
     return (
         <>
-            <div className={`mb-3`}>
-                <button
-                    onClick={() => handleOnModal(modal.id)}
-                    className={`btn btn-green d-flex align-items-center`}>
-                    <i className="icon me-2">
-                        <CollectionIcon/>
-                    </i>
-                    <span>
+
+            <button
+                onClick={() => handleOnModal(modal.id)}
+                className={`btn btn-green d-flex align-items-center`}>
+                <i className="icon me-2">
+                    <CollectionIcon/>
+                </i>
+                <span>
                        Добавить карточку
                    </span>
-                </button>
-            </div>
+            </button>
+
             <Modal modal={modal} onClose={handleOnModal} title={'Создать карточку'}>
                 <>
                     <form onSubmit={event => handleOnSubmit(event)}>

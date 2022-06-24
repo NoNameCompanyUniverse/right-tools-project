@@ -192,7 +192,7 @@ const Project = () => {
                                                 {
                                                     loading === 'FULFILLED' && Array.isArray(project.mindmaps) && project.mindmaps.length > 0 ?
                                                         project.mindmaps.map((map, index) => (
-                                                            <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                            <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
                                                                 <Card data={map}>
                                                                     <ul>
                                                                         <li>
@@ -236,7 +236,7 @@ const Project = () => {
                                                 {
                                                     loading === 'FULFILLED' && Array.isArray(project.kanban) && project.kanban.length > 0 ?
                                                         project.kanban.map((map, index) => (
-                                                            <div key={index} className={`col-xxl-3 col-xl-4 col-lg-6 mb-3`}>
+                                                            <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
                                                                 <Card data={map}>
                                                                     <ul>
                                                                         <li>

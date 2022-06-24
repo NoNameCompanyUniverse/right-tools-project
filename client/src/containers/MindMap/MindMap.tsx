@@ -24,44 +24,9 @@ import {
 } from "../../redux/actions/MindMapAction";
 import {convertMindCard} from "../../helpers/functions";
 import {pushEdges, reset} from "../../redux/reducers/MindMapSlice";
+import Link from 'next/link';
+import {ReplyIcon} from "@heroicons/react/outline";
 
-
-const initialNodes: Node[] = [
-    {
-        id: '1',
-        type: 'nodeCard',
-        data: {
-            id: '1',
-            label: 'Hello World',
-            description: 'Нужно просто взять и сделать этот ваш гребаный сайт и забыть про эту фигню как страшный сон.',
-            type: 'source',
-        },
-        position: {x: 250, y: 550},
-    },
-    {
-        id: '2',
-        type: 'nodeCard',
-        data: {
-            id: '2',
-            label: 'Hello World 2',
-            description: '',
-            type: 'target',
-
-        },
-        position: {x: 450, y: 350},
-    },
-    {
-        id: '3',
-        type: 'nodeCard',
-        data: {
-            id: '3',
-            label: 'Hello World 3',
-            description: 'Нужно просто взять и сделать этот ваш гребаный сайт и забыть про эту фигню как страшный сон.',
-            type: 'default'
-        },
-        position: {x: 450, y: 150},
-    },
-];
 
 const nodeCard = {nodeCard: NodeCard};
 
@@ -71,39 +36,30 @@ const MindMap = () => {
     const dispatch = useAppDispatch();
     const {data: session} = useSession()
     const router = useRouter();
-
     const {mindmap, isLoading} = useAppSelector(state => state.mindmapSlice);
-
     const [nodes, setNodes] = useState<Node[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
-
     const [node, setNode] = useState<Node | null>(null)
-
     const handleAddNode = (data: Node) => {
         setNodes((nds) => nds.concat(data))
     }
-
     const handleOnNodeChange = useCallback(
         (changes: NodeChange[]) => setNodes((nds: any) =>
             applyNodeChanges(changes, nds)),
         [setNodes]
     );
-
     const handleOnEdgesChange = useCallback(
         (changes: EdgeChange[]) => setEdges((eds) =>
             applyEdgeChanges(changes, eds)),
         [setEdges]
     )
-
     const handleOnEdgeUpdate = (oldEdge: Edge<any>, newConnection: Connection) =>
         setEdges((els) => updateEdge(oldEdge, newConnection, els))
-
     const handleOnConnect = useCallback(
         (connection) => setEdges((eds) =>
             addEdge({...connection}, eds)),
         [setEdges]
     )
-
     const handleOnLookData = (_: ReactMouseEvent, data: Node) => {
         setNode(data)
     }
@@ -117,8 +73,6 @@ const MindMap = () => {
             dispatch(postMindEdges({token, id: mindID, data: edges}))
         }
     }, [edges])
-
-
     useEffect(() => {
         const handleRouteChange = () => {
             dispatch(reset())
@@ -132,8 +86,6 @@ const MindMap = () => {
             router.events.off('routeChangeStart', handleRouteChange)
         }
     }, [])
-
-
     useEffect(() => {
         if (mindmap) {
             console.log('dsd')
@@ -150,7 +102,6 @@ const MindMap = () => {
         const deleteEdges = () => {
             let newEdges: Edge[] = JSON.parse(JSON.stringify(edges));
             newEdges = newEdges.filter((edge: Edge) => edge.target !== payload.id && edge.source !== payload.id);
-            //dispatch(pushEdges(newEdges));
             setEdges(newEdges)
         }
 
@@ -158,7 +109,6 @@ const MindMap = () => {
             case "CREATE": {
                 // @ts-ignore
                 dispatch(postMindCard({token, id: mindID, data: convertMindCard(payload)}))
-                //setNodes((nds) => nds.concat(payload))
                 break;
             }
             case "EDIT": {
@@ -177,8 +127,6 @@ const MindMap = () => {
             }
         }
     }
-
-
     const handleOnNodeDragStop = (event: ReactMouseEvent, node: Node) => {
         //@ts-ignore
         const token: string = session?.accessToken;
@@ -192,12 +140,9 @@ const MindMap = () => {
         dispatch(patchMindCardCoord({token, id: mindID, data}))
         console.log(node)
     }
-
-
     const handleOnEdgeDelete = (edges: Edge[]) => {
         console.log(edges)
     }
-
 
     useEffect(() => {
         //@ts-ignore
@@ -206,8 +151,6 @@ const MindMap = () => {
         // @ts-ignore
         dispatch(getMindMap({token, id: router.query.mindmap}))
     }, [dispatch])
-
-
     useEffect(() => {
         if (isLoading === 'FULFILLED' && mindmap) {
             setNodes(JSON.parse(JSON.stringify(mindmap.nodes)));
@@ -215,9 +158,6 @@ const MindMap = () => {
             //dispatch(reset())
         }
     }, [isLoading])
-
-
-
 
     return (
         <>
@@ -242,6 +182,16 @@ const MindMap = () => {
                 }}>
                     <CreateNode onNode={handleOnNode}/>
                 </div>
+                <Link href={`/project/${router.query.id}`}>
+                    <a
+                        style={{"position" : "absolute", "zIndex" : "5", "top" : "5px", "left": "5px"}}
+                        className={['btn d-flex align-items-center'].join(" ")}>
+                        <i className="icon me-2">
+                            <ReplyIcon/>
+                        </i>
+                        <span>Вернуться назад</span>
+                    </a>
+                </Link>
                 <MiniMap nodeColor={(n: Node<any>) => {
                     if (n.data.type === 'target') return '#868974FF';
                     if (n.data.type === 'source') return '#F0B878FF';
@@ -253,7 +203,6 @@ const MindMap = () => {
                 <Background color={`#aaa`} gap={10}/>
             </ReactFlow>
             <ControlNode data={node} onNode={handleOnNode}/>
-
         </>
     );
 };

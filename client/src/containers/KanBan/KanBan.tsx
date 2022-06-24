@@ -12,6 +12,9 @@ import {IDrag} from "../../types/old/IDrag";
 import Modal from "../../components/Modal";
 import ControlDrag from "../../blocks/KanBan/ControlDrag";
 import {convertKanBan} from "../../helpers/functions";
+import {ReplyIcon} from "@heroicons/react/outline";
+import Link from "next/link";
+import {useRouter} from "next/router";
 
 
 const dataDrag = [
@@ -22,6 +25,7 @@ const dataDrag = [
 
 
 const KanBan: React.FC = () => {
+    const router = useRouter();
     const [boardData, setBoardData] = useState<Array<{id: number, name: string, items: Array<IDrag> }>>(BoardData);
     const [boardItem, setBoardItem] = useState<IDrag | null>(null);
     const onDragEnd = (re: any) => {
@@ -78,7 +82,19 @@ const KanBan: React.FC = () => {
 
     return (
         <>
-            <CreateDrag onDrag={handleOnDrag}/>
+            <div className={'d-flex justify-content-between align-items-center mb-3'}>
+                <Link href={`/project/${router.query.id}`}>
+                <a
+                    className={['btn d-flex align-items-center ps-0'].join(" ")}>
+                    <i className="icon me-2">
+                        <ReplyIcon/>
+                    </i>
+                    <span>Вернуться назад</span>
+                </a>
+            </Link>
+
+                <CreateDrag onDrag={handleOnDrag}/>
+            </div>
             <ControlDrag data={boardItem} onDrag={handleOnDrag}/>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className={`row flex-grow-1 gx-3`}>

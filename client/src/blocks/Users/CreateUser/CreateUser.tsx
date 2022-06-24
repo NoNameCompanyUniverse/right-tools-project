@@ -108,14 +108,6 @@ const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => 
                                 setValue={handleSetValue}
                                 type={'text'}/>
                         </div>
-                        <div className="col-12 mb-3">
-                            <FormInput
-                                placeholder={'Введите email'}
-                                name={'email'}
-                                value={state.email}
-                                setValue={handleSetValue}
-                                type={'email'}/>
-                        </div>
                         <div className="col-6 mb-3">
                             <FormInput
                                 placeholder={'Введите дату рождения'}
@@ -123,6 +115,14 @@ const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => 
                                 value={state.date_birth}
                                 setValue={handleSetValue}
                                 type={'date'}/>
+                        </div>
+                        <div className="col-12 mb-3">
+                            <FormInput
+                                placeholder={'Введите email'}
+                                name={'email'}
+                                value={state.email}
+                                setValue={handleSetValue}
+                                type={'email'}/>
                         </div>
                         <div className="col-12 mb-4">
                             <FormTextarea
