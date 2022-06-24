@@ -7,7 +7,8 @@ interface IFormInput {
     setValue: (value: string, name: string) => void,
     name?: string,
     type?: 'text' | 'email' | 'tel' | 'number' | 'password' | 'date',
-    required?: boolean
+    required?: boolean,
+    readonly?: boolean
 }
 
 const FormInput:React.FC<IFormInput> = (
@@ -17,7 +18,8 @@ const FormInput:React.FC<IFormInput> = (
         value,
         name= '',
         type = 'text',
-        required = true
+        required = true,
+        readonly = false
     }) => {
 
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value, name)
@@ -26,6 +28,7 @@ const FormInput:React.FC<IFormInput> = (
     return (
         <div className={style.container}>
             <input
+                readOnly={readonly}
                 onChange={handleOnChange}
                 type={type}
                 name={name}

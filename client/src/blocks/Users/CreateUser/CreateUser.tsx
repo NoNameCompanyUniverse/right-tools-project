@@ -7,12 +7,24 @@ import Modal from "../../../components/Modal";
 import FormInput from "../../../components/Form/FormInput/FormInput";
 import FormTextarea from "../../../components/Form/FormTextarea/FormTextarea";
 import {data} from "dom7";
+import ControlSubdivision from "../ControlSubdivision";
+import {getSubdivision} from "../../../redux/actions/SubdivisionAction";
+import {useSession} from "next-auth/react";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 
 
 const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => {
 
-    const [modal, setModal] = useState<IModal>({id: '#modal', isOpen: false});
+    const [modal, setModal] = useState<IModal[]>([
+        {id: '#modal', isOpen: false},
+        {id: '#subdivision', isOpen: false}
+    ]);
+    const {data: session} = useSession()
+    const {subdivision} = useAppSelector(state => state.subdivisionSlice);
+    const dispatch = useAppDispatch();
 
+
+    const [sData, setSData] = useState<{ id: number, name: string }>({id: 1, name: 'Главный Отдел'})
     const [state, setState] = useState({
         username: '',
         password: '',
@@ -29,34 +41,54 @@ const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => 
         setState(state => ({...state, [name]: value}))
     };
 
+    const handleOnSubdivision = (value: number, name: string) => {
+        setState(state => ({...state, subdivision: value}));
+        setSData({id: value, name: name});
+    }
+
     const handleOnModal = (id: string) => {
-        setModal({id, isOpen: !modal.isOpen})
+        let clone = modal.concat();
+        clone = clone.map((e: IModal) => (
+            e.id === id ? {id: e.id, isOpen: !e.isOpen} : e
+        ))
+        setModal(clone)
     }
 
     const handleOnSubmit = (e: FormEvent) => {
         e.preventDefault();
         onSubmit(state);
-        //handleOnModal(modal.id)
+        handleOnModal(modal[0].id)
     }
 
     useEffect(() => {
-        !modal.isOpen ? setState({
-            username: '',
-            password: '',
-            first_name: '',
-            last_name: '',
-            phone: '',
-            email: '',
-            description: '',
-            date_birth: '',
-            subdivision: 1
-        }) : '';
+        if(!modal[0].isOpen) {
+            setState({
+                username: '',
+                password: '',
+                first_name: '',
+                last_name: '',
+                phone: '',
+                email: '',
+                description: '',
+                date_birth: '',
+                subdivision: 1
+            })
+            setSData({id: 1, name:'Главный отдел'})
+        }
     }, [modal])
+
+
+    useEffect(() => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        dispatch(getSubdivision({token}))
+    }, [dispatch])
+
 
     return (
         <>
             <motion.div
-                onClick={() => handleOnModal(modal.id)}
+                onClick={() => handleOnModal(modal[0].id)}
                 whileHover={{scale: 1.05}}
                 whileTap={{scale: .95}}
                 className={[style.create, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
@@ -64,9 +96,9 @@ const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => 
                     <FolderAddIcon/>
                 </i>
             </motion.div>
-            <Modal modal={modal} onClose={handleOnModal} title={'Создать пользователя'}>
+            <Modal modal={modal[0]} onClose={handleOnModal} title={'Создать пользователя'}>
                 <form onSubmit={handleOnSubmit}>
-                    <div className="row">
+                    <div className="row gx-2">
                         <div className="col-6 mb-3">
                             <FormInput
                                 placeholder={'Введите логин'}
@@ -83,7 +115,6 @@ const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => 
                                 setValue={handleSetValue}
                                 type={'text'}/>
                         </div>
-
                         <div className="col-6 mb-3">
                             <FormInput
                                 placeholder={'Введите имя'}
@@ -110,19 +141,28 @@ const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => 
                         </div>
                         <div className="col-6 mb-3">
                             <FormInput
-                                placeholder={'Введите дату рождения'}
-                                name={'date_birth'}
-                                value={state.date_birth}
-                                setValue={handleSetValue}
-                                type={'date'}/>
-                        </div>
-                        <div className="col-12 mb-3">
-                            <FormInput
                                 placeholder={'Введите email'}
                                 name={'email'}
                                 value={state.email}
                                 setValue={handleSetValue}
                                 type={'email'}/>
+                        </div>
+                        <div className="col-7 mb-3"
+                             onClick={() => handleOnModal(modal[1].id)}>
+                            <FormInput
+                                setValue={handleSetValue}
+                                placeholder={'Выберите отдел'}
+                                value={sData.name}
+                                readonly={true}/>
+                        </div>
+
+                        <div className="col-5 mb-3">
+                            <FormInput
+                                placeholder={'Введите дату рождения'}
+                                name={'date_birth'}
+                                value={state.date_birth}
+                                setValue={handleSetValue}
+                                type={'date'}/>
                         </div>
                         <div className="col-12 mb-4">
                             <FormTextarea
@@ -145,6 +185,12 @@ const CreateUser: React.FC<{ onSubmit: (data: any) => void }> = ({onSubmit}) => 
                     </div>
                 </form>
             </Modal>
+            <ControlSubdivision
+                onSubdivision={handleOnSubdivision}
+                subdivision={state.subdivision}
+                subdivisions={subdivision}
+                modal={modal[1]}
+                onModal={handleOnModal}/>
         </>
     );
 };

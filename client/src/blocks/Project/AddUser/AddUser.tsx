@@ -8,6 +8,7 @@ import {useSession} from "next-auth/react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {deleteProjectParticipant} from "../../../redux/actions/ProjectsAction";
 import {useRouter} from "next/router";
+import {getSubdivision} from "../../../redux/actions/SubdivisionAction";
 
 interface IAddUser {
     modal: IModal,
@@ -27,6 +28,7 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers, isDe
     const router = useRouter();
     const {data: session} = useSession()
     const {users, isFetching} = useAppSelector(state => state.usersSlice);
+    const {subdivision} = useAppSelector(state => state.subdivisionSlice);
     const dispatch = useAppDispatch();
     const {auth} = useAppSelector(state => state.profileSlice);
 
@@ -61,6 +63,8 @@ const AddUser: React.FC<IAddUser> = ({modal, onModal, participant, onUsers, isDe
         onUsers(participantData);
         onModal(id);
     }
+
+
 
     useEffect(() => {
         setParticipantData(participant)
