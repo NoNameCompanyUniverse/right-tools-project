@@ -9,9 +9,9 @@ from .serializers import EdgesListSerializer
 
 
 class MindMapService:
-    def get_mind_card(self, pk: int) -> Union[MindCard, None]:
+    def get_mind_card(self, mind_card: QuerySet[MindCard], pk: int) -> Union[MindCard, None]:
         try:
-            return MindCard.objects.get(pk=pk)
+            return mind_card.get(pk=pk)
         except MindCard.DoesNotExist:
             return None
 
@@ -22,22 +22,28 @@ class MindMapService:
         card.save()
 
     def connect_cards(self, mind_map: MindMap, edges: List[OrderedDict]):
-        cards = mind_map.mindcard_set.all()
-        cards.update(parent=None)
+        mind_edges = mind_map.mindedges_set.select_related('mind_map').all()
+        mind_edges.delete()
+
+        mind_cards = mind_map.mindcard_set.all()
+
         for edge in edges:
-            card = mind_map.mindcard_set.get(pk=edge['source'])
+            # Получаем карточку из mind_map
+            source = self.get_mind_card(mind_cards, edge['source'])
+            if not source:
+                continue
+
             # Проверка карты на Target(Таргет не имеет родителя)
-            if card.type_card == 'T':
+            if source.type_card == 'T':
                 # Если имеет то пропустить
                 continue
             else:
                 # Если не имеет то
                 # Получить родительскую карточку
-                parent = self.get_mind_card(edge['target'])
-                if parent:
+                target = self.get_mind_card(mind_cards, edge['target'])
+                if target:
                     # если родитель сущетсвует то имезменить
-                    card.parent = parent
-                    card.save()
+                    source.mindedges_set.create(mind_map=mind_map, source=source, target=target.pk)
                 else:
                     # Иначе пропустить
                     continue

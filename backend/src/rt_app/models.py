@@ -123,7 +123,6 @@ class MindCard(models.Model):
     type_card = models.CharField(max_length=1, choices=TYPE_CARD)
     x_coord = models.IntegerField(null=False)
     y_coord = models.IntegerField(null=False)
-    # parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, related_name='target')
 
 
 class KanbanColumn(models.Model):
@@ -141,3 +140,9 @@ class KanbanCard(models.Model):
     name = models.CharField(max_length=100, null=False)
     priority = models.CharField(max_length=1, choices=PRIORITY)
     description = models.TextField(null=True)
+
+
+class MindEdges(models.Model):
+    mind_map = models.ForeignKey(MindMap, on_delete=models.CASCADE, null=False)
+    source = models.ForeignKey(MindCard, on_delete=models.PROTECT, null=False)
+    target = models.IntegerField(null=False)

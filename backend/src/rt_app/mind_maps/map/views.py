@@ -1,10 +1,12 @@
-from django.db.models import Q
+from typing import Callable
+
+from django.db.models import Q, QuerySet
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import views, status, serializers
 from rest_framework.response import Response
 
-from rt_app.models import MindMap
+from rt_app.models import MindMap, MindCard, MindEdges
 
 from ..views import BaseMindMapView
 
@@ -21,10 +23,12 @@ class MindMapView(BaseMindMapView, views.APIView):
         result = {"nodes": '', "edges": ''}
 
         mind_map: MindMap = self.get_object()
-        cards = mind_map.mindcard_set.select_related('mind_map').all().order_by('pk')
 
+        cards: QuerySet[MindCard] = mind_map.mindcard_set.select_related('mind_map').all().order_by('pk')
         nodes = NodesListSerializer(cards, many=True).data
-        edges = EdgesListSerializer(cards.exclude(parent=None), many=True).data
+
+        edges: QuerySet[MindEdges] = mind_map.mindedges_set.select_related('mind_map').all().order_by('pk')
+        edges = EdgesListSerializer(edges, many=True).data
 
         result['nodes'] = nodes
         result['edges'] = edges

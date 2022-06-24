@@ -2,7 +2,7 @@ from drf_yasg.utils import swagger_serializer_method
 
 from rest_framework import serializers
 
-from rt_app.models import MindMap, MindCard
+from rt_app.models import MindMap, MindCard, MindEdges
 
 
 class PositionSerializer(serializers.ModelSerializer):
@@ -71,19 +71,19 @@ class EdgesListSerializer(serializers.ModelSerializer):
     target = serializers.SerializerMethodField('get_target')
 
     @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_id(self, obj: MindCard):
-        return f'e{obj.pk}-{obj.parent.pk}'
+    def get_id(self, obj: MindEdges):
+        return f'e{obj.source.pk}-{obj.target}'
 
     @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_source(self, obj: MindCard):
-        return str(obj.pk)
+    def get_source(self, obj: MindEdges):
+        return str(obj.source.pk)
 
     @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_target(self, obj: MindCard):
-        return str(obj.parent.pk)
+    def get_target(self, obj: MindEdges):
+        return str(obj.target)
 
     class Meta:
-        model = MindCard
+        model = MindEdges
         fields = ('id', 'source', 'target')
 
 
