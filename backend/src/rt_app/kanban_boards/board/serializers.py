@@ -2,107 +2,31 @@ from drf_yasg.utils import swagger_serializer_method
 
 from rest_framework import serializers
 
-from rt_app.models import MindMap, MindCard
+from rt_app.models import KanbanBoard, KanbanColumn, KanbanCard
 
 
-class PositionSerializer(serializers.ModelSerializer):
-    x = serializers.SerializerMethodField('get_x')
-    y = serializers.SerializerMethodField('get_y')
-
-    @swagger_serializer_method(serializer_or_field=serializers.IntegerField())
-    def get_x(self, obj: MindCard):
-        return obj.x_coord
+class KanbanCardSerializer(serializers.ModelSerializer):
+    board = serializers.SerializerMethodField('get_board')
 
     @swagger_serializer_method(serializer_or_field=serializers.IntegerField())
-    def get_y(self, obj: MindCard):
-        return obj.y_coord
+    def get_board(self, obj: KanbanCard):
+        return obj.kanban_column.position
 
     class Meta:
-        model = MindCard
-        fields = ('x', 'y')
+        model = KanbanCard
+        fields = '__all__'
 
 
-class MindCardBodySerializer(serializers.ModelSerializer):
-    id = serializers.SerializerMethodField('get_id')
-    type = serializers.SerializerMethodField('get_type')
+class KanbanColumnSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+    items = serializers.SerializerMethodField('get_items')
 
-    @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_id(self, obj: MindCard):
-        return str(obj.pk)
-
-    def get_type(self, obj: MindCard) -> str:
-        return obj.get_type_card_display()
+    @swagger_serializer_method(serializer_or_field=KanbanCardSerializer(many=True))
+    def get_items(self, obj: KanbanColumn):
+        cards = obj.kanbancard_set.all()
+        return KanbanCardSerializer(cards, many=True).data
 
     class Meta:
-        model = MindCard
-        fields = ('id', 'name', 'description', 'type')
+        model = KanbanColumn
+        exclude = ('kanban_board', 'position')
 
-
-class NodesListSerializer(serializers.ModelSerializer):
-    id = serializers.SerializerMethodField('get_id')
-    type = serializers.SerializerMethodField('get_type')
-    data = serializers.SerializerMethodField('get_data')
-    position = serializers.SerializerMethodField('get_position')
-
-    @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_id(self, obj: MindCard):
-        return str(obj.pk)
-
-    @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_type(self, obj: MindCard) -> str:
-        return "nodeCard"
-
-    @swagger_serializer_method(serializer_or_field=MindCardBodySerializer)
-    def get_data(self, obj: MindCard) -> dict:
-        return MindCardBodySerializer(obj).data
-
-    @swagger_serializer_method(serializer_or_field=PositionSerializer)
-    def get_position(self, obj: MindCard) -> dict:
-        return PositionSerializer(obj).data
-
-    class Meta:
-        model = MindCard
-        fields = ('id', 'type', 'data', 'position')
-
-
-class EdgesListSerializer(serializers.ModelSerializer):
-    id = serializers.SerializerMethodField('get_id')
-    source = serializers.SerializerMethodField('get_source')
-    target = serializers.SerializerMethodField('get_target')
-
-    @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_id(self, obj: MindCard):
-        return f'e{obj.pk}-{obj.parent.pk}'
-
-    @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_source(self, obj: MindCard):
-        return str(obj.pk)
-
-    @swagger_serializer_method(serializer_or_field=serializers.CharField())
-    def get_target(self, obj: MindCard):
-        return str(obj.parent.pk)
-
-    class Meta:
-        model = MindCard
-        fields = ('id', 'source', 'target')
-
-
-class MindMapSerializer(serializers.ModelSerializer):
-    nodes = NodesListSerializer(many=True)
-    edges = EdgesListSerializer(many=True)
-
-    class Meta:
-        model = MindMap
-        fields = ('nodes', 'edges')
-
-
-class ChangePositionSerializer(serializers.Serializer):
-    card = serializers.IntegerField(allow_null=False, required=True)
-    x = serializers.IntegerField(allow_null=False, required=True)
-    y = serializers.IntegerField(allow_null=False, required=True)
-
-
-class EdgesSerializer(serializers.Serializer):
-    id = serializers.CharField()
-    source = serializers.IntegerField()
-    target = serializers.IntegerField()

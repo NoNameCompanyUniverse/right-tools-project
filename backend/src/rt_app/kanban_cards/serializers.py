@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rt_app.models import KanbanCard
 
 
-class KanbanCardSerializer(serializers.ModelSerializer):
+class KanbanDetailCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = KanbanCard
         exclude = ('kanban_column',)
@@ -25,3 +25,7 @@ class KanbanCardUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = KanbanCard
         exclude = ('kanban_column',)
+
+
+class ChangeColumnSerializer(serializers.Serializer):
+    kanban_column = serializers.IntegerField(allow_null=False, required=True)
