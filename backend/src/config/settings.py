@@ -242,9 +242,17 @@ DJANGO_SIMPLE_LOGS = {
     }
 }
 
-TELEGRAM_BOT = {
-    "TOKEN": os.getenv('TOKEN'),
-    "CHATS": {
-        '494061970'
+BASE_IMAGE_SHAPE = {
+    'PHOTO': {
+        'WIDTH': 200,
+        'HEIGHT': 200,
+    },
+    'BANNER': {
+        'WIDTH': 500,
+        'HEIGHT': 500,
+    },
+    'PROJECT_PICTURE': {
+        'WIDTH': 500,
+        'HEIGHT': 500,
     }
 }

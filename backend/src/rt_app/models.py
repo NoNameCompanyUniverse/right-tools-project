@@ -1,14 +1,16 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.http import Http404
 
-from image_compressor import comressor, storages, utils
+from image_compressor import storages
+
+from .image_service import services
 
 from .common.services import *
-from .users.services import *
-from .projects.picture.services import *
 from .projects.documents.services import *
+from .projects.picture.services import *
+from .users.services import *
 
 
 class User(AbstractUser):
@@ -30,21 +32,20 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        if self.photo and utils.compare_with_and_height_image(100, 100, self.photo):
-            comressor.compress_img(
-                self.photo.path,
-                new_size_ratio=1.0,
-                width=self.photo.width,
-                height=self.photo.height
+        instance = super(User, self).save(*args, **kwargs)
+        if self.photo:
+            services.ImageService.check_image(
+                self.photo,
+                settings.BASE_IMAGE_SHAPE.get('PHOTO').get('WIDTH'),
+                settings.BASE_IMAGE_SHAPE.get('PHOTO').get('HEIGHT'),
             )
-        if self.banner and utils.compare_with_and_height_image(450, 200, self.banner):
-            comressor.compress_img(
-                self.banner.path,
-                new_size_ratio=1.0,
-                width=self.banner.width,
-                height=self.banner.height
+        if self.banner:
+            services.ImageService.check_image(
+                self.banner,
+                settings.BASE_IMAGE_SHAPE.get('BANNER').get('WIDTH'),
+                settings.BASE_IMAGE_SHAPE.get('BANNER').get('HEIGHT'),
             )
-        super(User, self).save(*args, **kwargs)
+        return instance
 
 
 class Subdivision(models.Model):
@@ -71,14 +72,14 @@ class Project(models.Model):
     date_create = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        if self.picture and utils.compare_with_and_height_image(450, 200, self.picture):
-            comressor.compress_img(
-                self.picture.path,
-                new_size_ratio=1.0,
-                width=self.picture.width,
-                height=self.picture.height
+        instance = super(Project, self).save(*args, **kwargs)
+        if self.picture:
+            services.ImageService.check_image(
+                self.picture,
+                settings.BASE_IMAGE_SHAPE.get('PICTURE').get('WIDTH'),
+                settings.BASE_IMAGE_SHAPE.get('PICTURE').get('HEIGHT'),
             )
-        super(Project, self).save(*args, **kwargs)
+        return instance
 
 
 class MindMap(models.Model):

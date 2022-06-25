@@ -150,3 +150,5 @@ cython_debug/
 
 logs
 base_template
+static
+media
