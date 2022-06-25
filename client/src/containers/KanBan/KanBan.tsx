@@ -8,62 +8,72 @@ import styleColumn from '../../components/KanBan/DragColumn/index.module.scss';
 import BoardData from '../../../data-board.json';
 import DragItem from "../../components/KanBan/DragItem";
 import CreateDrag from "../../blocks/KanBan/CreateDrag";
-import {IDrag} from "../../types/old/IDrag";
-import Modal from "../../components/Modal";
+import {IDrag, INewDrag} from "../../types/IKanBan";
 import ControlDrag from "../../blocks/KanBan/ControlDrag";
-import {convertKanBan} from "../../helpers/functions";
 import {ReplyIcon} from "@heroicons/react/outline";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import {IKanBan} from "../../types/IKanBan";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {useSession} from "next-auth/react";
+import {
+    deleteKanBanCard,
+    getKanBan,
+    patchKanBanCard,
+    postKanBanCard,
+    putKanBanCard
+} from "../../redux/actions/KanBanActions";
 
-
-const dataDrag = [
-    {id: 5051, title: '1', description: '1', priority: 0, board: 0},
-    {id: 2402, title: '2', description: '2', priority: 0, board: 1},
-    {id: 2428, title: '3', description: '3', priority: 0, board: 3}
-]
 
 
 const KanBan: React.FC = () => {
     const router = useRouter();
-    const [boardData, setBoardData] = useState<Array<{id: number, name: string, items: Array<IDrag> }>>(BoardData);
+    const {kanban, isLoading} = useAppSelector(state => state.kanbanSlice);
+    const dispatch = useAppDispatch();
+    const {data: session} = useSession()
+
+    const [boardData, setBoardData] = useState<Array<{ id: number, name: string, items: Array<IDrag> }>>(BoardData);
     const [boardItem, setBoardItem] = useState<IDrag | null>(null);
+
+    const [kanbanData, setKanBanData] = useState<IKanBan[]>([])
+
     const onDragEnd = (re: any) => {
+        //@ts-ignore
+        const token: string = session?.accessToken;
         if (!re.destination) return;
-        let newBoardData = Array.from(boardData);
+        let newBoardData = Array.from(kanbanData);
         let dragItem = newBoardData[parseInt(re.source.droppableId)].items[re.source.index];
         dragItem.board = parseInt(re.destination.droppableId);
+        dragItem.kanban_column = parseInt(re.destination.droppableId) + 1;
         newBoardData[parseInt(re.source.droppableId)].items.splice(re.source.index, 1);
         newBoardData[parseInt(re.destination.droppableId)].items.splice(re.destination.index, 0, dragItem);
-        setBoardData(newBoardData);
+        dispatch(patchKanBanCard({
+            token,
+            id: dragItem.id,
+            data: {kanban_column: dragItem.kanban_column},
+            kanban: newBoardData}))
     };
-    const handleOnDrag = (action: { type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: IDrag }) => {
-        const {type, payload} = action
+    const handleOnDrag = (action: { type: "LOOK" | "EDIT" | "DELETE" | "DEFAULT" | "CREATE", payload: INewDrag | IDrag}) => {
+        const {type, payload} = action;
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        //@ts-ignore
+        const idKB: number = router.query.kanban;
         switch (type) {
             case "CREATE": {
-                let newBoardData = Array.from(boardData);
-                newBoardData[0].items.push(payload);
-                setBoardData(newBoardData);
+                dispatch(postKanBanCard({token, id: idKB, data: payload}))
                 break;
             }
             case "EDIT": {
-                let newBoardData = Array.from(boardData);
-                newBoardData = newBoardData.map(board => ({
-                    id: board.id,
-                    name: board.name,
-                    items: board.items.map(item => item.id === payload.id ? item = payload : item)
-                }))
-                setBoardData(newBoardData);
+                if ("id" in payload) {
+                    dispatch(putKanBanCard({token, id: payload.id, data: payload}))
+                }
                 break;
             }
             case "DELETE": {
-                let newBoardData = Array.from(boardData);
-                newBoardData = newBoardData.map(board => ({
-                    id: board.id,
-                    name: board.name,
-                    items: board.items.filter(item => item.id !== payload.id)
-                }))
-                setBoardData(newBoardData);
+                if ("id" in payload) {
+                    dispatch(deleteKanBanCard({token, id: payload.id}))
+                }
                 break;
             }
             default: {
@@ -77,31 +87,46 @@ const KanBan: React.FC = () => {
 
 
     useEffect(() => {
-        setBoardData(convertKanBan(boardData, dataDrag))
-    }, [])
+        //@ts-ignore
+        const token: string = session?.accessToken;
+        if (!router.isReady) return;
+
+        // @ts-ignore
+        dispatch(getKanBan({token, id: router.query.kanban}))
+
+    }, [dispatch]);
+
+
+    useEffect(() => {
+        isLoading === 'FULFILLED' ? setKanBanData(JSON.parse(JSON.stringify(kanban))) : ''
+    }, [isLoading]);
+
+
+    useEffect(() => {
+        setKanBanData(JSON.parse(JSON.stringify(kanban)))
+    }, [kanban]);
 
     return (
         <>
             <div className={'d-flex justify-content-between align-items-center mb-3'}>
                 <Link href={`/project/${router.query.id}`}>
-                <a
-                    className={['btn d-flex align-items-center ps-0'].join(" ")}>
-                    <i className="icon me-2">
-                        <ReplyIcon/>
-                    </i>
-                    <span>Вернуться назад</span>
-                </a>
-            </Link>
-
+                    <a
+                        className={['btn d-flex align-items-center ps-0'].join(" ")}>
+                        <i className="icon me-2">
+                            <ReplyIcon/>
+                        </i>
+                        <span>Вернуться назад</span>
+                    </a>
+                </Link>
                 <CreateDrag onDrag={handleOnDrag}/>
             </div>
             <ControlDrag data={boardItem} onDrag={handleOnDrag}/>
             <DragDropContext onDragEnd={onDragEnd}>
-                <div className={`row flex-grow-1 gx-3`}>
+                <div className={`row flex-grow-1 gx-3`} >
                     {
-                        boardData.map((data: any, bIndex: number) => (
+                        kanbanData.map((data: any, bIndex: number) => (
                             <div key={data.name} className="col">
-                                <Droppable droppableId={data.id.toString()}>
+                                <Droppable droppableId={bIndex.toString()}>
                                     {
                                         (provided: any, snapshot: any) => (
 

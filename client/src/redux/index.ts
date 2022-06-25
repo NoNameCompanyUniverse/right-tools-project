@@ -8,13 +8,15 @@ import profileSlice from './reducers/ProfileSlice';
 import projectSlice from './reducers/ProjectsSlice';
 import mindmapSlice from './reducers/MindMapSlice';
 import subdivisionSlice from './reducers/SubdivisionSlice';
+import kanbanSlice from './reducers/KanBanSlice';
 
 const rootReducer = combineReducers({
     usersSlice,
     profileSlice,
     projectSlice,
     mindmapSlice,
-    subdivisionSlice
+    subdivisionSlice,
+    kanbanSlice
 })
 export const setupStore = () => {
     return configureStore({

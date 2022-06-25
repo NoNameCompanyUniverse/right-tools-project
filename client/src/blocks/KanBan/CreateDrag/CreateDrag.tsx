@@ -1,14 +1,14 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import {CollectionIcon} from "@heroicons/react/outline";
 import Modal from "../../../components/Modal";
-import {genId} from '../../../helpers/functions';
-import {IDrag, INewDrag} from '../../../types/old/IDrag';
+import {IDrag, INewDrag} from '../../../types/IKanBan';
 import {IModal} from "../../../types/IModal";
 import FormInput from "../../../components/Form/FormInput/FormInput";
+import FormTextarea from "../../../components/Form/FormTextarea/FormTextarea";
 
 
 interface ICreateDrag {
-    onDrag: (action: { type: "CREATE" | "EDIT" | "DELETE", payload: IDrag }) => void,
+    onDrag: (action: { type: "CREATE" | "EDIT" | "DELETE", payload: INewDrag }) => void,
 }
 
 const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
@@ -17,19 +17,18 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
     const [modal, setModal] = useState<IModal>({id: '1', isOpen: false});
 
     const [state, setState] = useState<INewDrag>({
-        title: '',
-        priority: '0',
+        name: '',
+        priority: 'L',
         description: '',
-        board: 0,
     });
 
 
     const [valid, setValid] = useState<boolean>(false)
 
     const types: Array<{ option: string, label: string }> = [
-        {option: '0', label: 'Низкий приоритет'},
-        {option: '1', label: 'Средний приоритет'},
-        {option: '2', label: 'Высокий приоритет'}
+        {option: 'L', label: 'Низкий приоритет'},
+        {option: 'A', label: 'Средний приоритет'},
+        {option: 'H', label: 'Высокий приоритет'}
     ];
 
     const handleSetValue = (value: string, name: string) => setState(state => ({...state, [name]: value}));
@@ -41,26 +40,19 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        const newDrag: IDrag = {
-            id: genId(),
-            title: state.title,
-            description: state.description,
-            priority: +state.priority,
-            board: state.board
-        }
-        onDrag({type: "CREATE", payload: newDrag});
+        onDrag({type: "CREATE", payload: state});
         handleOnModal(modal.id);
     }
 
 
     useEffect(() => {
         if (!modal.isOpen) {
-            setState({title: '', description: '', priority: '0', board: 0});
+            setState({name: '', description: '', priority: 'L',});
         }
 
     }, [modal]);
     useEffect(() => {
-        let formValid: boolean = state.title !== '' && state.description !== '';
+        let formValid: boolean = state.name !== '' && state.description !== '';
         setValid(formValid)
     }, [state])
 
@@ -85,9 +77,9 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
                         <div className="row">
                             <div className="col-12">
                                 <FormInput
-                                    name={'title'}
+                                    name={'name'}
                                     type={'text'}
-                                    value={state.title}
+                                    value={state.name}
                                     placeholder={'Введите название'}
                                     setValue={handleSetValue}
                                 />
@@ -105,14 +97,12 @@ const CreateDrag: React.FC<ICreateDrag> = ({onDrag}) => {
                                 </select>
                             </div>
                             <div className="col-12 mt-3">
-                                <textarea
-                                    rows={5}
+                                <FormTextarea
                                     placeholder={`Введите описание`}
-                                    className="form-control"
-                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                    name="description"
-                                    value={state.description}
-                                />
+                                    setValue={handleSetValue}
+                                    value={state.description ? state.description : ''}
+                                    name={'description'}
+                                    rows={5}/>
                             </div>
                             <div className="col-12 mt-4">
                                 <div className="d-flex justify-content-end">

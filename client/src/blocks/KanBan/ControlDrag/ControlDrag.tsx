@@ -1,10 +1,13 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import Modal from "../../../components/Modal";
 import {IModal} from "../../../types/IModal";
-import {IDrag, INewDrag} from "../../../types/old/IDrag";
+//import {IDrag, INewDrag} from "../../../types/old/IDrag";
 import Tabs from "../../../components/Tabs";
 
 import style from './../../../components/KanBan/DragItem/index.module.scss'
+import {IDrag} from '../../../types/IKanBan';
+import FormTextarea from "../../../components/Form/FormTextarea/FormTextarea";
+import FormInput from "../../../components/Form/FormInput/FormInput";
 
 interface IControlDrag {
     data: IDrag | null,
@@ -25,7 +28,7 @@ const ControlDrag: React.FC<IControlDrag> = ({data, onDrag}) => {
 
     const handleOnSubmit = (event: FormEvent) => {
         event.preventDefault();
-        state ? onDrag({type: "EDIT", payload: {...state, priority: +state.priority}}) : '';
+        state ? onDrag({type: "EDIT", payload: {...state, priority: state.priority}}) : '';
         handleOnModal(modal.id);
     }
 
@@ -35,9 +38,9 @@ const ControlDrag: React.FC<IControlDrag> = ({data, onDrag}) => {
     }
 
     const types: Array<{ option: string, label: string }> = [
-        {option: '0', label: 'Низкий приоритет'},
-        {option: '1', label: 'Средний приоритет'},
-        {option: '2', label: 'Высокий приоритет'}
+        {option: 'L', label: 'Низкий приоритет'},
+        {option: 'A', label: 'Средний приоритет'},
+        {option: 'H', label: 'Высокий приоритет'}
     ];
 
     // @ts-ignore
@@ -58,7 +61,7 @@ const ControlDrag: React.FC<IControlDrag> = ({data, onDrag}) => {
     }, [data]);
 
     useEffect(() => {
-        let formValid: boolean = state !== null ? state.title !== '' && state.description !== '' : false;
+        let formValid: boolean = state !== null ? state.name !== '' && state.description !== '' : false;
         setValid(formValid)
     }, [state])
 
@@ -72,12 +75,20 @@ const ControlDrag: React.FC<IControlDrag> = ({data, onDrag}) => {
                                 <>
                                     <div className="row">
                                         <div className="col-12">
-                                            <div className={`${style.title} fs-4`}>{state.title}</div>
+                                            <div className={`${style.title} fs-4`}>{state.name}</div>
                                         </div>
                                         <div className="col-12 mt-3">
                                             <div
-                                                className={`${style.tag} fs-6 ${state.priority === 0 ? style.low : state.priority === 1 ? style.medium : style.high}`}>
-                                                {state.priority === 0 ? "Низкий приоритет" : state.priority === 1 ? "Средний приоритет" : "Высокий приоритет"}
+                                                className={`${style.tag} fs-6 ${state.priority === "L" 
+                                                    ? style.low 
+                                                    : state.priority === 'A' 
+                                                        ? style.medium 
+                                                        : style.high}`}>
+                                                {state.priority === 'L'
+                                                    ? "Низкий приоритет"
+                                                    : state.priority === 'A'
+                                                        ? "Средний приоритет"
+                                                        : "Высокий приоритет"}
                                             </div>
                                         </div>
                                         <div className="col-12 mt-4">
@@ -87,13 +98,11 @@ const ControlDrag: React.FC<IControlDrag> = ({data, onDrag}) => {
                                     <form onSubmit={event => handleOnSubmit(event)}>
                                         <div className="row">
                                             <div className="col-12">
-                                                <input
-                                                    onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                                    value={state.title}
-                                                    name={`title`}
-                                                    type="text"
-                                                    placeholder={`Введите название`}
-                                                    className="form-control"/>
+                                                <FormInput
+                                                    name={'name'}
+                                                    value={state.name}
+                                                    setValue={handleSetValue}
+                                                    placeholder={`Введите название`}/>
                                             </div>
                                             <div className="col-12 mt-3">
                                                 <select
@@ -108,14 +117,12 @@ const ControlDrag: React.FC<IControlDrag> = ({data, onDrag}) => {
                                                 </select>
                                             </div>
                                             <div className="col-12 mt-3">
-                                                    <textarea
-                                                        rows={5}
-                                                        placeholder={`Введите описание`}
-                                                        className="form-control"
-                                                        onChange={event => handleSetValue(event.target.value, event.target.name)}
-                                                        name="description"
-                                                        value={state.description}
-                                                    />
+                                                <FormTextarea
+                                                    placeholder={`Введите описание`}
+                                                    setValue={handleSetValue}
+                                                    value={state.description ? state.description : ''}
+                                                    name={'description'}
+                                                    rows={5}/>
                                             </div>
                                             <div className="col-12 mt-4">
                                                 <div className="d-flex justify-content-end">
