@@ -20,6 +20,7 @@ import {getProfileInfo, putMe} from "../../redux/actions/ProfileAction";
 import {deleteProject, getProjectsProfile} from "../../redux/actions/ProjectsAction";
 import ProjectCard from "../../components/Cards/ProjectCard/ProjectCard";
 import Link from 'next/link'
+import {getSubdivision} from "../../redux/actions/SubdivisionAction";
 
 const Profile = () => {
 
@@ -28,6 +29,7 @@ const Profile = () => {
     const {users, isFetching} = useAppSelector(state => state.usersSlice);
     const {auth, info} = useAppSelector(state => state.profileSlice);
     const {projects, loading} = useAppSelector(state => state.projectSlice);
+    const {subdivision} = useAppSelector(state => state.subdivisionSlice);
     const dispatch = useAppDispatch();
 
 
@@ -51,7 +53,6 @@ const Profile = () => {
             date_birth: _data.date_birth,
             subdivision: _data.subdivision ? _data.subdivision.id : 1
         }
-        console.log(photo)
         dispatch(putMe({token, data, id: _data.id, photo, banner}))
     };
 
@@ -83,6 +84,7 @@ const Profile = () => {
         dispatch(getUsers({token, limit: 4}));
         dispatch(getProfileInfo(token));
         dispatch(getProjectsProfile({token, limit: 3}));
+        dispatch(getSubdivision({token}))
     }, [dispatch]);
 
     return (
@@ -90,6 +92,7 @@ const Profile = () => {
             {
                 auth && (
                     <ControlProfile
+                        subdivisions={subdivision}
                         modal={modal[0]}
                         setModal={handleOnModal}
                         data={auth}

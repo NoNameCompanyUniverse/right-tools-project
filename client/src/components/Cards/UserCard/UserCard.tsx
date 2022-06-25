@@ -14,18 +14,13 @@ const UserCard: React.FC<IUserCard> = ({data, children}) => {
     const {id, subdivision, full_name, photo, online} = data;
 
     return (
-        <div className={style.block}>
-            <motion.div
-                whileHover={
-                    {
-                        width: '5.15rem',
-                        height: '5.15rem',
-                        transformOrigin: 'left top'
-                    }}
-                className={[style.avatar, online ? style.online : ''].join(" ")}>
+        <motion.div
+            className={style.block}
+            whileHover={{y: -10}}>
+            <div className={[style.avatar, online ? style.online : ''].join(" ")}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={photo ? photo : '/profile/default-profile.png'} alt=""/>
-            </motion.div>
+            </div>
             <div className={style.control}>
                 {
                     children && (
@@ -63,7 +58,7 @@ const UserCard: React.FC<IUserCard> = ({data, children}) => {
             {/*        ))*/}
             {/*    }*/}
             {/*</div>*/}
-        </div>
+        </motion.div>
     );
 };
 

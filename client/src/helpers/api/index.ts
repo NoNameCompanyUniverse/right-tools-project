@@ -74,7 +74,7 @@ class Api {
 
     patchUserBanner(token: string, id: number, banner: any) {
         let formData = new FormData();
-        formData.append('photo', banner);
+        formData.append('banner', banner);
         this.api.patch(`${this.USERS_URL}${id}/banner/`, formData, {
             headers: {Authorization: `Bearer ${token}`}
         }).then(res => {
