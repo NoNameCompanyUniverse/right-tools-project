@@ -241,18 +241,3 @@ DJANGO_SIMPLE_LOGS = {
         ]
     }
 }
-
-BASE_IMAGE_SHAPE = {
-    'PHOTO': {
-        'WIDTH': 200,
-        'HEIGHT': 200,
-    },
-    'BANNER': {
-        'WIDTH': 500,
-        'HEIGHT': 500,
-    },
-    'PROJECT_PICTURE': {
-        'WIDTH': 500,
-        'HEIGHT': 500,
-    }
-}

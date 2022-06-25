@@ -1,13 +1,10 @@
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
 from django.db import models
 
 from image_compressor import storages
-
-from .image_service import services
-
 from .common.services import *
+from .image_service import services
 from .projects.documents.services import *
 from .projects.picture.services import *
 from .users.services import *
@@ -18,7 +15,7 @@ class User(AbstractUser):
         upload_to=get_path_to_photo,
         null=True,
         storage=storages.OverwriteStorage,
-        validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
+        validators=[FileExtensionValidator(allowed_extensions=['JPG']), validate_size_image]
     )
     description = models.TextField(null=True)
     date_birth = models.DateField(null=True)
@@ -32,20 +29,12 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        instance = super(User, self).save(*args, **kwargs)
-        if self.photo:
-            services.ImageService.check_image(
-                self.photo,
-                settings.BASE_IMAGE_SHAPE.get('PHOTO').get('WIDTH'),
-                settings.BASE_IMAGE_SHAPE.get('PHOTO').get('HEIGHT'),
-            )
-        if self.banner:
-            services.ImageService.check_image(
-                self.banner,
-                settings.BASE_IMAGE_SHAPE.get('BANNER').get('WIDTH'),
-                settings.BASE_IMAGE_SHAPE.get('BANNER').get('HEIGHT'),
-            )
-        return instance
+        image_service = services.ImageService()
+        if self.photo and image_service.check_image(self.photo, 200, 200):
+            image_service.compress(self.photo, 200, 200)
+        if self.banner and image_service.check_image(self.banner, 450, 200):
+            image_service.compress(self.banner, 450, 200)
+        super(User, self).save(*args, **kwargs)
 
 
 class Subdivision(models.Model):
@@ -72,14 +61,10 @@ class Project(models.Model):
     date_create = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        instance = super(Project, self).save(*args, **kwargs)
-        if self.picture:
-            services.ImageService.check_image(
-                self.picture,
-                settings.BASE_IMAGE_SHAPE.get('PICTURE').get('WIDTH'),
-                settings.BASE_IMAGE_SHAPE.get('PICTURE').get('HEIGHT'),
-            )
-        return instance
+        image_service = services.ImageService()
+        if self.picture and image_service.check_image(self.picture, 450, 200):
+            image_service.compress(self.picture, 450, 200)
+        super(Project, self).save(*args, **kwargs)
 
 
 class MindMap(models.Model):

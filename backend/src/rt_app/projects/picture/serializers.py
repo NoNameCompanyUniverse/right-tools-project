@@ -8,7 +8,8 @@ class PictureSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         project = self.instance
-        project.picture = self.validated_data.get('picture')
+        picture = self.validated_data.get('picture')
+        project.picture.save(picture.name, picture)
         return project.save()
 
     class Meta:

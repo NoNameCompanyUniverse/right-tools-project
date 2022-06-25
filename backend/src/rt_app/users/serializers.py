@@ -11,7 +11,9 @@ from rt_app.models import User
 from rt_app.common.serializers import ServiceSerializer
 from rt_app.subdivisions.serializers import SubdivisionShortInfoSerializer
 
-from .exceptions import *
+from rt_app.image_service import services
+from django.conf import settings
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 class UserListSerializer(ServiceSerializer, ModelSerializer):
@@ -133,15 +135,18 @@ class PasswordSerializer(Serializer):
 
 
 class PhotoSerializer(Serializer):
-    photo = fields.ImageField(allow_null=True, max_length=100, required=False)
+    photo = fields.ImageField(allow_null=False, max_length=100, required=True)
 
     def save(self, **kwargs):
-        self.context.user.photo = self.validated_data['photo']
+        photo = self.validated_data.get('photo')
+        self.context.user.photo.save(photo.name, photo)
         return self.context.user.save()
 
 
-class BannerSerializer(PhotoSerializer):
+class BannerSerializer(Serializer):
+    banner = fields.ImageField(allow_null=False, max_length=100, required=True)
 
     def save(self, **kwargs):
-        self.context.user.banner = self.validated_data['photo']
+        banner = self.validated_data.get('banner')
+        self.context.user.banner.save(banner.name, banner)
         return self.context.user.save()
