@@ -131,5 +131,5 @@ class KanbanCard(models.Model):
 
 class MindEdges(models.Model):
     mind_map = models.ForeignKey(MindMap, on_delete=models.CASCADE, null=False)
-    source = models.ForeignKey(MindCard, on_delete=models.PROTECT, null=False)
+    source = models.ForeignKey(MindCard, on_delete=models.CASCADE, null=False)
     target = models.IntegerField(null=False)
