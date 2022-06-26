@@ -388,11 +388,19 @@ const Home: NextPage = () => {
                 <footer className={style.footer}>
                     <div className={`container-xl`}>
                         <div className={`row justify-content-between align-items-center`}>
-                            <div className={`col-auto`}>
-                                © Trash Team., 2022 г. Все права защищены.
+                            <div className={`col-auto text-gray`}>
+                                © Trash Team.
                             </div>
                             <div className={`col-auto`}>
-                                Россия, г. Брянск, БГИТУ
+                                <span className={['d-block', 'text-gray', 'fs-7'].join(" ")}>
+                                    проект
+                                </span>
+                                <div className={'text-gray fs-6 fw-bold'}>
+                                    NOOSOFT
+                                </div>
+                                <div className={'text-gray fs-6 fw-bold'}>
+                                    БГИТУ
+                                </div>
                             </div>
                         </div>
                     </div>

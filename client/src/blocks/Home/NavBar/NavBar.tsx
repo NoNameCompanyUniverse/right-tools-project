@@ -1,11 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import style from "../../../styles/home/Home.module.scss";
 import Link from "next/link";
-import {useAppSelector} from "../../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {useSession} from "next-auth/react";
+import {getMe} from "../../../redux/actions/ProfileAction";
 
 const NavBar = () => {
 
-    const {auth} = useAppSelector(state => state.profileSlice)
+    const {auth} = useAppSelector(state => state.profileSlice);
+    const {data: session, status} = useSession();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (status === 'authenticated') {
+            //@ts-ignore
+            const token: string = session?.accessToken;
+            !auth && dispatch(getMe(token));
+        }
+    }, [dispatch, session])
 
 
     return (
