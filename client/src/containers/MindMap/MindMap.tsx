@@ -88,7 +88,6 @@ const MindMap = () => {
     }, [])
     useEffect(() => {
         if (mindmap) {
-            console.log('dsd')
             setNodes(JSON.parse(JSON.stringify(mindmap.nodes)));
         }
     }, [mindmap])
@@ -138,10 +137,9 @@ const MindMap = () => {
         }
         // @ts-ignore
         dispatch(patchMindCardCoord({token, id: mindID, data}))
-        console.log(node)
     }
     const handleOnEdgeDelete = (edges: Edge[]) => {
-        console.log(edges)
+
     }
 
     useEffect(() => {

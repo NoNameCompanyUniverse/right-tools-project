@@ -41,6 +41,7 @@ const KanBan: React.FC = () => {
         //@ts-ignore
         const token: string = session?.accessToken;
         if (!re.destination) return;
+        console.log(re)
         let newBoardData = Array.from(kanbanData);
         let dragItem = newBoardData[parseInt(re.source.droppableId)].items[re.source.index];
         dragItem.board = parseInt(re.destination.droppableId);
@@ -126,7 +127,7 @@ const KanBan: React.FC = () => {
                     {
                         kanbanData.map((data: any, bIndex: number) => (
                             <div key={data.name} className="col">
-                                <Droppable droppableId={bIndex.toString()}>
+                                <Droppable id={data.id} droppableId={bIndex.toString()}>
                                     {
                                         (provided: any, snapshot: any) => (
 

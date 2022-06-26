@@ -32,6 +32,19 @@ export const mindMapSlice = createSlice({
         },
         reset(state) {
             state.isLoading = '';
+        },
+        setPositionNode(state, action: PayloadAction<{card: number, x: number, y:number}>) {
+            if(state.mindmap) {
+                state.mindmap.nodes = state.mindmap?.nodes.map(n => {
+                    if(n.id === action.payload.card.toString()){
+                        n.position.x = action.payload.x;
+                        n.position.y = action.payload.y;
+                        return n;
+                    } else {
+                        return n;
+                    }
+                })
+            }
         }
     },
     extraReducers: {
@@ -78,5 +91,5 @@ export const mindMapSlice = createSlice({
     }
 })
 
-export const {removeNode, pushEdges, reset} = mindMapSlice.actions;
+export const {removeNode, pushEdges, reset, setPositionNode} = mindMapSlice.actions;
 export default mindMapSlice.reducer;
