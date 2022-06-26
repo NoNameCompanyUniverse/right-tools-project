@@ -25,19 +25,6 @@ export const getUsersAll = createAsyncThunk(
     }
 )
 
-export const getUser = createAsyncThunk(
-    'user/get',
-    async ({token, id} : {token:string, id: number}, {rejectWithValue}) => {
-        try {
-            return await API.getUser(token, id)
-        } catch (e) {
-            // @ts-ignore
-            return rejectWithValue(e.message)
-        }
-    }
-)
-
-
 export const putUser = createAsyncThunk(
     'user/put',
     async ({token, data, id, photo, banner} : {token:string, data:any, id: number, photo:any, banner: any}, {rejectWithValue}) => {

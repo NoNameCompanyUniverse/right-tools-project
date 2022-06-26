@@ -12,6 +12,7 @@ import CreateUser from "../../blocks/Users/CreateUser";
 import SkeletonUser from "../../components/Skeleton/SkeletonUser";
 import {IModal} from "../../types/IModal";
 import Modal from "../../components/Modal";
+import Link from 'next/link'
 
 const Users = () => {
 
@@ -146,7 +147,9 @@ const Users = () => {
                                                         auth?.id !== user.id && (
                                                             <ul>
                                                                 <li onClick={() => handleOnUser(user)}>
-                                                                    Подробнее
+                                                                    <Link href={`/profile/${user.id}/`}>
+                                                                        <a>Подробнее</a>
+                                                                    </Link>
                                                                 </li>
                                                                 {
                                                                     auth?.is_staff && <li onClick={() => handleDeleteUser(user.id)}>

@@ -2,6 +2,7 @@ import {IUser} from "../../types/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {getMe, getProfileInfo, putMe} from "../actions/ProfileAction";
 import {toast} from "react-toastify";
+import {IProject} from "../../types/IProject";
 
 interface IProfileState {
     auth: IUser | null,

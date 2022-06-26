@@ -30,6 +30,22 @@ class Api {
         })
     }
 
+    getUserInfo(token: string, id: number) {
+        return this.api.get(`${this.USERS_URL + id}/profile/info/`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+
+    getUserProjectAll(token: string, id: number) {
+        return this.api.get(`${this.USERS_URL + id}/profile/projects/`, {
+            headers: {Authorization: `Bearer ${token}`,}
+        }).then(res => {
+            return res.data;
+        })
+    }
+
     getUsersAll(token: string) {
         return this.api.get(this.USERS_URL, {
             headers: {Authorization: `Bearer ${token}`}

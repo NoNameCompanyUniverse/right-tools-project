@@ -107,7 +107,8 @@ const Projects = () => {
                                     <div key={index} className="col-xxl-4 col-lg-6 mb-4">
                                         <SkeletonProject/>
                                     </div>
-                                )) : loading === 'FULFILLED' ? Array.isArray(projects) && projects.length > 0 ? projects.map((i: IProject, index) => (
+                                )) : loading === 'FULFILLED' ? Array.isArray(projects) && projects.length > 0 ? projects
+                                        .filter(p => p.name.toLowerCase().includes(query)).map((i: IProject, index) => (
                                         <div key={index} className="col-xxl-4 col-lg-6 mb-4">
                                             <ProjectCard data={i} root={auth ? auth.id : 0}>
                                                 <ul>

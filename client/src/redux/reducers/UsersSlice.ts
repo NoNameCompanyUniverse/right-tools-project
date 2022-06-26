@@ -1,6 +1,6 @@
 import {IUser, IUserMin} from "../../types/IUser";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {deleteUser, getUser, getUsers, getUsersAll, postUser, putUser} from "../actions/UsersAction";
+import {deleteUser, getUsers, getUsersAll, postUser, putUser} from "../actions/UsersAction";
 import {toast} from "react-toastify";
 
 interface IUsersState {
@@ -45,18 +45,6 @@ export const usersSlice = createSlice({
             toast.error('Ошибка загрузки пользователей');
             state.users = []
         },
-
-        [getUser.pending.type]: () => {
-
-        },
-        [getUser.fulfilled.type]: (state, action: PayloadAction<IUser>) => {
-            state.user = action.payload;
-        },
-        [getUser.rejected.type]: () => {
-            toast.error('Ошибка пользователя')
-        },
-
-
 
         [putUser.pending.type]: (state) => {
             //state.isFetching = 'PENDING'
