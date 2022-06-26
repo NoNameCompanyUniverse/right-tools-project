@@ -47,7 +47,7 @@ const Home: NextPage = () => {
                                     distinctio dolorum facilis incidunt libero, magnam magni nisi officiis optio quasi
                                     quisquam reiciendis sit tempora tempore tenetur voluptate.
                                 </p>
-                                <Link href={``}>
+                                <Link href={`/profile`}>
                                     <a className={`btn btn-green mt-4 rounded-pill`}>
                                         Начать использовать
                                     </a>

@@ -5,7 +5,7 @@ import style from './index.module.scss';
 interface ISubdivisionTree {
     props: ISubdivision,
     isChecked: number,
-    onChecked: (id:number, name: string) => void
+    onChecked: (id: number, name: string) => void
 }
 
 const SubdivisionTree: React.FC<ISubdivisionTree> = ({props, isChecked, onChecked}) => {
@@ -14,16 +14,23 @@ const SubdivisionTree: React.FC<ISubdivisionTree> = ({props, isChecked, onChecke
 
     return (
         <>
-            <div className={'ms-3'}>
-
-
-                    <label>
-                        <input onChange={() => onChecked(id, name)} checked={id === isChecked} type="checkbox"/>
-                    </label>
+            <div className={style.checkboxGroup}>
+                <label className={style.label}>
+                    <input
+                        onChange={() => onChecked(id, name)}
+                        checked={id === isChecked}
+                        type="checkbox"/>
+                    <span className={style.checkbox}>
+                        <span className={style.check}/>
+                    </span>
                     {name}
-                    {hasChildren && children.map((i:ISubdivision) => (
+                </label>
+                <div className={'ms-3'}>
+                    {hasChildren && children.map((i: ISubdivision) => (
                         <SubdivisionTree key={i.id} onChecked={onChecked} isChecked={isChecked} props={i}/>
                     ))}
+                </div>
+
 
             </div>
         </>

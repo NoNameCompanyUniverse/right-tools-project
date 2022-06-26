@@ -38,12 +38,12 @@ const Project = () => {
         {id: '#popup', isOpen: false},
         {id: '#controlBoard', isOpen: false}
     ]);
-    const [board, setBoard] = useState<{id: number, name: string, description: string} | null>(null)
+    const [board, setBoard] = useState<{ id: number, name: string, description: string } | null>(null)
 
     const [type, setType] = useState<"KANBAN" | "MINDMAP">("KANBAN")
 
 
-    const handleBoard = (id: string, type: "KANBAN" | "MINDMAP", data: {id: number, name: string, description: string}) => {
+    const handleBoard = (id: string, type: "KANBAN" | "MINDMAP", data: { id: number, name: string, description: string }) => {
         setType(type);
         setBoard(data)
         handleOnModal(id)
@@ -83,7 +83,7 @@ const Project = () => {
                 dispatch(deleteProjectParticipant({token, id: idP, data: {participants: [buf.id]}}))
                 break;
             }
-            case 'FILE':{
+            case 'FILE': {
                 // @ts-ignore
                 dispatch(deleteProjectDocument({token, id: buf.id}))
                 break;
@@ -106,7 +106,7 @@ const Project = () => {
         handleOnModal(modal[0].id);
     }
 
-    function IsAdmin(Component:any) {
+    function IsAdmin(Component: any) {
         if (auth && project.info) {
             if (auth.id === project.info.admin.id) {
                 return Component
@@ -164,13 +164,11 @@ const Project = () => {
                                                     )) : Array.isArray(project.participants) && project.participants.length > 0 ? project.participants.map((i: IUserMin, index) => (
                                                         <div key={index} className={`col-xl-4 mb-3`}>
                                                             <UserCard data={i}>
-                                                                {
-                                                                    IsAdmin(<ul>
-                                                                        <li onClick={() => handleSwitchDelete(i.id, 'TEAM')}>
-                                                                            Удалить
-                                                                        </li>
-                                                                    </ul>)
-                                                                }
+                                                                <ul>
+                                                                    <li onClick={() => handleSwitchDelete(i.id, 'TEAM')}>
+                                                                        Удалить
+                                                                    </li>
+                                                                </ul>
                                                             </UserCard>
                                                         </div>
                                                     )) : <>Нет проектов</>
@@ -184,10 +182,10 @@ const Project = () => {
                                             <div className={`row`}>
                                                 {
                                                     loading === 'PENDING' && [...new Array(3)].map((_, index) => (
-                                                            <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
-                                                                <SkeletonCard/>
-                                                            </div>
-                                                        ))
+                                                        <div key={index} className={`col-xl-4 col-lg-6 mb-3`}>
+                                                            <SkeletonCard/>
+                                                        </div>
+                                                    ))
                                                 }
                                                 {
                                                     loading === 'FULFILLED' && Array.isArray(project.mindmaps) && project.mindmaps.length > 0 ?
@@ -203,12 +201,8 @@ const Project = () => {
                                                                                 </a>
                                                                             </Link>
                                                                         </li>
-                                                                        {
-                                                                            IsAdmin(<>
-                                                                                <li onClick={() => handleSwitchDelete(map.id, 'MINDMAP')}>Удалить</li>
-                                                                                <li onClick={() => handleBoard(modal[1].id, 'MINDMAP', map)}>Изменить</li>
-                                                                            </>)
-                                                                        }
+                                                                        <li onClick={() => handleSwitchDelete(map.id, 'MINDMAP')}>Удалить</li>
+                                                                        <li onClick={() => handleBoard(modal[1].id, 'MINDMAP', map)}>Изменить</li>
                                                                     </ul>
                                                                 </Card>
                                                             </div>
@@ -247,13 +241,8 @@ const Project = () => {
                                                                                 </a>
                                                                             </Link>
                                                                         </li>
-                                                                        {
-                                                                            IsAdmin(<>
-                                                                                <li onClick={() => handleSwitchDelete(map.id, 'KANBAN')}>Удалить</li>
-                                                                                <li onClick={() => handleBoard(modal[1].id, 'KANBAN', map)}>Изменить</li>
-                                                                            </>)
-                                                                        }
-
+                                                                        <li onClick={() => handleSwitchDelete(map.id, 'KANBAN')}>Удалить</li>
+                                                                        <li onClick={() => handleBoard(modal[1].id, 'KANBAN', map)}>Изменить</li>
                                                                     </ul>
                                                                 </Card>
                                                             </div>
@@ -282,12 +271,10 @@ const Project = () => {
                                                                  className={`col-xxl-4 col-xl-6 col-lg-12 mb-3`}>
                                                                 <FileCard props={file}>
                                                                     <ul>
-                                                                        {
-                                                                            IsAdmin(<li onClick={() => handleSwitchDelete(file.id, 'FILE')}>
-                                                                                Удалить
-                                                                            </li>)
-                                                                        }
-
+                                                                        <li
+                                                                            onClick={() => handleSwitchDelete(file.id, 'FILE')}>
+                                                                            Удалить
+                                                                        </li>
                                                                         <li>
                                                                             <a href={file.file} download>Скачать</a>
                                                                         </li>

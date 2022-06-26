@@ -99,7 +99,7 @@ const PanelInfo: React.FC = () => {
         setParticipant(data);
     }
 
-    function IsAdmin(Component:any) {
+    function IsAdmin(Component: any) {
         if (auth && project.info) {
             if (auth.id === project.info.admin.id) {
                 return Component
@@ -151,15 +151,15 @@ const PanelInfo: React.FC = () => {
                                      alt=""/>
                             </div>
                         </div>
-                        {
-                            IsAdmin(<div className="mb-4">
-                                <button onClick={() => handleOnModal(modal[3].id)}
-                                        type={'button'}
-                                        className="btn-green btn btn-sm ">
-                                    Редактировать
-                                </button>
-                            </div>)
-                        }
+
+                        <div className="mb-4">
+                            <button onClick={() => handleOnModal(modal[3].id)}
+                                    type={'button'}
+                                    className="btn-green btn btn-sm ">
+                                Редактировать
+                            </button>
+                        </div>
+
 
                         <div className={`mb-4`}>
                             <Title value={`Разработчики проекта`}/>
@@ -184,7 +184,7 @@ const PanelInfo: React.FC = () => {
                                 })}
 
                                 {
-                                    IsAdmin( <div
+                                    IsAdmin(<div
                                         onClick={() => handleOnModal(modal[2].id)}
                                         className={style.addUser}>
                                         <PlusSmIcon/>
@@ -204,22 +204,20 @@ const PanelInfo: React.FC = () => {
                                     mousewheel={true}
                                     modules={[Mousewheel, Pagination]}
                                     centeredSlides={true}>
-                                    {
-                                        IsAdmin(<SwiperSlide>
-                                            <motion.div
-                                                onClick={() => handleCreateBoard(modal[1].id, "MINDMAP")}
-                                                whileTap={{scale: 0.95}}
-                                                className={[
-                                                    style.item,
-                                                    'd-flex',
-                                                    'align-items-center',
-                                                    'justify-content-center'].join(" ")}>
-                                                <i className={'icon icon-lg'}>
-                                                    <FolderAddIcon/>
-                                                </i>
-                                            </motion.div>
-                                        </SwiperSlide>)
-                                    }
+                                    <SwiperSlide>
+                                        <motion.div
+                                            onClick={() => handleCreateBoard(modal[1].id, "MINDMAP")}
+                                            whileTap={{scale: 0.95}}
+                                            className={[
+                                                style.item,
+                                                'd-flex',
+                                                'align-items-center',
+                                                'justify-content-center'].join(" ")}>
+                                            <i className={'icon icon-lg'}>
+                                                <FolderAddIcon/>
+                                            </i>
+                                        </motion.div>
+                                    </SwiperSlide>
                                     {
                                         project.mindmaps.map((item: { id: number, name: string }, index: number) => (
                                             <SwiperSlide key={index}>
@@ -250,18 +248,17 @@ const PanelInfo: React.FC = () => {
                                     mousewheel={true}
                                     modules={[Mousewheel, Pagination]}
                                     centeredSlides={true}>
-                                    {
-                                        IsAdmin(<SwiperSlide>
-                                            <motion.div
-                                                onClick={() => handleCreateBoard(modal[1].id, "KANBAN")}
-                                                whileTap={{scale: 0.95}}
-                                                className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
-                                                <i className={'icon icon-lg'}>
-                                                    <FolderAddIcon/>
-                                                </i>
-                                            </motion.div>
-                                        </SwiperSlide>)
-                                    }
+                                    <SwiperSlide>
+                                        <motion.div
+                                            onClick={() => handleCreateBoard(modal[1].id, "KANBAN")}
+                                            whileTap={{scale: 0.95}}
+                                            className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
+                                            <i className={'icon icon-lg'}>
+                                                <FolderAddIcon/>
+                                            </i>
+                                        </motion.div>
+                                    </SwiperSlide>
+
                                     {
                                         project.kanban.map((item: { id: number, name: string }, index: number) => (
                                             <SwiperSlide key={index}>
@@ -290,39 +287,39 @@ const PanelInfo: React.FC = () => {
                                     mousewheel={true}
                                     modules={[Mousewheel, Pagination]}
                                     centeredSlides={true}>
-                                    {
-                                        IsAdmin(<SwiperSlide>
-                                            <motion.div
-                                                whileTap={{scale: 0.95}}
-                                                style={{"position": "relative"}}
-                                                className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
-                                                <label style={{
-                                                    "width": "100%",
-                                                    "height": "100%",
-                                                    "position": "absolute",
-                                                    "cursor": "pointer"
-                                                }}>
-                                                    <input
-                                                        accept={".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"}
-                                                        onChange={handleOnFile}
-                                                        type="file"
-                                                        hidden={true}/>
-                                                </label>
-                                                <i className={'icon icon-lg'}>
-                                                    <FolderAddIcon/>
-                                                </i>
-                                            </motion.div>
-                                        </SwiperSlide>)
-                                    }
+
+                                    <SwiperSlide>
+                                        <motion.div
+                                            whileTap={{scale: 0.95}}
+                                            style={{"position": "relative"}}
+                                            className={[style.item, 'd-flex', 'align-items-center', 'justify-content-center'].join(" ")}>
+                                            <label style={{
+                                                "width": "100%",
+                                                "height": "100%",
+                                                "position": "absolute",
+                                                "cursor": "pointer"
+                                            }}>
+                                                <input
+                                                    accept={".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"}
+                                                    onChange={handleOnFile}
+                                                    type="file"
+                                                    hidden={true}/>
+                                            </label>
+                                            <i className={'icon icon-lg'}>
+                                                <FolderAddIcon/>
+                                            </i>
+                                        </motion.div>
+                                    </SwiperSlide>
+
                                     {
                                         project.files.map((item: IFile, index: number) => (
                                             <SwiperSlide key={index}>
                                                 <motion.div
                                                     whileHover={{scale: .95}}
                                                     className={style.item}>
-                                                        <a href={item.file} download>
-                                                            {item.name}
-                                                        </a>
+                                                    <a href={item.file} download>
+                                                        {item.name}
+                                                    </a>
                                                 </motion.div>
                                             </SwiperSlide>
                                         ))

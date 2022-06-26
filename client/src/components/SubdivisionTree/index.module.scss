@@ -1,0 +1,96 @@
+.checkboxGroup input {
+  display: none;
+}
+
+.checkboxGroup label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: .5rem;
+}
+.label {
+  display: flex;
+  align-items: center;
+  grid-gap: 8px;
+  cursor: pointer;
+}
+.label .checkbox {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  background: #ccc;
+  border-radius: 4px;
+  position: relative;
+  transition: .2s ease;
+  transition-delay: .2s;
+}
+
+.label .checkbox::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: #fff;
+  border-radius: 2.5px;
+  transition: .2s ease;
+  transition-delay: .2s;
+}
+.checkboxGroup input:checked + .checkbox::before {
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 50%;
+  transition-delay: 0s;
+}
+
+.checkboxGroup input:checked + .checkbox {
+  background: var(--green);
+  transition-delay: 0s;
+}
+
+.label .checkbox .check {
+  display: block;
+  width: 10px;
+  height: 6px;
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%) rotateZ(-45deg);
+}
+
+.label .checkbox .check::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: #fff;
+  transition: .2s ease;
+  transition-delay: .2s;
+}
+
+.label .checkbox .check::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: .2s ease;
+  transition-delay: 0s;
+}
+
+.checkboxGroup input:checked + .checkbox .check::before {
+  height: 100%;
+  transition-delay: .2s;
+}
+
+.checkboxGroup input:checked + .checkbox .check::after {
+  width: 100%;
+  transition-delay: .4s;
+}
+
