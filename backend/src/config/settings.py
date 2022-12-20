@@ -36,6 +36,7 @@ DEBUG = os.getenv('DEBUG', default=False)
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'rt-project.ru',
     os.getenv('ALLOWED_HOST')
 ]
 
@@ -220,6 +221,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://rt-project.ru",
     os.getenv('CORS_ALLOWED_ORIGINS'),
 ]
 
