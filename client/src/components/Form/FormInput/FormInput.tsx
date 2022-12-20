@@ -22,7 +22,7 @@ const FormInput:React.FC<IFormInput> = (
         readonly = false
     }) => {
 
-    const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value, name)
+    const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value, name);
 
 
     return (
@@ -33,7 +33,7 @@ const FormInput:React.FC<IFormInput> = (
                 type={type}
                 name={name}
                 value={value}
-                className={[style.control, value.length > 0 ? style.focus : ''].join(" ")}
+                className={[style.control, value && value.length > 0 ? style.focus : ''].join(" ")}
                 required={required}/>
             <span className={style.label}>{placeholder}</span>
         </div>

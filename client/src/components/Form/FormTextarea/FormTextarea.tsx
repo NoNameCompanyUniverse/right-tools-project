@@ -38,7 +38,7 @@ const FormTextarea:React.FC<IFormTextarea> = (
                     rows={rows}
                 />
                {
-                   maxLength && (
+                   value && maxLength && (
                        <span className={style.count}>
                            {value.length}/{maxLength}
                        </span>
